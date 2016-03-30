@@ -1,7 +1,7 @@
 # sbcremote
 SBC remote for M2M Circuits
 
-TODO: Write a project description
+An open-source mobile application which enables users to remotely manipulate the GPIO unit of a Raspberry Pi. The project will build on top of emerging technology such as the Maker Modem, Weaved, and WebIOPi to remotely control single-board computers. The mobile application will integrate WebIOPi to let users control their Raspberry Pis remotely. The GUI will contain a configuration screen that will allow the user to change I/O signals. Additionally, the user will be notified when I/O signals change or some event occurs
 
 ## Installation
 
@@ -26,13 +26,3 @@ TODO: Write history
 ## Credits
 
 TODO: Write credits
-
-## License
-
-TODO: Write license
-
-## Acknowledgments
-
-* Hat tip to anyone who's code was used
-* Inspiration
-* etc
