@@ -1,0 +1,11 @@
+You can run the scripts using the following command on a Linux system:
+./(script name)
+
+For example:
+./scriptsunix.txt
+
+NOTE: use scriptsunix.txt if scripts.txt does not work
+You will need to have cURL installed to run the scripts.
+
+Use the following command on a Debian system to install cURL:
+sudo apt-get install curl
