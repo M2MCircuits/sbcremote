@@ -1,28 +1,30 @@
 # sbcremote
 SBC remote for M2M Circuits
 
-An open-source mobile application which enables users to remotely manipulate the GPIO unit of a Raspberry Pi. The project will build on top of emerging technology such as the Maker Modem, Weaved, and WebIOPi to remotely control single-board computers. The mobile application will integrate WebIOPi to let users control their Raspberry Pis remotely. The GUI will contain a configuration screen that will allow the user to change I/O signals. Additionally, the user will be notified when I/O signals change or some event occurs
+## Summary
 
-## Installation
+A Weaved-integrated mobile application for Android and iOS that allows the user to monitor and configure the GPIO ports of a Raspberry Pi remotely.
 
-TODO: Describe the installation process
+## Description
+
+An open-source mobile application which enables users to remotely manipulate the GPIO unit of a Raspberry Pi. The project will build on top of emerging technology such as the Maker Modem, Weaved, and WebIOPi to remotely control single-board computers. The mobile application will integrate WebIOPi to let users control their Raspberry Pis remotely. The GUI will contain a configuration screen that will allow the user to change I/O signals. Additionally, the user will be notified when I/O signals change or some event occurs.
 
 ## Usage
 
-TODO: Write usage instructions
+On opening the app, a login screen for Weaved will pop up, allowing the user to provide their username and password.
 
-## Contributing
+After signing in, the user will be presented with a device screen, which will list the devices associated with the Weaved account.
 
-1. Fork it!
-2. Create your feature branch: `git checkout -b my-new-feature`
-3. Commit your changes: `git commit -am 'Add some feature'`
-4. Push to the branch: `git push origin my-new-feature`
-5. Submit a pull request :D
+After choosing a device, the user will be taken to a control screen, which will list the control pins' states and names, show the status of each pin in real time, and allow the user to set the pins to high or low.
 
-## History
+From the control screen, the user will be able to go to a configuration page, which will have app settings and customizable GPIO pin names. It will also allow the user to rename the high and low states for each pin, set each pin's natural state to Monitor, Control, or Ignore, and allow the user to enable push notifications, a feature that will let the user know when a pin switches states.
 
-TODO: Write history
+##  Design Team
+J. Hunter Heard
+Luke New
+Siddhesh
+Peter Welsh
 
-## Credits
+## Sponsored by
 
-TODO: Write credits
+Jesse Lee and Don Powrie of M2M Circuits and Miguel Razo of the UTDallas Computer Science department
