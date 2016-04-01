@@ -20,9 +20,9 @@ After choosing a device, the user will be taken to a control screen, which will 
 From the control screen, the user will be able to go to a configuration page, which will have app settings and customizable GPIO pin names. It will also allow the user to rename the high and low states for each pin, set each pin's natural state to Monitor, Control, or Ignore, and allow the user to enable push notifications, a feature that will let the user know when a pin switches states.
 
 ##  Design Team
-J. Hunter Heard
-Luke New
-Siddhesh
+J. Hunter Heard,
+Luke New,
+Siddhesh Pratap Singh,
 Peter Welsh
 
 ## Sponsored by
