@@ -3,11 +3,17 @@ SBC remote for M2M Circuits
 
 ## Summary
 
-A Weaved-integrated mobile application for Android and iOS that allows the user to monitor and configure the GPIO ports of a Raspberry Pi remotely.
+A mobile application for Android and iOS that allows the user to remotely monitor and configure the GPIO ports of Raspberry Pis and other single-board computers.
 
 ## Description
 
-An open-source mobile application which enables users to remotely manipulate the GPIO unit of a Raspberry Pi. The project will build on top of emerging technology such as the Maker Modem, Weaved, and WebIOPi to remotely control single-board computers. The mobile application will integrate WebIOPi to let users control their Raspberry Pis remotely. The GUI will contain a configuration screen that will allow the user to change I/O signals. Additionally, the user will be notified when I/O signals change or some event occurs.
+This is an open-source mobile application which enables users to remotely manipulate the GPIO unit of a Raspberry Pi. The project builds on top of emerging technology such as the Maker Modem, Weaved, and WebIOPi to remotely control single-board computers. The mobile application will integrate WebIOPi to let users control their Raspberry Pis remotely. The GUI will contain a configuration screen that will allow the user to change I/O signals. Additionally, the user will be notified when I/O signals change or some event occurs.
+
+## Installation
+
+To set up WebIOPI and Weaved, follow the steps given here: http://webiopi.trouch.com/INSTALL.html. This step includes creating an account with Weaved and downloading Weaved onto your single board computer.
+
+Once Weaved is installed, you can download the app to your mobile device.
 
 ## Usage
 
