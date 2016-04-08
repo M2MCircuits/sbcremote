@@ -90,7 +90,7 @@ public class weavedapi
 		
 	}
 	
-	protected String connect(String deviceaddress)
+	private String connect(String deviceaddress)
 	{
 		String URL = API_CONNECT;
 		String dumpStr = "";
