@@ -36,7 +36,7 @@ public class weavedapi
 	private String tokenid = "";
 	private ArrayList<rasppi> piList = null;
 	
-	weavedapi()
+	public weavedapi()
 	{
 		tokenid = "";
 	}
