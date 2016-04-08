@@ -8,7 +8,7 @@ public class PiInfoObj {
 	String deviceowner;
 	int pins;
 	
-	PiInfoObj(int ind, String al, String add, String own, int p)
+	public PiInfoObj(int ind, String al, String add, String own, int p)
 	{
 		indexInWeaved = ind;
 		devicealias = al;
