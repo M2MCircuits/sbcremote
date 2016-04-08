@@ -141,7 +141,7 @@ public class weavedapi
 		this.piList.add(newPi);
 	}
 	
-	protected void setup(boolean saved)
+	public void setup(boolean saved)
 	{
 		if(saved)
 		{
