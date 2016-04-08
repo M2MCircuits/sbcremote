@@ -10,7 +10,7 @@ public class PinInfoObj {
 	private String highLabel;
 	private String lowLabel;
 	
-	PinInfoObj(int num, String name, boolean fun, boolean state, boolean pers, String hi, String lo)
+	public PinInfoObj(int num, String name, boolean fun, boolean state, boolean pers, String hi, String lo)
 	{
 		pinNumber = num;
 		pinName = name;
