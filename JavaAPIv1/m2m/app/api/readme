@@ -1,0 +1,9 @@
+you will need the following libraries to run the api:
+
+JSON simple:
+https://code.google.com/archive/p/json-simple/
+
+Apache HttpComponents:
+https://hc.apache.org/
+
+
