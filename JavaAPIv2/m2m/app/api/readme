@@ -1,0 +1,11 @@
+Version two of the API removes all support for persistence through internal methods.
+All setup methods also accept a parameter string which can be used to pass file location/info to the method.
+
+
+you will need the following libraries to run the api:
+
+JSON simple:
+https://code.google.com/archive/p/json-simple/
+
+Apache HttpComponents:
+https://hc.apache.org/
