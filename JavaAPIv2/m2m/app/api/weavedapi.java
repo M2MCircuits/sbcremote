@@ -517,7 +517,7 @@ public class weavedapi
 		return currentPi.getPinInfoArray();
 	}
 	
-	public ArrayList<PiInfoObj> getPiInfoArray(int index)
+	public ArrayList<PiInfoObj> getPiInfoArray()
 	{
 		ArrayList<PiInfoObj> retArr = new ArrayList<PiInfoObj>();
 		int max = this.getPiListSize();
