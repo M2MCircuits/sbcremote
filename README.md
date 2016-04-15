@@ -3,7 +3,7 @@ SBC remote for M2M Circuits
 
 ## Summary
 
-A mobile application for Android and iOS that allows the user to remotely monitor and configure the GPIO ports of Raspberry Pis and other single-board computers.
+A mobile application for Android and iOS that allows the user to remotely monitor and configure the GPIO ports of Raspberry Pis.
 
 ## Description
 
@@ -11,7 +11,7 @@ This is an open-source mobile application which enables users to remotely manipu
 
 ## Installation
 
-To set up WebIOPI and Weaved, follow the steps given here: http://webiopi.trouch.com/INSTALL.html. This step includes creating an account with Weaved and downloading Weaved onto your single board computer.
+To set up WebIOPI and Weaved, follow the steps given here: http://webiopi.trouch.com/INSTALL.html. This step includes creating an account with Weaved and downloading Weaved onto your Raspberry Pi.
 
 Once Weaved is installed, you can download the app to your mobile device.
 
