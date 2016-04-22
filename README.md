@@ -7,7 +7,7 @@ A mobile application for Android and iOS that allows the user to remotely monito
 
 ## Description
 
-This is an open-source mobile application which enables users to remotely manipulate the GPIO unit of a Raspberry Pi. The project builds on top of emerging technology such as the Maker Modem, Weaved, and WebIOPi to remotely control single-board computers. The mobile application will integrate WebIOPi to let users control their Raspberry Pis remotely. The GUI will contain a configuration screen that will allow the user to change I/O signals. Additionally, the user will be notified when I/O signals change or some event occurs.
+This is an open-source mobile application which enables users to remotely manipulate the GPIO unit of a Raspberry Pi. The project builds on top of emerging technology such as the Maker Modem, Weaved, and WebIOPi to remotely control Raspberry Pis. The mobile application integrates WebIOPi to let users control their Raspberry Pis remotely. The GUI contains a configuration screen that will allow the user to change I/O signals. Additionally, the user will be notified when I/O signals change or some event occurs.
 
 ## Installation
 
