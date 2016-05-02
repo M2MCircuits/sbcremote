@@ -179,11 +179,11 @@ public class weavedapi
 		
 		for(int i = 0; i < size; i++)
 		{
-			boolean devicetype = (this.deviceParse(rawList, i, "devicetype")).equals(API_DEVICETYPE_PI);
+			
 			boolean devicestate = (this.deviceParse(rawList, i, "devicestate")).equals("active");
-			boolean servicetitle = (this.deviceParse(rawList, i, "servicetitle")).equals("HTTP");
+			
 			boolean webenabled = (this.deviceParse(rawList, i, "webenabled")).equals("1");
-			if(devicetype && devicestate && servicetitle && webenabled)
+			if(devicestate && webenabled)
 			{
 				String deviceAlias = this.deviceParse(rawList, i, "devicealias");
 				String deviceAddress = this.deviceParse(rawList, i, "deviceaddress");
