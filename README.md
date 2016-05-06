@@ -11,7 +11,7 @@ This is an open-source mobile application which enables users to remotely manipu
 
 ## Installation
 
-To set up WebIOPI and Weaved, follow the steps given here: http://webiopi.trouch.com/INSTALL.html. This step includes creating an account with Weaved and downloading Weaved onto your Raspberry Pi.
+To set up WebIOPI and Weaved, follow the steps given here: http://webiopi.trouch.com/INSTALL.html. Create an account with Weaved and install the Weaved WebIOPi service using the installer provided here: https://github.com/weaved/installer/tree/master/binaries
 
 Once Weaved is installed, you can download the app to your mobile device.
 
