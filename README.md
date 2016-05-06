@@ -27,7 +27,7 @@ From the control screen, the user will be able to go to a configuration page, wh
 
 ## Link to wiki
 Additional documentation for the Weaved and WebIOPi APIs, in addition to a short explanation of weavedapi public methods, can be found on the wiki:
-https://github.com/siddhesh-singh/sbcremote/wiki
+https://github.com/M2MCircuits/sbcremote/wiki
 
 ##  Design Team
 J. Hunter Heard,
