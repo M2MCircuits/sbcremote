@@ -98,7 +98,7 @@ public class weavedapi
 		String dumpStr = "";
 		String proxystr = "";
 		//IMPORTAMT MOTE: hostip does not seem to affect request so is left blank
-		String data = "{\"deviceaddress\":\"" + deviceaddress + "\", \"hostip\":\"36.143.180.96\",\"wait\":\"true\"}";
+		String data = "{\"deviceaddress\":\"" + deviceaddress + "\", \"hostip\":\"00.000.000.00\",\"wait\":\"true\"}";
 		
 		try 
 		{
