@@ -231,7 +231,7 @@
                                                         <action selector="devLoginButtonPress:" destination="Quz-7m-Y6X" eventType="touchUpInside" id="2u0-UQ-mOA"/>
                                                     </connections>
                                                 </button>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="raspberry" borderStyle="roundedRect" placeholder="password" textAlignment="natural" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="UUP-5M-vPz">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="password" textAlignment="natural" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="UUP-5M-vPz">
                                                     <rect key="frame" x="20" y="63" width="560" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                     <textInputTraits key="textInputTraits" secureTextEntry="YES"/>

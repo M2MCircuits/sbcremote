@@ -70,33 +70,6 @@ class MyTabBarController: UITabBarController {
         
         setIP();
         
-//        let url = NSURL(string: "http://ip.42.pl/raw");
-//        
-//        let request = NSMutableURLRequest(URL:url!);
-//        request.HTTPMethod = "GET";
-//        var response: NSURLResponse?
-//        var reponseError: NSError?
-//
-//        var urlData = NSData();
-//        //crashes here
-//        do
-//        {
-//            urlData = try NSURLConnection.sendSynchronousRequest(request, returningResponse:&response);
-//        }
-//        catch
-//        {
-//            print("IP get failed");
-//            ipaddress = "";
-//            return "";
-//        }
-//        
-//        
-//        let ip = NSString(data: urlData, encoding: NSUTF8StringEncoding);
-//        
-//        ipaddress = ip as! String;
-//        
-//        print("IP: " + ipaddress);
-        
         return ipaddress;
         
         
@@ -163,10 +136,6 @@ class MyTabBarController: UITabBarController {
         
         let myUrl = NSURL(string: urlText);
         let request = NSMutableURLRequest(URL:myUrl!);
-        
-        //let loginString = NSString(format: "%@:%@", "webiopi", "raspberry");
-        //let loginData: NSData = loginString.dataUsingEncoding(NSUTF8StringEncoding)!;
-        //base64LoginString = loginData.base64EncodedStringWithOptions(nil);
         
         
         request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")

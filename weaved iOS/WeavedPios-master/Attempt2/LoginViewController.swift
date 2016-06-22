@@ -168,7 +168,6 @@ class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDat
             dispatch_async(dispatch_get_main_queue()) {
                 self.loginIndicator.stopAnimating();
                 self.logButton.enabled = true;
-                self.logButton.setTitle("Logged In", forState: UIControlState.Normal);
                 
                 if let error = error{
                     print(error.localizedDescription, terminator: "")
@@ -186,6 +185,8 @@ class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     
                     if(status == "true")
                     {
+                        self.logButton.setTitle("Logged In", forState: UIControlState.Normal);
+                        
                         //we set the Token in the main TabBarController
                         tbc.weavedToken = jsonData.valueForKey("token") as! String;
                         print("token: " + tbc.weavedToken);
@@ -331,18 +332,17 @@ class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     }
                     self.devices = temparray;
                     
-                    //ErrorLabel.text = devices[0].valueForKey("devicealias") as? String;
+                    //GET DEVICE ADDRESSES
+                    for device in temparray{
+                        print("DEVICE ADDRESSSS",(device.objectForKey("deviceaddress") as! String));
+                    }
                     
                     //the actual listing of the devices is done by the tableView functions in this class
                     //this just sets up devices and devCount, and tells the table to reload
                     
-                    //ErrorLabel.text = devCount;
-                    
                     self.devTable.reloadData();
                     
                     //DeviceTable.insertRowsAtIndexPaths(0, withRowAnimation: UITableViewRowAnimation.Automatic);
-                    
-                    
                     
                     
                     
