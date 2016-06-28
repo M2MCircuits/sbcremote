@@ -1,0 +1,495 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5A279FCE1CBFE53900272E05 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A279FCD1CBFE53900272E05 /* File.swift */; };
+		5A279FD01CBFE60800272E05 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A279FCF1CBFE60800272E05 /* LoginViewController.swift */; };
+		5A279FD21CC0790700272E05 /* weavedDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A279FD11CC0790700272E05 /* weavedDevice.swift */; };
+		5A279FD41CC13B7A00272E05 /* ListTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A279FD31CC13B7A00272E05 /* ListTableView.swift */; };
+		5A279FD61CC150B400272E05 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A279FD51CC150B400272E05 /* ListTableViewCell.swift */; };
+		5AD0606E1CAD8E9800BD6930 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD0606D1CAD8E9800BD6930 /* AppDelegate.swift */; };
+		5AD060701CAD8E9800BD6930 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD0606F1CAD8E9800BD6930 /* ViewController.swift */; };
+		5AD060731CAD8E9800BD6930 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5AD060711CAD8E9800BD6930 /* Main.storyboard */; settings = {ASSET_TAGS = (Login, ); }; };
+		5AD060751CAD8E9800BD6930 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5AD060741CAD8E9800BD6930 /* Images.xcassets */; };
+		5AD060781CAD8E9800BD6930 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5AD060761CAD8E9800BD6930 /* LaunchScreen.xib */; };
+		5AD060841CAD8E9800BD6930 /* Attempt2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD060831CAD8E9800BD6930 /* Attempt2Tests.swift */; };
+		5AD0608E1CAD96B100BD6930 /* Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD0608D1CAD96B100BD6930 /* Pin.swift */; };
+		5AD060901CAD9E7700BD6930 /* PinTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD0608F1CAD9E7700BD6930 /* PinTableViewCell.swift */; };
+		5AD060921CADA2BB00BD6930 /* PinTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD060911CADA2BB00BD6930 /* PinTableViewController.swift */; };
+		5AD060941CADC36200BD6930 /* PinUISwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD060931CADC36200BD6930 /* PinUISwitch.swift */; };
+		5AD060961CADF6EE00BD6930 /* OptionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD060951CADF6EE00BD6930 /* OptionTableViewController.swift */; };
+		5AD060981CADF71C00BD6930 /* OptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD060971CADF71C00BD6930 /* OptionTableViewCell.swift */; };
+		5AD0609A1CAE026D00BD6930 /* MyTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD060991CAE026D00BD6930 /* MyTabBarController.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		5AD0607E1CAD8E9800BD6930 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5AD060601CAD8E9700BD6930 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5AD060671CAD8E9800BD6930;
+			remoteInfo = Attempt2;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		5A279FCD1CBFE53900272E05 /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		5A279FCF1CBFE60800272E05 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		5A279FD11CC0790700272E05 /* weavedDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = weavedDevice.swift; sourceTree = "<group>"; };
+		5A279FD31CC13B7A00272E05 /* ListTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTableView.swift; sourceTree = "<group>"; };
+		5A279FD51CC150B400272E05 /* ListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
+		5AD060681CAD8E9800BD6930 /* PiPremote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PiPremote.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5AD0606C1CAD8E9800BD6930 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5AD0606D1CAD8E9800BD6930 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		5AD0606F1CAD8E9800BD6930 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		5AD060721CAD8E9800BD6930 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		5AD060741CAD8E9800BD6930 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		5AD060771CAD8E9800BD6930 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		5AD0607D1CAD8E9800BD6930 /* PiRemoteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PiRemoteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5AD060821CAD8E9800BD6930 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5AD060831CAD8E9800BD6930 /* Attempt2Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attempt2Tests.swift; sourceTree = "<group>"; };
+		5AD0608D1CAD96B100BD6930 /* Pin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pin.swift; sourceTree = "<group>"; };
+		5AD0608F1CAD9E7700BD6930 /* PinTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinTableViewCell.swift; sourceTree = "<group>"; };
+		5AD060911CADA2BB00BD6930 /* PinTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinTableViewController.swift; sourceTree = "<group>"; };
+		5AD060931CADC36200BD6930 /* PinUISwitch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinUISwitch.swift; sourceTree = "<group>"; };
+		5AD060951CADF6EE00BD6930 /* OptionTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionTableViewController.swift; sourceTree = "<group>"; };
+		5AD060971CADF71C00BD6930 /* OptionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionTableViewCell.swift; sourceTree = "<group>"; };
+		5AD060991CAE026D00BD6930 /* MyTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTabBarController.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5AD060651CAD8E9800BD6930 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5AD0607A1CAD8E9800BD6930 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5AD0605F1CAD8E9700BD6930 = {
+			isa = PBXGroup;
+			children = (
+				5AD0606A1CAD8E9800BD6930 /* PiRemote */,
+				5AD060801CAD8E9800BD6930 /* PiRemoteTests */,
+				5AD060691CAD8E9800BD6930 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		5AD060691CAD8E9800BD6930 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5AD060681CAD8E9800BD6930 /* PiPremote.app */,
+				5AD0607D1CAD8E9800BD6930 /* PiRemoteTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5AD0606A1CAD8E9800BD6930 /* PiRemote */ = {
+			isa = PBXGroup;
+			children = (
+				5AD0606D1CAD8E9800BD6930 /* AppDelegate.swift */,
+				5AD0606F1CAD8E9800BD6930 /* ViewController.swift */,
+				5AD060711CAD8E9800BD6930 /* Main.storyboard */,
+				5A279FD31CC13B7A00272E05 /* ListTableView.swift */,
+				5A279FCF1CBFE60800272E05 /* LoginViewController.swift */,
+				5A279FD51CC150B400272E05 /* ListTableViewCell.swift */,
+				5AD060991CAE026D00BD6930 /* MyTabBarController.swift */,
+				5A279FD11CC0790700272E05 /* weavedDevice.swift */,
+				5AD060951CADF6EE00BD6930 /* OptionTableViewController.swift */,
+				5A279FCD1CBFE53900272E05 /* File.swift */,
+				5AD060971CADF71C00BD6930 /* OptionTableViewCell.swift */,
+				5AD060911CADA2BB00BD6930 /* PinTableViewController.swift */,
+				5AD0608F1CAD9E7700BD6930 /* PinTableViewCell.swift */,
+				5AD060931CADC36200BD6930 /* PinUISwitch.swift */,
+				5AD0608D1CAD96B100BD6930 /* Pin.swift */,
+				5AD060741CAD8E9800BD6930 /* Images.xcassets */,
+				5AD060761CAD8E9800BD6930 /* LaunchScreen.xib */,
+				5AD0606B1CAD8E9800BD6930 /* Supporting Files */,
+			);
+			path = PiRemote;
+			sourceTree = "<group>";
+		};
+		5AD0606B1CAD8E9800BD6930 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				5AD0606C1CAD8E9800BD6930 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		5AD060801CAD8E9800BD6930 /* PiRemoteTests */ = {
+			isa = PBXGroup;
+			children = (
+				5AD060831CAD8E9800BD6930 /* Attempt2Tests.swift */,
+				5AD060811CAD8E9800BD6930 /* Supporting Files */,
+			);
+			path = PiRemoteTests;
+			sourceTree = "<group>";
+		};
+		5AD060811CAD8E9800BD6930 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				5AD060821CAD8E9800BD6930 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5AD060671CAD8E9800BD6930 /* PiRemote */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5AD060871CAD8E9800BD6930 /* Build configuration list for PBXNativeTarget "PiRemote" */;
+			buildPhases = (
+				5AD060641CAD8E9800BD6930 /* Sources */,
+				5AD060651CAD8E9800BD6930 /* Frameworks */,
+				5AD060661CAD8E9800BD6930 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PiRemote;
+			productName = Attempt2;
+			productReference = 5AD060681CAD8E9800BD6930 /* PiPremote.app */;
+			productType = "com.apple.product-type.application";
+		};
+		5AD0607C1CAD8E9800BD6930 /* PiRemoteTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5AD0608A1CAD8E9800BD6930 /* Build configuration list for PBXNativeTarget "PiRemoteTests" */;
+			buildPhases = (
+				5AD060791CAD8E9800BD6930 /* Sources */,
+				5AD0607A1CAD8E9800BD6930 /* Frameworks */,
+				5AD0607B1CAD8E9800BD6930 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5AD0607F1CAD8E9800BD6930 /* PBXTargetDependency */,
+			);
+			name = PiRemoteTests;
+			productName = Attempt2Tests;
+			productReference = 5AD0607D1CAD8E9800BD6930 /* PiRemoteTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5AD060601CAD8E9700BD6930 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				KnownAssetTags = (
+					Login,
+				);
+				LastSwiftMigration = 0730;
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = "JLL Consulting";
+				TargetAttributes = {
+					5AD060671CAD8E9800BD6930 = {
+						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = P3H85LZ522;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
+					};
+					5AD0607C1CAD8E9800BD6930 = {
+						CreatedOnToolsVersion = 6.2;
+						TestTargetID = 5AD060671CAD8E9800BD6930;
+					};
+				};
+			};
+			buildConfigurationList = 5AD060631CAD8E9700BD6930 /* Build configuration list for PBXProject "PiRemote" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 5AD0605F1CAD8E9700BD6930;
+			productRefGroup = 5AD060691CAD8E9800BD6930 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5AD060671CAD8E9800BD6930 /* PiRemote */,
+				5AD0607C1CAD8E9800BD6930 /* PiRemoteTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		5AD060661CAD8E9800BD6930 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5AD060731CAD8E9800BD6930 /* Main.storyboard in Resources */,
+				5AD060781CAD8E9800BD6930 /* LaunchScreen.xib in Resources */,
+				5AD060751CAD8E9800BD6930 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5AD0607B1CAD8E9800BD6930 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5AD060641CAD8E9800BD6930 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5AD060981CADF71C00BD6930 /* OptionTableViewCell.swift in Sources */,
+				5AD0608E1CAD96B100BD6930 /* Pin.swift in Sources */,
+				5AD0609A1CAE026D00BD6930 /* MyTabBarController.swift in Sources */,
+				5AD060701CAD8E9800BD6930 /* ViewController.swift in Sources */,
+				5AD060961CADF6EE00BD6930 /* OptionTableViewController.swift in Sources */,
+				5A279FD21CC0790700272E05 /* weavedDevice.swift in Sources */,
+				5A279FCE1CBFE53900272E05 /* File.swift in Sources */,
+				5A279FD61CC150B400272E05 /* ListTableViewCell.swift in Sources */,
+				5A279FD41CC13B7A00272E05 /* ListTableView.swift in Sources */,
+				5AD0606E1CAD8E9800BD6930 /* AppDelegate.swift in Sources */,
+				5AD060901CAD9E7700BD6930 /* PinTableViewCell.swift in Sources */,
+				5AD060921CADA2BB00BD6930 /* PinTableViewController.swift in Sources */,
+				5AD060941CADC36200BD6930 /* PinUISwitch.swift in Sources */,
+				5A279FD01CBFE60800272E05 /* LoginViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5AD060791CAD8E9800BD6930 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5AD060841CAD8E9800BD6930 /* Attempt2Tests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5AD0607F1CAD8E9800BD6930 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5AD060671CAD8E9800BD6930 /* PiRemote */;
+			targetProxy = 5AD0607E1CAD8E9800BD6930 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		5AD060711CAD8E9800BD6930 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5AD060721CAD8E9800BD6930 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		5AD060761CAD8E9800BD6930 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5AD060771CAD8E9800BD6930 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		5AD060851CAD8E9800BD6930 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5AD060861CAD8E9800BD6930 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		5AD060881CAD8E9800BD6930 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Josh Binkley (9WG9SV5LN5)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Josh Binkley (9WG9SV5LN5)";
+				INFOPLIST_FILE = PiRemote/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.m2mcircuits.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = PiPremote;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5AD060891CAD8E9800BD6930 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Josh Binkley (9WG9SV5LN5)";
+				INFOPLIST_FILE = PiRemote/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.m2mcircuits.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = PiPremote;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		5AD0608B1CAD8E9800BD6930 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = PiRemoteTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "Hcom.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = PiRemoteTests;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PiRemote.app/PiRemote";
+			};
+			name = Debug;
+		};
+		5AD0608C1CAD8E9800BD6930 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = PiRemoteTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "Hcom.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = PiRemoteTests;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PiRemote.app/PiRemote";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5AD060631CAD8E9700BD6930 /* Build configuration list for PBXProject "PiRemote" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5AD060851CAD8E9800BD6930 /* Debug */,
+				5AD060861CAD8E9800BD6930 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5AD060871CAD8E9800BD6930 /* Build configuration list for PBXNativeTarget "PiRemote" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5AD060881CAD8E9800BD6930 /* Debug */,
+				5AD060891CAD8E9800BD6930 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5AD0608A1CAD8E9800BD6930 /* Build configuration list for PBXNativeTarget "PiRemoteTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5AD0608B1CAD8E9800BD6930 /* Debug */,
+				5AD0608C1CAD8E9800BD6930 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5AD060601CAD8E9700BD6930 /* Project object */;
+}
