@@ -18,11 +18,11 @@ This version is in Xcode 7.2
 
 faq
 
- 1. "How do I compile this?"
+"How do I compile this?"
 
 Simply download PiRemote, PiRemote.xcodeproj, and PiRemoteTests, put them in the same folder somewhere on your mac, and open PiRemote.xcodeproj with Xcode. Once you've successfully imported the project, click the play button to compile and run. You may have to set the Target to iOS 9.1 or earlier.
 
 
- 2. "What does this do that the official Weaved and WebIOPi apps don't do?"
+"What does this do that the official Weaved and WebIOPi apps don't do?"
 
 The notifications, labeling, and persistency should make this a bit more convenient than the official Weaved and WebIOPi apps.
