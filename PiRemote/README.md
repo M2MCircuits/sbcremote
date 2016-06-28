@@ -16,7 +16,7 @@ Basic goals of this project:
 April 29, 2016
 This version is in Xcode 7.2
 
-faq
+--FAQ
 
 "How do I compile this?"
 
