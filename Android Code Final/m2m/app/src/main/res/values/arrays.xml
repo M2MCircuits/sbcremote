@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pref_syncConnectionTypes_entries">
+        <item>Pin 1</item>
+        <item>Pin 2</item>
+        <item>Pin 3</item>
+        <item>Pin 4</item>
+    </string-array>
+    <string-array name="pref_syncConnectionTypes_values">
+        <item>Pin 1</item>
+        <item>Pin 2</item>
+        <item>Pin 3</item>
+        <item>Pin 4</item>
+    </string-array>
+    <string-array name="monitorStates" >
+        <item>Control</item>
+        <item>Monitor</item>
+        <item>Ignore</item>
+    </string-array>
+    <string-array name="monitorStates_values" >
+        <item>Control</item>
+        <item>Monitor</item>
+        <item>Ignore</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.luke.m2m">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".login"
+            android:label="SBC Remote">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".config"
+            android:label="@string/title_activity_config" />
+        <activity
+            android:name=".control"
+            android:label="@string/title_activity_control" />
+        <activity
+            android:name=".device"
+            android:label="@string/title_activity_device" />
+        <activity
+            android:name=".dev"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:taskAffinity="">
+            android:label="@string/title_activity_dev"></activity>
+
+        <service
+            android:name=".MyTestService"
+            android:exported="false" />
+
+        <receiver
+            android:name=".MyAlarmReceiver"
+            android:process=":remote" />
+
+        <activity
+            android:name=".test"
+            android:label="@string/title_activity_test" />
+        <activity
+            android:name=".piLogin"
+            android:label="Raspberry Pi Login" />
+        <activity
+            android:name=".SharedPreference"
+            android:label="@string/title_activity_shared_preference" />
+        <activity
+            android:name=".setPins"
+            android:label="@string/title_activity_set_pins" />
+        <activity
+            android:name=".monitorControl"
+            android:label="@string/title_activity_monitor_control"></activity>
+    </application>
+
+</manifest>

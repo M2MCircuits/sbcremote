@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">m2m</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_login">login</string>
+    <string name="title_activity_config">Configuration</string>
+    <string name="title_activity_control">Monitor/Control Screen</string>
+    <string name="title_activity_device">Device Screen</string>
+    <string name="title_activity_dev">Developer\'s Screen</string>
+    <string name="title_activity_rsspull_service">RSS Pull Service</string>
+    <string name="title_activity_my_test_service">MyTestService</string>
+    <string name="title_activity_test">Testing</string>
+    <string name="title_activity_pi_login">piLogin</string>
+    <string name="loginKey" />
+    <string name="passKey" />
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_shared_preference">SharedPreference</string>
+    <string name="title_activity_set_pins">Set Pins</string>
+    <string name="title_activity_monitor_control">View Monitor/Control Pins</string>
+</resources>

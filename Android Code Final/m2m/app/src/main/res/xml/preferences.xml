@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- GPIO Pin Name Settings -->
+    <PreferenceScreen
+        android:key="pin_name_settings_key"
+        android:title="GPIO Pin Name Settings"
+        android:persistent="false">
+        <EditTextPreference
+            android:key="pin1name"
+            android:title="Pin 1"
+            android:summary="GPIO Pin 1 name"
+            android:defaultValue="Pin 1"
+            android:dialogTitle="Name for GPIO Pin 1" />
+        <EditTextPreference
+            android:key="pin2name"
+            android:title="Pin 2"
+            android:summary="GPIO Pin 2 name"
+            android:defaultValue="Pin 2"
+            android:dialogTitle="Name for GPIO Pin 2" />
+    </PreferenceScreen>
+
+    <!-- label the High and Low states for each pin -->
+    <PreferenceScreen
+        android:key="set_state_key"
+        android:title="Set Pin States"
+        android:summary="Label the High and Low states for each pin"
+        android:persistent="false">
+        <SwitchPreference
+        android:defaultValue="true"
+        android:key="pin1OnOff"
+        android:title="Pin 1" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="pin2OnOff"
+            android:title="Pin 2" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="pin3OnOff"
+            android:title="Pin 3" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="pin4OnOff"
+            android:title="Pin 4" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="pin5OnOff"
+            android:title="Pin 5" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="pin6OnOff"
+            android:title="Pin 6" />
+    </PreferenceScreen>
+
+    <!--  label the High and Low states for each pin -->
+    <PreferenceScreen
+        android:key="label_name_settings_key"
+        android:title="Set High/Low Labels"
+        android:summary="label the High and Low states for each pin"
+        android:persistent="false">
+        <PreferenceScreen
+        android:key="label_pin1_key"
+        android:title="Pin 1"
+        android:persistent="false">
+        <EditTextPreference
+            android:key="pin1High"
+            android:title="High"
+            android:defaultValue="High"
+            android:dialogTitle="Name Label for Pin 1 High" />
+        <EditTextPreference
+            android:key="pin1Low"
+            android:title="Low"
+            android:defaultValue="Low"
+            android:dialogTitle="Name Label for Pin 1 Low" />
+         </PreferenceScreen>
+
+        <PreferenceScreen
+            android:key="label_pin1_key"
+            android:title="Pin 2"
+            android:persistent="false">
+            <EditTextPreference
+                android:key="pin2High"
+                android:title="High"
+                android:defaultValue="High"
+                android:dialogTitle="Name Label for Pin 2 High" />
+            <EditTextPreference
+                android:key="pin2Low"
+                android:title="Low"
+                android:defaultValue="Low"
+                android:dialogTitle="Name Label for Pin 2 Low" />
+        </PreferenceScreen>
+
+    </PreferenceScreen>
+
+    <!-- set each pin as Control, Monitor, or Ignore -->
+    <PreferenceScreen
+        android:key="pin_monitor_key"
+        android:title="Set Monitor Status of Pins"
+        android:summary="Set each pin as Control, Monitor, or Ignore"
+        android:persistent="false">
+        <ListPreference
+            android:key="monitor_pin1_key"
+            android:title="Pin 1 Monitor State"
+            android:dialogTitle="Pin 1 Monitor States"
+            android:entries="@array/monitorStates"
+            android:entryValues="@array/monitorStates_values"
+            android:defaultValue="Ignore" />
+        <ListPreference
+            android:key="monitor_pin2_key"
+            android:title="Pin 2 Monitor State"
+            android:dialogTitle="Pin 2 Monitor States"
+            android:entries="@array/monitorStates"
+            android:entryValues="@array/monitorStates_values"
+            android:defaultValue="Ignore" />
+        <ListPreference
+            android:key="monitor_pin3_key"
+            android:title="Pin 3 Monitor State"
+            android:dialogTitle="Pin 3 Monitor States"
+            android:entries="@array/monitorStates"
+            android:entryValues="@array/monitorStates_values"
+            android:defaultValue="Ignore" />
+
+    </PreferenceScreen>
+
+    <!--  set Monitor pins to "push" notification from the Pi to the app -->
+    <PreferenceScreen
+        android:key="pin_push_key"
+        android:title="Pin Push Notifications"
+        android:summary="Set Monitor pins to 'push; notification from the Pi to the app"
+        android:persistent="false">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="pin1pushOnOff"
+            android:title="Pin 1" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="pin2pushOnOff"
+            android:title="Pin 2" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="pin3pushOnOff"
+            android:title="Pin 3" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="pin4pushOnOff"
+            android:title="Pin 4" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="pin5pushOnOff"
+            android:title="Pin 5" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="pin6pushOnOff"
+            android:title="Pin 6" />
+        </PreferenceScreen>
+
+
+
+</PreferenceScreen>
