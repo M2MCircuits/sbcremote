@@ -1,0 +1,3 @@
+[submodule "JavaIOPi"]
+	path = JavaIOPi
+	url = https://github.com/siddhesh-singh/JavaIOPi.git
