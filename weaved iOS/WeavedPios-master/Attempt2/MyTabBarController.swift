@@ -22,7 +22,7 @@ class MyTabBarController: UITabBarController {
     
     var devProxy = "";
     
-    var session = NSURLSession();
+    var session = URLSession();
     
     var weavedToken = "";
     
@@ -35,21 +35,12 @@ class MyTabBarController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
         print("loading Tab Bar Controller\n");
-        
-        
         tabBarPins = Pin.getEmpty();
-        
-        
         //getIP();
-
         // Do any additional setup after loading the view.
     }
     
-    
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -69,49 +60,40 @@ class MyTabBarController: UITabBarController {
         }
         
         setIP();
-        
         return ipaddress;
-        
-        
-
     }
     
     func setIP()
     {
-        
         if(ipaddress == "")
         {
             ipaddress = "-1";
         }
         
-        let session = NSURLSession.sharedSession()
-        
-        
         let urlText = "http://ip.42.pl/raw";
         
         //these url and request objects are required for the connection method I use
-        let myUrl = NSURL(string: urlText);
-        let request = NSMutableURLRequest(URL:myUrl!);
+        let myUrl = URL(string: urlText);
+        var request = URLRequest(url:myUrl!);
         
         //set the httpmethod, and set a header value
-        request.HTTPMethod = "GET";
-        
+        request.httpMethod = "GET";
         
         print("getting ip...");
-        //start task definition
-        let task = session.dataTaskWithRequest(request, completionHandler:{
+     
+        let task = URLSession.shared.dataTask(with: request) {
             urlData, response, error -> Void in
             
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 
-                print(urlData);
-                print(response);
+                print(String(data: urlData!, encoding: String.Encoding.utf8) ?? "[DEBUG] urlData is nil");
+                print(response?.expectedContentLength ?? "[DEBUG] response is nil");
                 
                 do
                 {
                     if urlData != nil{
-                        let ip = NSString(data: urlData!, encoding: NSUTF8StringEncoding);
-                        self.ipaddress = ip as! String;
+                        let ip = String(data: urlData!, encoding: String.Encoding.utf8);
+                        self.ipaddress = ip! as String;
                     }
                     else{
                         print("no connection");
@@ -120,43 +102,30 @@ class MyTabBarController: UITabBarController {
                 }
                 
                 print("IP fetch: " + self.ipaddress);
-                
-                
-            }//end of dispatch
-            
-        })//end of task
-        task.resume();
+            } // end of dispatch
+        } // end of task
         
-
+        task.resume();
     }
     
     func getPins()
     {
         let urlText = devProxy + "/*";
-        
-        let myUrl = NSURL(string: urlText);
-        let request = NSMutableURLRequest(URL:myUrl!);
-        
+        let myUrl = URL(string: urlText);
+        var request = URLRequest(url:myUrl!);
         
         request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
         
-        
-        
         //set some headers
-        request.HTTPMethod = "GET";
-        
+        request.httpMethod = "GET";
         
         //var urlData: NSData? = NSURLConnection.sendSynchronousRequest(request, returningResponse:&response, error:&reponseError);
         
-        
         //start task
-        let task = session.dataTaskWithRequest(request, completionHandler:{
+        let task = session.dataTask(with: request) {
             urlData, response, error -> Void in
             
-            dispatch_async(dispatch_get_main_queue())
-                {//start dispatch
-                    
-
+            DispatchQueue.main.async {
                     
                     if(urlData == nil)
                     {
@@ -166,16 +135,12 @@ class MyTabBarController: UITabBarController {
                     
                     print("successful fetch from Pi");
                     
-                    
                     //jsonData is where the data for the response is kept
                     
-                   
                     
-                    let jsonData:NSDictionary = try! NSJSONSerialization.JSONObjectWithData(urlData!, options:NSJSONReadingOptions.MutableContainers) as! NSDictionary
+                    let jsonData:NSDictionary = try! JSONSerialization.jsonObject(with: urlData!, options:JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
                     
-                    
-                    
-                    let GPIOdata = jsonData.valueForKey("GPIO") as! NSDictionary;
+                    let GPIOdata = jsonData.value(forKey: "GPIO") as! NSDictionary;
                     //print(GPIOdata);
                     
                     for index in 0 ... 27
@@ -183,7 +148,7 @@ class MyTabBarController: UITabBarController {
                         //print("setting pin ", terminator: "");
                         //print(index);
 
-                        self.tabBarPins[index].setFromData(GPIOdata.valueForKey(String(index)) as! NSDictionary);
+                        self.tabBarPins[index].setFromData(GPIOdata.value(forKey: String(index)) as! NSDictionary);
                         
                         //set the name to the pin number
                         self.tabBarPins[index].setName(String(index));
@@ -219,51 +184,28 @@ class MyTabBarController: UITabBarController {
                     
                     //sleep(10000);
                     //self.getPins();
-                    
-                    
-            }//end dispatch
-            
-            
-            
-        })//end task
+            } // end dispatch
+        } // end task
         
         task.resume();
-        
-        
-        
     }
     
-    func setFunction(sender: UIButton, newFunction: Bool)
+    func setFunction(_ sender: UIButton, newFunction: Bool)
     {
+        let nS = newFunction ? "out" : "in";
         let pinNumber = sender.tag;
-        
-        
-        var nS = "in";
-        
-        if(newFunction)
-        {
-            nS = "out";
-        }
-        
-        
-        var urlText = devProxy + "/GPIO/";
-        
-        urlText += String(pinNumber) + "/function/" + nS;
-        
-        let myUrl = NSURL(string: urlText);
-        let request = NSMutableURLRequest(URL:myUrl!);
+        let urlText = devProxy + "/GPIO/" + String(pinNumber) + "/function/" + nS;
+        let myUrl = URL(string: urlText);
+        var request = URLRequest(url:myUrl!);
         
         //let loginString = NSString(format: "%@:%@", "webiopi", "raspberry");
         //let loginData: NSData = loginString.dataUsingEncoding(NSUTF8StringEncoding)!;
         //base64LoginString = loginData.base64EncodedStringWithOptions(nil);
         
-        
         request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
         
-        
-        
         //set some headers
-        request.HTTPMethod = "POST";
+        request.httpMethod = "POST";
         
         
         //var urlData: NSData? = NSURLConnection.sendSynchronousRequest(request, returningResponse:&response, error:&reponseError);
@@ -271,34 +213,26 @@ class MyTabBarController: UITabBarController {
         let ps = "Posting " + nS + " to Pin " + String(pinNumber) + "function...";
         print(ps);
         
-        
-        
-        //start task
-        let task = session.dataTaskWithRequest(request, completionHandler:{
+        let task = session.dataTask(with: request) {
             urlData, response, error -> Void in
             
-            dispatch_async(dispatch_get_main_queue())
-            {//start dispatch
+            DispatchQueue.main.async
+            {
                 
                 let optionView = self.childViewControllers[1] as! OptionTableViewController;
-                
                 let cell = optionView.getCellAtIndex(pinNumber);
-                
-                let res = response as! NSHTTPURLResponse!;
-                
-                
+                let res = response as! HTTPURLResponse!;
                 
                 if(res == nil)
                 {
                     print("nil on function post from Pi");
-
                 }
                 else
                 {
                     //jsonData is where the data for the response is kept
                     do
                     {
-                        let jsonData:NSData = try NSJSONSerialization.JSONObjectWithData(urlData!, options:[]) as! NSData
+                        let jsonData:Data = try JSONSerialization.jsonObject(with: urlData!, options:[]) as! Data
                         
                         print("jsonData:");
                         print(jsonData);
@@ -309,60 +243,40 @@ class MyTabBarController: UITabBarController {
                         print("jsonData not successful for pin function set");
                     }
                     
-                    
                     //Successful post!
-                    if(res.statusCode == 200)
+                    if(res!.statusCode == 200)
                     {
-                        
                         //set the pin function
                         optionView.pins[pinNumber].changeFunction(newFunction);
                         
+                        sender.setTitle(cell.getType(optionView.pins[pinNumber].type), for: UIControlState());
                         
-                        sender.setTitle(cell.getType(optionView.pins[pinNumber].type), forState: UIControlState.Normal);
-                        
-
                         optionView.syncWithTable();
-                        
-                        
-
                     }
                     else
                     {
-                        print("Response status fail: " + String(res.statusCode));
+                        print("Response status fail: " + String(res!.statusCode));
                         //cell.onState.on = !cell.onState.on;
                     }
                     
                 }
                 
-                
-                
-                
-                
-                //print();
-                print("urlData:");
-                print(urlData);
-                //print();
-                
-                print("res:");
-                print(res);
+                print("[DEBUG] urlData:");
+                print(String(data: urlData!, encoding: String.Encoding.utf8) ?? "[DEBUG] urlData is nil");
+                print("[DEBUG] res:");
+                print(response?.expectedContentLength ?? "[DEBUG] response is nil");
                 
                 //Status code: 200 is inside 'res' somewhere, THAT is what will tell me if we were successful
                 
-                
-                sender.enabled = true;
-                
-            }//end dispatch
-            
+                sender.isEnabled = true;
+            } // end dispatch
             self.getPins();
-            
-        })//end task
+        } // end task
         
         task.resume();
-        
-        
     }
     
-    func setPin(pinNumber: Int, newState: Bool)
+    func setPin(_ pinNumber: Int, newState: Bool)
     {
         var nS = "0";
         
@@ -376,8 +290,8 @@ class MyTabBarController: UITabBarController {
         
         urlText += String(pinNumber) + "/value/" + nS;
         
-        let myUrl = NSURL(string: urlText);
-        let request = NSMutableURLRequest(URL:myUrl!);
+        let myUrl = URL(string: urlText);
+        var request = URLRequest(url:myUrl!);
         
         //let loginString = NSString(format: "%@:%@", "webiopi", "raspberry");
         //let loginData: NSData = loginString.dataUsingEncoding(NSUTF8StringEncoding)!;
@@ -389,7 +303,7 @@ class MyTabBarController: UITabBarController {
         
         
         //set some headers
-        request.HTTPMethod = "POST";
+        request.httpMethod = "POST";
         
         
         //var urlData: NSData? = NSURLConnection.sendSynchronousRequest(request, returningResponse:&response, error:&reponseError);
@@ -400,29 +314,29 @@ class MyTabBarController: UITabBarController {
         
         
         //start task
-        let task = session.dataTaskWithRequest(request, completionHandler:{
+        let task = session.dataTask(with: request) {
             urlData, response, error -> Void in
             
-            dispatch_async(dispatch_get_main_queue())
+            DispatchQueue.main.async
                 {//start dispatch
                     
                     let pinView = self.childViewControllers[2] as! PinTableViewController;
                     
                     let cell = pinView.getCellForPinNumber(pinNumber);
 
-                    let res = response as! NSHTTPURLResponse!;
+                    let res = response as! HTTPURLResponse!;
                     
                     if(res == nil)
                     {
                         print("nil on post from Pi");
-                        cell.onState.on = !cell.onState.on;
+                        cell.onState.isOn = !cell.onState.isOn;
                     }
                     else
                     {
                         //jsonData is where the data for the response is kept
                         do
                         {
-                            let jsonData:NSData = try NSJSONSerialization.JSONObjectWithData(urlData!, options:[]) as! NSData
+                            let jsonData:Data = try JSONSerialization.jsonObject(with: urlData!, options:[]) as! Data
                             
                             print("jsonData");
                             print(jsonData);
@@ -435,46 +349,32 @@ class MyTabBarController: UITabBarController {
                         
                         
                         //Successful post!
-                        if(res.statusCode == 200)
+                        if(res!.statusCode == 200)
                         {
                             self.setPinValue(pinNumber, value: newState);
                         }
                         else
                         {
-                            print("Response status fail: " + String(res.statusCode));
-                            cell.onState.on = !cell.onState.on;
+                            print("Response status fail: " + String(res!.statusCode));
+                            cell.onState.isOn = !cell.onState.isOn;
                         }
 
                     }
 
+                    print("[DEBUG] urlData:");
+                    print(String(data: urlData!, encoding: String.Encoding.utf8) ?? "[DEBUG] urlData is nil");
+                    print("[DEBUG] res:");
+                    print(response?.expectedContentLength ?? "[DEBUG] response is nil");
                     
+                    // Status code: 200 is inside 'res' somewhere, THAT is what will tell me if we were successful
                     
-                    
-                    
-                    //print();
-                    print("urlData:");
-                    print(urlData);
-                    //print();
-                    
-                    print("res:");
-                    print(res);
-                    
-                    //Status code: 200 is inside 'res' somewhere, THAT is what will tell me if we were successful
-                    
-                    
-                    cell.onState.enabled = true;
+                    cell.onState.isEnabled = true;
                     cell.spinner.stopAnimating();
-                    
-                    
-                    
-            }//end dispatch
-            
+            } // end dispatch
             self.getPins();
-            
-        })//end task
+        } // end task
         
         task.resume();
-    
     }
 
     
@@ -500,7 +400,7 @@ class MyTabBarController: UITabBarController {
     
     
     //sets one pin to HIGH or LOW (not on the pi, just in this program)
-    func setPinValue(pinNumber: Int, value: Bool)
+    func setPinValue(_ pinNumber: Int, value: Bool)
     {
         tabBarPins[pinNumber].on = value;
         let optionView = self.childViewControllers[1] as! OptionTableViewController;

@@ -203,6 +203,7 @@
 					5AD060671CAD8E9800BD6930 = {
 						CreatedOnToolsVersion = 6.2;
 						DevelopmentTeam = P3H85LZ522;
+						LastSwiftMigration = 0820;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
@@ -211,6 +212,7 @@
 					};
 					5AD0607C1CAD8E9800BD6930 = {
 						CreatedOnToolsVersion = 6.2;
+						LastSwiftMigration = 0820;
 						TestTargetID = 5AD060671CAD8E9800BD6930;
 					};
 				};
@@ -405,6 +407,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.m2mcircuits.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = PiPremote;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -419,6 +422,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.m2mcircuits.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = PiPremote;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -439,7 +443,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Hcom.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Attempt2.app/Attempt2";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PiPremote.app/PiPremote";
 			};
 			name = Debug;
 		};
@@ -455,7 +460,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Hcom.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Attempt2.app/Attempt2";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PiPremote.app/PiPremote";
 			};
 			name = Release;
 		};
