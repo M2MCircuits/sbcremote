@@ -26,7 +26,7 @@ class OptionTableViewCell: UITableViewCell {
     var typeNumber = 0;
     
 
-    @IBAction func typePress(sender: UIButton) {
+    @IBAction func typePress(_ sender: UIButton) {
         
         /*
         typeNumber++;
@@ -58,7 +58,7 @@ class OptionTableViewCell: UITableViewCell {
     }
     */
     
-    func getType(type: Int) -> String
+    func getType(_ type: Int) -> String
     {
         if(type == 0)
         {
@@ -84,7 +84,7 @@ class OptionTableViewCell: UITableViewCell {
         // Initialization code
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state

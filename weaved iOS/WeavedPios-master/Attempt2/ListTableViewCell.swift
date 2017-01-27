@@ -21,7 +21,7 @@ class ListTableViewCell: UITableViewCell {
     
     @IBOutlet weak var devLogButton: UIButton!
     
-    @IBAction func devButtonPress(sender: UIButton) {
+    @IBAction func devButtonPress(_ sender: UIButton) {
         
         
         //spinner.startAnimating();
@@ -40,16 +40,16 @@ class ListTableViewCell: UITableViewCell {
         // Initialization code
     }
 
-    func setName(name: String)
+    func setName(_ name: String)
     {
         aliasLabel.text = name;
     }
     
-    func setLog(logged: Bool)
+    func setLog(_ logged: Bool)
     {
         if(logged)
         {
-            devLogButton.setTitle("Logged In", forState: UIControlState.Normal);
+            devLogButton.setTitle("Logged In", for: UIControlState());
             backgroundColor = UIColor(red:0.50, green:1.00, blue:0.70, alpha:1.0);
             
         }
@@ -60,7 +60,7 @@ class ListTableViewCell: UITableViewCell {
     }
     
     
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state

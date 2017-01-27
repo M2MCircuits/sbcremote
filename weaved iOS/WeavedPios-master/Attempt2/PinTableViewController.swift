@@ -29,14 +29,14 @@ class PinTableViewController: UITableViewController {
     }
     */
     
-    @IBAction func switchHit(sender: PinUISwitch) {
+    @IBAction func switchHit(_ sender: PinUISwitch) {
 
         print("YOU SWITCH DEVIL!");
         
         let number = sender.pinNumber;
-        let tbc = self.parentViewController as! MyTabBarController;
+        let tbc = self.parent as! MyTabBarController;
         
-        let cell = getCellForPinNumber(number);
+        let cell = getCellForPinNumber(number!);
         
         
         if(sender.pinNumber < 0 || sender.pinNumber >= pins.count)
@@ -48,9 +48,9 @@ class PinTableViewController: UITableViewController {
         
         
         cell.spinner.startAnimating();
-        sender.enabled = false;
+        sender.isEnabled = false;
         
-        tbc.setPin(number, newState: !pins[number].on);
+        tbc.setPin(number!, newState: !pins[number!].on);
         
         
         //pins[sender.pinNumber].changeState();
@@ -99,7 +99,7 @@ class PinTableViewController: UITableViewController {
         for p in pins{
             if(p.type == 2)
             {
-                n++;
+                n += 1;
             }
             
         }
@@ -114,7 +114,7 @@ class PinTableViewController: UITableViewController {
         for p in pins{
             if(p.type == 1)
             {
-                n++;
+                n += 1;
             }
             
         }
@@ -122,7 +122,7 @@ class PinTableViewController: UITableViewController {
         return n;
     }
     
-    func numberOfPinsOfType(type: Int) -> Int
+    func numberOfPinsOfType(_ type: Int) -> Int
     {
         if(type == 0)
         {
@@ -165,7 +165,7 @@ class PinTableViewController: UITableViewController {
     //(except here it's type instead of section
     //if section == 0 then type == 1
     //if section == 1 then type == 2
-    func getPinDegree(type: Int, degree: Int) -> Int
+    func getPinDegree(_ type: Int, degree: Int) -> Int
     {
         
         var count = -1;
@@ -189,7 +189,7 @@ class PinTableViewController: UITableViewController {
         return -1;
     }
     
-    func getCellForPinNumber(pNumber: Int) -> PinTableViewCell
+    func getCellForPinNumber(_ pNumber: Int) -> PinTableViewCell
     {
         let p = pins[pNumber];
         
@@ -214,11 +214,11 @@ class PinTableViewController: UITableViewController {
         return cell;
     }
     
-    func getCellForSectionIndex(section: Int, index: Int) -> PinTableViewCell
+    func getCellForSectionIndex(_ section: Int, index: Int) -> PinTableViewCell
     {
-        let path = NSIndexPath(forRow: index, inSection: section);
+        let path = IndexPath(row: index, section: section);
         
-        let cell = tableView.cellForRowAtIndexPath(path) as! PinTableViewCell;
+        let cell = tableView.cellForRow(at: path) as! PinTableViewCell;
         
         
         return cell;
@@ -232,13 +232,13 @@ class PinTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
 
         // Return the number of sections.
         return 2
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         
         
@@ -252,12 +252,12 @@ class PinTableViewController: UITableViewController {
 
     
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         //ask someone what these mean
         let cellIdentifier = "PinTableViewCell";
         
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! PinTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! PinTableViewCell
 
         
         
@@ -280,22 +280,22 @@ class PinTableViewController: UITableViewController {
         
         cell.nameLabel.text = String(ind);
 //        
-        cell.onState.on = pin.on;
+        cell.onState.isOn = pin.on;
         cell.onState.pinNumber = ind;
         
         if(pin.type == 2)
         {
-            cell.onState.enabled = false;
+            cell.onState.isEnabled = false;
 //            print("Set pin ");
 //            print(ind);
 //            println(" to disabled");
         }
         else
         {
-            cell.onState.enabled = true;
+            cell.onState.isEnabled = true;
         }
         
-        if(cell.onState.on == false)
+        if(cell.onState.isOn == false)
         {
             cell.HLnameLabel.text = pin.Lname;
         }

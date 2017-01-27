@@ -19,17 +19,17 @@ class OptionTableViewController: UITableViewController {
     //if the "type" button on a cell is pressed
     //this function will use the button's tag
     //as an index for pins and change that pin's type
-    @IBAction func typeButtonPress(sender: UIButton) {
+    @IBAction func typeButtonPress(_ sender: UIButton) {
         
         if(sender.tag < 0 || sender.tag >= pins.count)
         {
             return;
         }
         
-        let tbc = self.parentViewController as! MyTabBarController;
+        let tbc = self.parent as! MyTabBarController;
         
         
-        sender.enabled = false;
+        sender.isEnabled = false;
         
         tbc.setFunction(sender, newFunction: !pins[sender.tag].function)
         
@@ -42,7 +42,7 @@ class OptionTableViewController: UITableViewController {
     }
     
     
-    @IBAction func nameChange(sender: UITextField) {
+    @IBAction func nameChange(_ sender: UITextField) {
         
         if(sender.tag < 0 || sender.tag >= pins.count)
         {
@@ -50,7 +50,7 @@ class OptionTableViewController: UITableViewController {
         }
         pins[sender.tag].setHname(sender.text!);
         
-        let tbc = self.parentViewController as! MyTabBarController;
+        let tbc = self.parent as! MyTabBarController;
         let otherView = tbc.childViewControllers[2] as! PinTableViewController;
         otherView.getCellForPinNumber(sender.tag).nameLabel.text=sender.text;
         otherView.getCellForPinNumber(sender.tag).setNeedsDisplay();
@@ -63,7 +63,7 @@ class OptionTableViewController: UITableViewController {
     }
     
     
-    @IBAction func HnameChange(sender: UITextField) {
+    @IBAction func HnameChange(_ sender: UITextField) {
         if(sender.tag < 0 || sender.tag >= pins.count)
         {
             return;
@@ -71,7 +71,7 @@ class OptionTableViewController: UITableViewController {
         
         pins[sender.tag].setHname(sender.text!);
         
-        let tbc = self.parentViewController as! MyTabBarController;
+        let tbc = self.parent as! MyTabBarController;
         let otherView = tbc.childViewControllers[2] as! PinTableViewController;
         otherView.getCellForPinNumber(sender.tag).Hlabel=sender.text;
         otherView.getCellForPinNumber(sender.tag).setNeedsDisplay();
@@ -84,7 +84,7 @@ class OptionTableViewController: UITableViewController {
     }
 
     
-    @IBAction func LnameChange(sender: UITextField) {
+    @IBAction func LnameChange(_ sender: UITextField) {
         if(sender.tag < 0 || sender.tag >= pins.count)
         {
             return;
@@ -92,7 +92,7 @@ class OptionTableViewController: UITableViewController {
         
         pins[sender.tag].setLname(sender.text!);
         
-        let tbc = self.parentViewController as! MyTabBarController;
+        let tbc = self.parent as! MyTabBarController;
         let otherView = tbc.childViewControllers[2] as! PinTableViewController;
         otherView.getCellForPinNumber(sender.tag).Llabel=sender.text;
         otherView.getCellForPinNumber(sender.tag).setNeedsDisplay();
@@ -215,7 +215,7 @@ class OptionTableViewController: UITableViewController {
     
     
     //what does this do here?
-    func getPinDegree(type: Int, degree: Int) -> Int
+    func getPinDegree(_ type: Int, degree: Int) -> Int
     {
         
         var count = -1;
@@ -224,7 +224,7 @@ class OptionTableViewController: UITableViewController {
             
             if(p.type == type && p.isGPIO)
             {
-                count++;
+                count += 1;
                 
                 if(count == degree)
                 {
@@ -233,7 +233,7 @@ class OptionTableViewController: UITableViewController {
                 
             }
             
-            I++;
+            I += 1;
         }
         
         return -1;
@@ -248,7 +248,7 @@ class OptionTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
         return 1
@@ -269,7 +269,7 @@ class OptionTableViewController: UITableViewController {
         return count;
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
         // Return the number of rows in the section.
         
@@ -279,9 +279,9 @@ class OptionTableViewController: UITableViewController {
 
 
     //not used
-    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
+    override func prepare(for segue: UIStoryboardSegue!, sender: Any!) {
         if segue.identifier == "segueUno" {
-            let viewControllerB = segue.destinationViewController as! PinTableViewController
+            let viewControllerB = segue.destination as! PinTableViewController
             viewControllerB.pins = self.pins;
         }
     }
@@ -292,7 +292,7 @@ class OptionTableViewController: UITableViewController {
         //self.performSegueWithIdentifier("segueUno", sender: self);
 
         //tbc is the TabBarController that contains all the views
-        let tbc = self.parentViewController as! MyTabBarController;
+        let tbc = self.parent as! MyTabBarController;
         
         print("Syncing with table");
         
@@ -315,23 +315,23 @@ class OptionTableViewController: UITableViewController {
         
     }
     
-    func getCellAtIndex(index: Int) -> OptionTableViewCell
+    func getCellAtIndex(_ index: Int) -> OptionTableViewCell
     {
         
-        let path = NSIndexPath(forRow: index, inSection: 0);
+        let path = IndexPath(row: index, section: 0);
         
-        let cell = tableView.cellForRowAtIndexPath(path) as! OptionTableViewCell;
+        let cell = tableView.cellForRow(at: path) as! OptionTableViewCell;
         
         return cell;
         
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         //ask someone what these mean
         let cellIdentifier = "OptionTableViewCell";
         
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! OptionTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! OptionTableViewCell
         
         
         
@@ -357,11 +357,11 @@ class OptionTableViewController: UITableViewController {
         cell.Hlabel.tag = indexPath.row;
         cell.Llabel.tag = indexPath.row;
         
-        cell.typeButton.setTitle(cell.getType(pin.type), forState: UIControlState.Normal)
+        cell.typeButton.setTitle(cell.getType(pin.type), for: UIControlState())
         
         if(!pin.isGPIO)
         {
-            cell.typeButton.enabled = false;
+            cell.typeButton.isEnabled = false;
         }
         
         //print("Loading Option Table Cell ", terminator: "")
