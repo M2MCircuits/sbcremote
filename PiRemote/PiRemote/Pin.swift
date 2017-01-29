@@ -19,7 +19,6 @@ class Pin {
     // Name of High
     // Name of Low
     
-    
     var name: String
     
     var Hname: String
@@ -31,9 +30,6 @@ class Pin {
     var function: Bool
     
     var isGPIO: Bool
-    
-    
-    
     
     //type 0: Ignore
     //type 1: Control
@@ -60,8 +56,6 @@ class Pin {
         }
         
         self.on = false;
-        
-        
     }
     
     init() {
@@ -73,10 +67,7 @@ class Pin {
         self.stateName = "Off";
         self.function = false;
         self.isGPIO = false;
-        
-        
         self.on = false;
-        
         
     }
     
@@ -95,8 +86,6 @@ class Pin {
                 type = 2;
             }
         }
-        
-        
     }
     
     func typeFunction(_ t: Int) -> Bool
@@ -154,16 +143,9 @@ class Pin {
             function = true;
         }
         
-        
-        
-        
-        
-        typeFunction(type);
-        
         print("Type set to ", terminator: "");
         print(type);
         return;
-        
     }
     
     func changeType()
@@ -181,7 +163,6 @@ class Pin {
         
     }
     
-    
     func setName(_ newName: String)
     {
         name = newName;
@@ -198,7 +179,6 @@ class Pin {
     }
     
     
-    
     class func getEmpty() -> [Pin]
     {
         var pins = [Pin]();
@@ -211,12 +191,7 @@ class Pin {
             pins += [p];
         }
         
-        
         return pins;
-        
-        
-        
     }
-    
     
 }

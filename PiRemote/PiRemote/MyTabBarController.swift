@@ -35,21 +35,12 @@ class MyTabBarController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
         print("loading Tab Bar Controller\n");
-        
-        
         tabBarPins = Pin.getEmpty();
-        
-        
         //getIP();
-
         // Do any additional setup after loading the view.
     }
     
-    
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -57,143 +48,95 @@ class MyTabBarController: UITabBarController {
     
     func getIP() -> String
     {
-        if(ipaddress != "")
-        {
+        if(ipaddress != "") {
             return ipaddress;
         }
         
-        if(ipaddress == "-1")
-        {
+        if(ipaddress == "-1") {
             print("IP address still waiting...");
             return ipaddress;
         }
-        
-        setIP();
-        
-        return ipaddress;
-        
-        
 
+        setIP();
+        return ipaddress;
     }
     
     func setIP()
     {
-        
-        if(ipaddress == "")
-        {
+        if(ipaddress == "") {
             ipaddress = "-1";
         }
-        
-        let session = URLSession.shared
-        
         
         let urlText = "http://ip.42.pl/raw";
         
         //these url and request objects are required for the connection method I use
         let myUrl = URL(string: urlText);
-        let request = NSMutableURLRequest(url:myUrl!);
+        var request = URLRequest(url:myUrl!);
         
         //set the httpmethod, and set a header value
         request.httpMethod = "GET";
         
-        
         print("getting ip...");
-        //start task definition
-        let task = session.dataTask(with: request, completionHandler:{
+        let task = URLSession.shared.dataTask(with: request) {
             urlData, response, error -> Void in
             
             DispatchQueue.main.async {
-                
-                print(urlData);
-                print(response);
-                
-                do
-                {
-                    if urlData != nil{
-                        let ip = NSString(data: urlData!, encoding: String.Encoding.utf8);
-                        self.ipaddress = ip as! String;
-                    }
-                    else{
+                print(urlData!);
+                do {
+                    if urlData != nil {
+                        self.ipaddress = String(data: urlData!, encoding: String.Encoding.utf8)!;
+                    } else {
                         print("no connection");
                     }
-                    
                 }
-                
                 print("IP fetch: " + self.ipaddress);
-                
-                
-            }//end of dispatch
-            
-        })//end of task
+            } // end dispatch
+        } // end task
         task.resume();
-        
-
     }
     
     func getPins()
     {
         let urlText = devProxy + "/*";
-        
         let myUrl = URL(string: urlText);
-        let request = NSMutableURLRequest(url:myUrl!);
-        
+        var request = URLRequest(url:myUrl!);
         
         request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
-        
-        
         
         //set some headers
         request.httpMethod = "GET";
         
-        
         //var urlData: NSData? = NSURLConnection.sendSynchronousRequest(request, returningResponse:&response, error:&reponseError);
         
-        
-        //start task
-        let task = session.dataTask(with: request, completionHandler:{
+        let task = URLSession.shared.dataTask(with: request) {
             urlData, response, error -> Void in
-            
-            DispatchQueue.main.async
-                {//start dispatch
-                    
 
-                    
-                    if(urlData == nil)
-                    {
+            DispatchQueue.main.async {
+                    if(urlData == nil) {
                         print("nil on fetch from Pi");
                         return;
                     }
                     
                     print("successful fetch from Pi");
-                    
-                    
+                
                     //jsonData is where the data for the response is kept
-                    
-                   
-                    
-                    let jsonData:NSDictionary = try! JSONSerialization.jsonObject(with: urlData!, options:JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
-                    
-                    
-                    
-                    let GPIOdata = jsonData.value(forKey: "GPIO") as! NSDictionary;
+                    let jsonData = try! JSONSerialization.jsonObject(with: urlData!, options:JSONSerialization.ReadingOptions.mutableContainers) as! [String: AnyObject]
+                
+                    let GPIOdata = jsonData["GPIO"] as! [String: AnyObject];
                     //print(GPIOdata);
                     
-                    for index in 0 ... 27
-                    {
+                    for index in 0 ... 27 {
                         //print("setting pin ", terminator: "");
                         //print(index);
 
-                        self.tabBarPins[index].setFromData(GPIOdata.value(forKey: String(index)) as! NSDictionary);
+                        self.tabBarPins[index].setFromData(GPIOdata[String(index)] as! NSDictionary);
                         
                         //set the name to the pin number
                         self.tabBarPins[index].setName(String(index));
-                        
-                        
                         self.tabBarPins[index].isGPIO = true;
                         
                         //Determines by the index if it's actually a GPIO number
-                        if(index < 2 || index == 14 || index == 15 || index > 27)
-                        {
+                        if(index < 2 || index == 14 || index == 15 || index > 27) {
                             self.tabBarPins[index].isGPIO = false;
                             self.tabBarPins[index].type = 0;
                         }
@@ -219,49 +162,28 @@ class MyTabBarController: UITabBarController {
                     
                     //sleep(10000);
                     //self.getPins();
-                    
-                    
-            }//end dispatch
-            
-            
-            
-        })//end task
-        
+            } // end dispatch
+        } // end task
+
         task.resume();
-        
-        
-        
     }
     
     func setFunction(_ sender: UIButton, newFunction: Bool)
     {
+        let nS = newFunction ? "out" : "in";
         let pinNumber = sender.tag;
-        
-        
-        var nS = "in";
-        
-        if(newFunction)
-        {
-            nS = "out";
-        }
-        
-        
         var urlText = devProxy + "/GPIO/";
         
         urlText += String(pinNumber) + "/function/" + nS;
         
         let myUrl = URL(string: urlText);
-        let request = NSMutableURLRequest(url:myUrl!);
+        var request = URLRequest(url:myUrl!);
         
         //let loginString = NSString(format: "%@:%@", "webiopi", "raspberry");
         //let loginData: NSData = loginString.dataUsingEncoding(NSUTF8StringEncoding)!;
         //base64LoginString = loginData.base64EncodedStringWithOptions(nil);
         
-        
         request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
-        
-        
-        
         //set some headers
         request.httpMethod = "POST";
         
@@ -271,233 +193,128 @@ class MyTabBarController: UITabBarController {
         let ps = "Posting " + nS + " to Pin " + String(pinNumber) + "function...";
         print(ps);
         
-        
-        
-        //start task
-        let task = session.dataTask(with: request, completionHandler:{
-            urlData, response, error -> Void in
+        let task = URLSession.shared.dataTask(with: request) {
+            urlData, response, error in
             
-            DispatchQueue.main.async
-            {//start dispatch
-                
+            DispatchQueue.main.async {
                 let optionView = self.childViewControllers[1] as! OptionTableViewController;
-                
                 let cell = optionView.getCellAtIndex(pinNumber);
-                
                 let res = response as! HTTPURLResponse!;
                 
-                
-                
-                if(res == nil)
-                {
+                if(res == nil) {
                     print("nil on function post from Pi");
-
-                }
-                else
-                {
+                } else {
                     //jsonData is where the data for the response is kept
-                    do
-                    {
+                    do {
                         let jsonData:Data = try JSONSerialization.jsonObject(with: urlData!, options:[]) as! Data
-                        
-                        print("jsonData:");
-                        print(jsonData);
-                        
-                    }
-                    catch
-                    {
+                        print("jsonData: \(jsonData)");
+                    } catch {
                         print("jsonData not successful for pin function set");
                     }
                     
                     
                     //Successful post!
-                    if(res.statusCode == 200)
-                    {
-                        
+                    if(res!.statusCode == 200) {
                         //set the pin function
                         optionView.pins[pinNumber].changeFunction(newFunction);
-                        
-                        
                         sender.setTitle(cell.getType(optionView.pins[pinNumber].type), for: UIControlState());
-                        
-
                         optionView.syncWithTable();
-                        
-                        
-
-                    }
-                    else
-                    {
-                        print("Response status fail: " + String(res.statusCode));
+                    } else {
+                        print("Response status fail: " + String(res!.statusCode));
                         //cell.onState.on = !cell.onState.on;
                     }
-                    
                 }
-                
-                
-                
-                
-                
-                //print();
-                print("urlData:");
-                print(urlData);
-                //print();
-                
-                print("res:");
-                print(res);
+
+                print("urlData: \(urlData)");
+                print("res: \(res)");
                 
                 //Status code: 200 is inside 'res' somewhere, THAT is what will tell me if we were successful
                 
-                
                 sender.isEnabled = true;
-                
-            }//end dispatch
-            
+            } // end dispatch
             self.getPins();
-            
-        })//end task
+        } // end task
         
         task.resume();
-        
-        
     }
     
     func setPin(_ pinNumber: Int, newState: Bool)
     {
-        var nS = "0";
-        
-        if(newState)
-        {
-            nS = "1";
-        }
-        
-        
+        let nS = newState ? "1" : "0";
         var urlText = devProxy + "/GPIO/";
-        
         urlText += String(pinNumber) + "/value/" + nS;
         
         let myUrl = URL(string: urlText);
-        let request = NSMutableURLRequest(url:myUrl!);
+        var request = URLRequest(url:myUrl!);
         
         //let loginString = NSString(format: "%@:%@", "webiopi", "raspberry");
         //let loginData: NSData = loginString.dataUsingEncoding(NSUTF8StringEncoding)!;
         //base64LoginString = loginData.base64EncodedStringWithOptions(nil);
-        
-        
+    
         request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
-        
-        
-        
+    
         //set some headers
         request.httpMethod = "POST";
-        
         
         //var urlData: NSData? = NSURLConnection.sendSynchronousRequest(request, returningResponse:&response, error:&reponseError);
         
         let ps = "Posting " + nS + " to Pin " + String(pinNumber) + "...";
         print(ps);
         
-        
-        
-        //start task
-        let task = session.dataTask(with: request, completionHandler:{
-            urlData, response, error -> Void in
+        let task = URLSession.shared.dataTask(with: request) {
+            urlData, response, error in
             
-            DispatchQueue.main.async
-                {//start dispatch
+            DispatchQueue.main.async {
                     
                     let pinView = self.childViewControllers[0] as! PinTableViewController;
-                    
                     let cell = pinView.getCellForPinNumber(pinNumber);
-
                     let res = response as! HTTPURLResponse!;
                     
-                    if(res == nil)
-                    {
+                    if(res == nil) {
                         print("nil on post from Pi");
                         cell.onState.isOn = !cell.onState.isOn;
-                    }
-                    else
-                    {
+                    } else {
                         //jsonData is where the data for the response is kept
-                        do
-                        {
+                        do {
                             let jsonData:Data = try JSONSerialization.jsonObject(with: urlData!, options:[]) as! Data
                             
                             print("jsonData");
                             print(jsonData);
                             
-                        }
-                        catch
-                        {
+                        } catch {
                             print("jsonData not successful for pin set");
                         }
                         
-                        
                         //Successful post!
-                        if(res.statusCode == 200)
-                        {
+                        if(res?.statusCode == 200) {
                             self.setPinValue(pinNumber, value: newState);
-                        }
-                        else
-                        {
-                            print("Response status fail: " + String(res.statusCode));
+                        } else {
+                            print("Response status fail: " + String(describing: res?.statusCode));
                             cell.onState.isOn = !cell.onState.isOn;
                         }
-
                     }
-
-                    
-                    
-                    
-                    
-                    //print();
-                    print("urlData:");
-                    print(urlData);
-                    //print();
-                    
-                    print("res:");
-                    print(res);
+                
+                    print("urlData: \(urlData)");
+                    print("res: \(res)");
                     
                     //Status code: 200 is inside 'res' somewhere, THAT is what will tell me if we were successful
-                    
-                    
+                
                     cell.onState.isEnabled = true;
                     cell.spinner.stopAnimating();
-                    
-                    
-                    
-            }//end dispatch
-            
+                
+            } // end dispatch
             self.getPins();
-            
-        })//end task
-        
+        } // end task
         task.resume();
-    
     }
 
-    
     func printPinList()
     {
-        
-        
-        for p in tabBarPins{
-            print(p.name, terminator: "");
-            print(" ", terminator: "");
-            print(p.stateName, terminator: "");
-            print(" ", terminator: "");
-            print(p.type, terminator: "");
-            
-            print("");
-            
+        for p in tabBarPins {
+            print("\(p.name) \(p.stateName) \(p.type)");
         }
-        
-        
         print("");
-        
     }
-    
     
     //sets one pin to HIGH or LOW (not on the pi, just in this program)
     func setPinValue(_ pinNumber: Int, value: Bool)
@@ -511,9 +328,6 @@ class MyTabBarController: UITabBarController {
         
         optionView.tableView.reloadData();
         pinView.tableView.reloadData();
-
-        
-        
     }
     
     /*

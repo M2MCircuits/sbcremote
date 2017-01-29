@@ -35,17 +35,17 @@ class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDat
     //@IBOutlet weak var listFetchIndicator: UIActivityIndicatorView!
     
     @IBOutlet weak var ErrorLabel: UILabel!
-    
+    @IBOutlet weak var displayMessage: UILabel!
     
     //an array of weaved devices, set by the HTTP request in listDevices()
-    var devices = NSArray();
+    var devices: [AnyObject]!
     
     //index of the device we will log in to
     var devIndex = 0;
 
     
     
-    //When the login button is pressed, this method is called.
+    // When the login button is pressed, this method is called.
     @IBAction func logPress(_ sender: UIButton) {
         
         sender.isEnabled = false;
@@ -60,7 +60,7 @@ class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         if(passw == "")
         {
-            self.displayMessage("Please enter a password.");
+            self.displayMessage.text = "Please enter a password.";
             sender.isEnabled = true;
             return;
         }
@@ -70,7 +70,7 @@ class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
     }
     
-    //when the "login" button next to a Weaved device is pressed
+    // when the "login" button next to a Weaved device is pressed
     @IBAction func devLoginButtonPress(_ sender: UIButton) {
       
         self.view.endEditing(true);
@@ -79,7 +79,7 @@ class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         if(cell.passwordLabel.text == "")
         {
-            self.displayMessage("Please enter a password.");
+            // self.displayMessage.text = "Please enter a password.";
             return;
         }
         
@@ -92,8 +92,6 @@ class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDat
     //this is a test label I use to print information on the login attempt
     //@IBOutlet weak var logSuccessLabel: UILabel!
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -102,7 +100,6 @@ class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDat
         //that way I can control it from this view controller
         self.devTable.dataSource = self;
         self.devTable.delegate = self;
-        
         
         // Do any additional setup after loading the view.
     }
@@ -123,7 +120,7 @@ class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         tbc.setIP();
         
-        let session = URLSession.shared
+        
 
         
         var urlText = "https://api.weaved.com/v22/api/user/login/";
@@ -133,7 +130,7 @@ class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         //these url and request objects are required for the connection method I use
         let myUrl = URL(string: urlText);
-        let request = NSMutableURLRequest(url:myUrl!);
+        var request = URLRequest(url:myUrl!);
         
         //set the httpmethod, and set a header value
         request.httpMethod = "GET";
@@ -144,14 +141,13 @@ class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         loginIndicator.startAnimating();
         
-        self.displayMessage("Logging in to Weaved...");
+        self.displayMessage.text = "Logging in to Weaved...";
         //start task definition
-        let task = session.dataTask(with: request, completionHandler:{
-            urlData, response, error -> Void in
+        let task = URLSession.shared.dataTask(with: request) {
+            urlData, response, error in
             // this code runs asynchronously...
             // ... i.e. later, after the request has completed (or failed)
-            
-            
+
             //odd bug
             //with this dispatch code and self.reloadInputViews(); the indicator
             //will stop spinning as soon as the stuff is printed.
@@ -181,83 +177,36 @@ class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     //ErrorLabel.text = "Success";
                     
                     //jsonData is where the data for the response is kept
-                    let jsonData:NSDictionary = try! JSONSerialization.jsonObject(with: urlData!, options:JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
-                    let status = jsonData.value(forKey: "status") as! String;
+                    let jsonData = try! JSONSerialization.jsonObject(with: urlData!, options:JSONSerialization.ReadingOptions.mutableContainers) as! [String: AnyObject]
+                    let status = jsonData["status"] as! String;
                     
-                    if(status == "true")
-                    {
+                    if(status == "true") {
                         self.logButton.setTitle("Logged In", for: UIControlState());
                         
                         //we set the Token in the main TabBarController
-                        tbc.weavedToken = jsonData.value(forKey: "token") as! String;
+                        tbc.weavedToken = jsonData["token"] as! String;
                         print("token: " + tbc.weavedToken);
-                        
-                        
+                    
                         //set the label on the log screen
                         //self.displayMessage(tbc.weavedToken);
                         
                         //clear the password box
                         self.password.text = "";
                         
-                        
-                        
-                        
                         //self.reloadInputViews();
                         
                         self.listDevices();
                         
+                    } else {
+                        self.displayMessage.text = jsonData["reason"] as? String;
                     }
-                    else
-                    {
-                        self.displayMessage(jsonData.value(forKey: "reason") as! String);
-                        
-                        
-                    }
-
+                } else {
+                    self.displayMessage.text = "Error: no internet connection";
                 }
-                else
-                {
-                    self.displayMessage("Error: no internet connection");
-                }
-                
-                
-                
-                
                 return;
             }
-            
-            
-
-            
-        })
-        
+        }
         task.resume();
-        
-        
-        
-        //THIS is the connection command
-        //var urlData: NSData? = NSURLConnection.sendSynchronousRequest(request, returningResponse:&response, error:&reponseError);
-
-        
-        
-        
-        
-
-//
-//        let task = NSURLSession.sharedSession().dataTaskWithRequest(request)
-//        {
-//                
-//            data, response, error in
-//            
-//            
-//            
-//        }
-//        
-//        
-//        task.resume();
-        
-        
-        
     }
     
     
@@ -269,16 +218,9 @@ class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func listDevices()
     {
         let tbc = self.parent as! MyTabBarController;
-        
-        
         let urlText = "https://api.weaved.com/v22/api/device/list/all";
-        
-        let session = URLSession.shared;
-
-        
-        
         let myUrl = URL(string: urlText);
-        let request = NSMutableURLRequest(url:myUrl!);
+        var request = URLRequest(url:myUrl!);
         
         //set some headers
         request.httpMethod = "GET";
@@ -286,59 +228,50 @@ class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDat
         request.setValue("application/json", forHTTPHeaderField: "Content-Type");
         request.setValue(tbc.weavedToken, forHTTPHeaderField: "token");
         
-        
         //var urlData: NSData? = NSURLConnection.sendSynchronousRequest(request, returningResponse:&response, error:&reponseError);
         
         print("\nsending list request...");
         //listFetchIndicator.startAnimating();
         
-        //start task
-        let listtask = session.dataTask(with: request, completionHandler:{
-            urlData, response, error -> Void in
-            
-            DispatchQueue.main.async
-            {//start dispatch
-                
+        let task = URLSession.shared.dataTask(with: request) {
+            urlData, response, error in
+            DispatchQueue.main.async {
                 //self.listFetchIndicator.stopAnimating();
                 
-                if(urlData != nil)
-                {
+                if(urlData != nil) {
                     //ErrorLabel.text = "Success";
-                    
                     print("received list");
                     
-                    let jsonData:NSMutableDictionary = try! JSONSerialization.jsonObject(with: urlData!, options:JSONSerialization.ReadingOptions.mutableContainers) as! NSMutableDictionary
-                    
-                    
+                    let jsonData = try! JSONSerialization.jsonObject(with: urlData!, options:JSONSerialization.ReadingOptions.mutableContainers) as! [String: AnyObject];
                     
                     //devices is declared at the beginning of this class
                     //it's an array of these devices
-                    self.devices = jsonData.value(forKey: "devices") as! NSArray;
+                    self.devices = jsonData["devices"] as? [AnyObject];
                     
                     //REMOVE SSH ENTRIES
-                    let temparray = self.devices as! NSMutableArray;
+                    let temparray = self.devices;
                     var sshindexarr = [Int]();
                     var i = 0;
-                    for item in temparray{
+                    for item in temparray! {
                         let alias: String? = item.object(forKey: "devicealias") as? String
                         if alias!.range(of: "_ssh") != nil{
                             
                             //REMOVE SSH DEVICE
                             sshindexarr.append(i);
                         }
-                        i=i+1;
+                        i = i + 1;
                     }
                     
-                    var inx = sshindexarr.count - 1;
-                    repeat {
-                        temparray.removeObject(at: sshindexarr[inx]);
-                        inx = inx - 1;
-                    } while (inx >= 0)
-                    
+//                    var inx = sshindexarr.count - 1;
+//                    repeat {
+//                        temparray.removeObject(at: sshindexarr[inx]);
+//                        inx = inx - 1;
+//                    } while (inx >= 0)
+//                    
                     self.devices = temparray;
                     
                     //GET DEVICE ADDRESSES
-                    for device in temparray{
+                    for device in temparray! {
                         print("DEVICE ADDRESSSS",(device.object(forKey: "deviceaddress") as! String));
                     }
                     
@@ -347,33 +280,19 @@ class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     
                     self.devTable.reloadData();
                     
-                    
-                    
                     //DeviceTable.insertRowsAtIndexPaths(0, withRowAnimation: UITableViewRowAnimation.Automatic);
                     
-                    
-                    
-                }
-                else
-                {
-                    self.displayMessage("Failed to get device list");
+                } else {
+                    self.displayMessage.text = "Failed to get device list";
                 }
                 
-            }//end dispatch
-        })//end task
-        listtask.resume();
-        
-        
-        
-        
-        
-        
+            } // end dispatch
+        } // end task
+        task.resume();
     }
     
     //The number of cells in the device table gets set to the number of devices
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        
         return devices.count;
     }
    
@@ -383,18 +302,14 @@ class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cellIdentifier = "ListTableViewCell";
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ListTableViewCell
         
-        cell.setName(devices[indexPath.row].value(forKey: "devicealias") as! String);
-        
+        cell.setName(devices[indexPath.row]["devicealias"] as! String);
         cell.tag = indexPath.row;
-        
         cell.devLogButton.tag = indexPath.row;
         
         return cell
     }
-    
     
     //when a device is selected from the table after logging in to Weaved,
     //we should call this function, which will attempt to contact the device.
@@ -409,9 +324,7 @@ class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func getListCellAtIndex(_ index: Int) -> ListTableViewCell
     {
         let path = IndexPath(row: index, section: 0);
-        
         let cell = devTable.cellForRow(at: path) as! ListTableViewCell;
-        
         return cell;
     }
     
@@ -420,22 +333,17 @@ class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         var nCells = devices.count;
         
-        if (nCells == 0)
-        {
+        if (nCells == 0) {
             return;
         }
         
         nCells = nCells - 1;
-        
-        for index in 0...nCells
-        {
+        for index in 0...nCells {
             let cell = getListCellAtIndex(index);
-            
             cell.devLogButton.isEnabled = enable;
         }
         
         return;
-        
     }
     
     
@@ -443,27 +351,17 @@ class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func devWebiopiLogin(_ sen: UIButton)
     {
         //tbc = MyTabBarController, the main controller of all these view controllers
-        let tbc = self.parent as! MyTabBarController;
-        
+        let cell = getListCellAtIndex(sen.tag);
         let dev = devices[sen.tag];
         let UID = (dev as AnyObject).value(forKey: "deviceaddress") as! String;
-        
+        let tbc = self.parent as! MyTabBarController;
         let ipaddress = tbc.getIP();
-        
-        let cell = getListCellAtIndex(sen.tag);
-        
-        let session = URLSession.shared;
-        
-        
         let urlText = "https://api.weaved.com/v22/api/device/connect";
-        
         //var apiKey = "WeavedDemoKey$2015"
-        
-        
         
         //these url and request objects are required for the connection method I use
         let myUrl = URL(string: urlText);
-        let request = NSMutableURLRequest(url:myUrl!);
+        var request = URLRequest(url:myUrl!);
  //       var body = NSData();
         
         //set the httpmethod, and set a header value
@@ -476,7 +374,6 @@ class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         //??
         request.httpBody = try! JSONSerialization.data(withJSONObject: params, options: [])
-
         
 //        body.setValue(UID, forKey: "deviceaddress");
 //        body.setValue(ipaddress, forKey: "hostip");
@@ -486,126 +383,78 @@ class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         cell.spinner.startAnimating();
         setListButtonEnabled(false);
-        self.displayMessage("Attempting to gain proxy for device...");
+        self.displayMessage.text = "Attempting to gain proxy for device...";
         
-        let weblogtask = session.dataTask(with: request, completionHandler:{
-            urlData, response, error -> Void in
-            
+        let task = URLSession.shared.dataTask(with: request) {
+            urlData, response, error in
             print("");
-            
-            DispatchQueue.main.async
-            {
+            DispatchQueue.main.async {
                 
-                self.displayMessage("Connected");
+                self.displayMessage.text = "Connected";
                 
                 //stop the spinner, unlock the buttons
                 cell.spinner.stopAnimating();
                 self.setListButtonEnabled(true);
                 
-                
                 if(urlData != nil)
                 {
                     //println("urlData != nil");
-                    
-                    
                     //jsonData is where the data for the response is kept
-                    let jsonData:NSDictionary = try! JSONSerialization.jsonObject(with: urlData!, options:JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
+                    let jsonData = try! JSONSerialization.jsonObject(with: urlData!, options:JSONSerialization.ReadingOptions.mutableContainers) as! [String: AnyObject]
                     
-                    let status = jsonData.value(forKey: "status") as! String;
+                    let status = jsonData["status"] as! String;
                     
-                    if(status == "false")
-                    {
+                    if(status == "false") {
                         print("status: false");
-                        
-                        print("reason: " + (jsonData.value(forKey: "reason") as! String));
-                        
-                        self.displayMessage("WebIOPi device authentification failed");
-                        
-                        
-                    }
-                    else
-                    {
+                        print("reason: " + (jsonData["reason"] as! String));
+                        self.displayMessage.text = "WebIOPi device authentification failed";
+                    } else {
                         //  set the variable saying we are logged in to the pi (this should be on TBC)
                         tbc.webioPiLogged = true;
-                        
-                        
                         //set ONLY the current device to logged in
                         var nCells = self.devices.count;
-                        if (nCells == 0)
-                        {
+                        if (nCells == 0) {
                             return;
                         }
                         
                         nCells = nCells - 1;
                         
-                        for index in 0...nCells
-                        {
+                        for index in 0...nCells {
                             let disablelogcell = self.getListCellAtIndex(index);
-                            
                             disablelogcell.setLog(false)
                         }
                         cell.setLog(true);
-                        
-                        
+                
                         self.devIndex = sen.tag;
-                        
-                        let proxy = (jsonData.value(forKey: "connection") as! NSObject).value(forKey: "proxy") as! String;
-                        
-                        
+                    
+                        let proxy = jsonData["connection"]?.value(forKey: "proxy") as! String;
+                    
                         print(proxy);
-                        
                         tbc.devProxy = proxy;
-                        
                         self.devIndex = sen.tag;
-                        
                         self.devFetchTest();
                         
                         //  set this device's login button to 'logout'
                         //cell.devLogButton.setTitle("Logged in", forState: UIControlState.Normal);
-                        
-                        
                         //cell.setName("(Logged in) + " + cell.aliasLabel.text!);
-                        
-                        
-                        
                         //  set all the variables in TBC needed in order to talk to the Pi
                         //      pi address, token, whatever
                     }
-                    
-                    
                 }
-                
-                
-                
-            }//end dispatch
-
-            
-            
-        })//end weblogtask
-        weblogtask.resume();
-        
-
-        
-        
+            } // end dispatch
+        } // end task
+        task.resume();
     }
-    
-    
-    
+
     func devFetchTest()
     {
         let tbc = self.parent as! MyTabBarController;
-        
         tbc.session = URLSession.shared;
-        
-        
+
         let urlText = tbc.devProxy + "/*";
-        
         let cell = getListCellAtIndex(devIndex);
-        
         let myUrl = URL(string: urlText);
-        let request = NSMutableURLRequest(url:myUrl!);
-        
-        
+        var request = URLRequest(url:myUrl!);
         let usrn = cell.userNameLabel.text!;
         let pass = cell.passwordLabel.text!;
         
@@ -613,78 +462,57 @@ class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         print("Username: " + usrn + "\nPassword: " + pass);
         
-        
         let loginString = NSString(format: "%@:%@", usrn, pass);
         let loginData: Data = loginString.data(using: String.Encoding.utf8.rawValue)!;
         tbc.base64LoginString = loginData.base64EncodedString(options: []) as NSString;
         
-        
         request.setValue("Basic \(tbc.base64LoginString)", forHTTPHeaderField: "Authorization")
 
-        
-        
         //set some headers
         request.httpMethod = "GET";
-        
-        
-        
         //var urlData: NSData? = NSURLConnection.sendSynchronousRequest(request, returningResponse:&response, error:&reponseError);
         
         cell.spinner.startAnimating();
         
-        //start task
-        let task = tbc.session.dataTask(with: request, completionHandler:{
-            urlData, response, error -> Void in
+        let task = tbc.session.dataTask(with: request) {
+            urlData, response, error in
             
-            DispatchQueue.main.async
-            {//start dispatch
+            DispatchQueue.main.async {
                 
                 cell.spinner.stopAnimating();
                 
-                if(urlData == nil)
-                {
+                if(urlData == nil) {
                     print("nil on fetch from Pi");
                     return;
                 }
                 
-                
                 let res = response as! HTTPURLResponse;
                 print(res);
                 
-                var jsonData = NSDictionary();
+                var jsonData: [String: AnyObject];
                 
                 //jsonData is where the data for the response is kept
-                do
-                {
-                    jsonData = try JSONSerialization.jsonObject(with: urlData!, options:JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
-                }
-                catch
-                {
+                do {
+                    jsonData = try JSONSerialization.jsonObject(with: urlData!, options:JSONSerialization.ReadingOptions.mutableContainers) as! [String: AnyObject]
+                } catch {
                     print("jsonData from devFetchTest() failure");
                     return;
                 }
                 
                 print("successful fetch from Pi");
 
+                let pinarray = jsonData["GPIO"] as! [String: AnyObject];
                 
-                
-                let pinarray = jsonData.value(forKey: "GPIO") as! NSDictionary;
-                
-                print(pinarray.value(forKey: "0"));
+                print(pinarray["0"] ?? "No value for pin 0");
                 
                 tbc.getPins();
                 
                 //println(jsonData);
-                
                 //println(urlData);
                 //println(res);
                 
-            }//end dispatch
-            
-            
-            
-        })//end task
-        
+            } // end dispatch
+        } // end task
         task.resume();
     }
 
@@ -699,7 +527,7 @@ class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDat
     */
 
     //display a disappearing message to user
-    func displayMessage(_ msg:String){
+    func displayMessage(_ msg:String) {
     
         self.ErrorLabel.text = msg;
         self.delay(3.0) {
