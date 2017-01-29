@@ -39,12 +39,12 @@ class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     //an array of weaved devices, set by the HTTP request in listDevices()
     var devices: [AnyObject]!
-    
+
     //index of the device we will log in to
-    var devIndex = 0;
+    var devIndex = 0
 
     
-    
+
     // When the login button is pressed, this method is called.
     @IBAction func logPress(_ sender: UIButton) {
         
