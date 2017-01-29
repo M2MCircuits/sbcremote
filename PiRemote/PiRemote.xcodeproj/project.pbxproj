@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		24133E451E3D774000A42198 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24133E441E3D774000A42198 /* APIManager.swift */; };
+		24133E471E3D786800A42198 /* SimpleHTTPRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24133E461E3D786800A42198 /* SimpleHTTPRequest.swift */; };
+		24133E491E3D793000A42198 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24133E481E3D793000A42198 /* Constants.swift */; };
 		5A279FCE1CBFE53900272E05 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A279FCD1CBFE53900272E05 /* File.swift */; };
 		5A279FD01CBFE60800272E05 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A279FCF1CBFE60800272E05 /* LoginViewController.swift */; };
 		5A279FD21CC0790700272E05 /* weavedDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A279FD11CC0790700272E05 /* weavedDevice.swift */; };
@@ -38,6 +41,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		24133E441E3D774000A42198 /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
+		24133E461E3D786800A42198 /* SimpleHTTPRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleHTTPRequest.swift; sourceTree = "<group>"; };
+		24133E481E3D793000A42198 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5A279FCD1CBFE53900272E05 /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		5A279FCF1CBFE60800272E05 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		5A279FD11CC0790700272E05 /* weavedDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = weavedDevice.swift; sourceTree = "<group>"; };
@@ -80,6 +86,43 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		24133E411E3D740C00A42198 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				5AD0608D1CAD96B100BD6930 /* Pin.swift */,
+				24133E441E3D774000A42198 /* APIManager.swift */,
+				24133E461E3D786800A42198 /* SimpleHTTPRequest.swift */,
+				5A279FCD1CBFE53900272E05 /* File.swift */,
+				5A279FD11CC0790700272E05 /* weavedDevice.swift */,
+				24133E481E3D793000A42198 /* Constants.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		24133E421E3D741500A42198 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5AD0608F1CAD9E7700BD6930 /* PinTableViewCell.swift */,
+				5AD060931CADC36200BD6930 /* PinUISwitch.swift */,
+				5A279FD31CC13B7A00272E05 /* ListTableView.swift */,
+				5AD060971CADF71C00BD6930 /* OptionTableViewCell.swift */,
+				5A279FD51CC150B400272E05 /* ListTableViewCell.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		24133E431E3D741F00A42198 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				5AD060911CADA2BB00BD6930 /* PinTableViewController.swift */,
+				5AD060951CADF6EE00BD6930 /* OptionTableViewController.swift */,
+				5AD060991CAE026D00BD6930 /* MyTabBarController.swift */,
+				5A279FCF1CBFE60800272E05 /* LoginViewController.swift */,
+				5AD0606F1CAD8E9800BD6930 /* ViewController.swift */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
 		5AD0605F1CAD8E9700BD6930 = {
 			isa = PBXGroup;
 			children = (
@@ -101,21 +144,11 @@
 		5AD0606A1CAD8E9800BD6930 /* PiRemote */ = {
 			isa = PBXGroup;
 			children = (
-				5AD0606D1CAD8E9800BD6930 /* AppDelegate.swift */,
-				5AD0606F1CAD8E9800BD6930 /* ViewController.swift */,
 				5AD060711CAD8E9800BD6930 /* Main.storyboard */,
-				5A279FD31CC13B7A00272E05 /* ListTableView.swift */,
-				5A279FCF1CBFE60800272E05 /* LoginViewController.swift */,
-				5A279FD51CC150B400272E05 /* ListTableViewCell.swift */,
-				5AD060991CAE026D00BD6930 /* MyTabBarController.swift */,
-				5A279FD11CC0790700272E05 /* weavedDevice.swift */,
-				5AD060951CADF6EE00BD6930 /* OptionTableViewController.swift */,
-				5A279FCD1CBFE53900272E05 /* File.swift */,
-				5AD060971CADF71C00BD6930 /* OptionTableViewCell.swift */,
-				5AD060911CADA2BB00BD6930 /* PinTableViewController.swift */,
-				5AD0608F1CAD9E7700BD6930 /* PinTableViewCell.swift */,
-				5AD060931CADC36200BD6930 /* PinUISwitch.swift */,
-				5AD0608D1CAD96B100BD6930 /* Pin.swift */,
+				5AD0606D1CAD8E9800BD6930 /* AppDelegate.swift */,
+				24133E431E3D741F00A42198 /* ViewControllers */,
+				24133E421E3D741500A42198 /* View */,
+				24133E411E3D740C00A42198 /* Model */,
 				5AD060741CAD8E9800BD6930 /* Images.xcassets */,
 				5AD060761CAD8E9800BD6930 /* LaunchScreen.xib */,
 				5AD0606B1CAD8E9800BD6930 /* Supporting Files */,
@@ -260,10 +293,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				5AD060981CADF71C00BD6930 /* OptionTableViewCell.swift in Sources */,
+				24133E491E3D793000A42198 /* Constants.swift in Sources */,
 				5AD0608E1CAD96B100BD6930 /* Pin.swift in Sources */,
 				5AD0609A1CAE026D00BD6930 /* MyTabBarController.swift in Sources */,
 				5AD060701CAD8E9800BD6930 /* ViewController.swift in Sources */,
 				5AD060961CADF6EE00BD6930 /* OptionTableViewController.swift in Sources */,
+				24133E471E3D786800A42198 /* SimpleHTTPRequest.swift in Sources */,
 				5A279FD21CC0790700272E05 /* weavedDevice.swift in Sources */,
 				5A279FCE1CBFE53900272E05 /* File.swift in Sources */,
 				5A279FD61CC150B400272E05 /* ListTableViewCell.swift in Sources */,
@@ -271,6 +306,7 @@
 				5AD0606E1CAD8E9800BD6930 /* AppDelegate.swift in Sources */,
 				5AD060901CAD9E7700BD6930 /* PinTableViewCell.swift in Sources */,
 				5AD060921CADA2BB00BD6930 /* PinTableViewController.swift in Sources */,
+				24133E451E3D774000A42198 /* APIManager.swift in Sources */,
 				5AD060941CADC36200BD6930 /* PinUISwitch.swift in Sources */,
 				5A279FD01CBFE60800272E05 /* LoginViewController.swift in Sources */,
 			);
