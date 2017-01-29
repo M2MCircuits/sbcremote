@@ -36,7 +36,7 @@ class PinTableViewCell: UITableViewCell {
     */
     
     
-    @IBAction func switchTrip(sender: PinUISwitch) {
+    @IBAction func switchTrip(_ sender: PinUISwitch) {
         
 //        if(sender.on)
 //        {
@@ -63,7 +63,7 @@ class PinTableViewCell: UITableViewCell {
 
     
     
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
