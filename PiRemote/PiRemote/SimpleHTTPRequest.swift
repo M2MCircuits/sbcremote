@@ -42,21 +42,36 @@ class SimpleHTTPRequest : NSObject {
         //Retrieves data returned.
         let task = session.dataTask(with: request as URLRequest){
             data, response, downloadError in
+            //Connectivity issues
             if let error = downloadError {
                 completionHandler(false, nil, downloadError)
                 print("Error communicating with server via HTTP")
                 print(error)
             }
-            else{
-                var jsonResult : Any?
-                do{
-                    jsonResult = try JSONSerialization.jsonObject(with: data!, options: [])
-                    completionHandler(true, jsonResult as? NSDictionary, nil)
-                }catch{
-                    completionHandler(false, nil, nil)
+            
+            
+            guard let resp = response as? HTTPURLResponse else{
+                //Something went really wrong.
+                completionHandler(false, nil, nil)
+                return
+            }
+            
+            guard resp.statusCode == 200 else {
+                print("request status code : \(resp.statusCode)")
+                completionHandler(false, nil, nil)
+                return
+            }
+            
+            
+            var jsonResult : Any?
+            do{
+                jsonResult = try JSONSerialization.jsonObject(with: data!, options: [])
+                completionHandler(true, jsonResult as? NSDictionary, nil)
+            }catch{
+                completionHandler(false, nil, nil)
                 }
             }
-        }
+        
         task.resume()
         
     }
