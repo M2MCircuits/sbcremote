@@ -11,7 +11,12 @@ import Foundation
 
 class SimpleHTTPRequest : NSObject {
     
-    
+    /**
+     Base request function for communicating with sever via HTTP. Only for simple, non-media related transmission
+     
+     - parameter url: (String), HTTPMethod(String), jsonBody([String: AnyObject], completionhandler
+     - returns: success, error, dictionary optional with json information via callback.
+     */
     func simpleAPIRequest(toUrl: String, HTTPMethod: String, jsonBody: [String: AnyObject]?, completionHandler: @escaping (_ sucess: Bool, _ data: NSDictionary?, _ error: Error?)->Void){
         
         //Creates URL Session

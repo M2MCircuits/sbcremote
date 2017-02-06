@@ -13,6 +13,7 @@ class WeavedAPIManager {
     
     var baseApiUrl : String!
     var API : APIManager!
+    var token : String?
     
     init() {
         self.baseApiUrl = "https://api.weaved.com/v22/api"
@@ -33,5 +34,25 @@ class WeavedAPIManager {
     }
     
     
+    func listDevices(completion: @escaping (_ data : NSDictionary?) -> Void){
+        guard self.token != nil else{
+            completion(nil)
+            return
+        }
+        let deviceURL = "device/list/all"
+        let endURL = self.baseApiUrl + "/" + deviceURL
+        //TODO ; Look at this again. Not the best.
+        self.API.getRequest(url: endURL) { (data) in
+            completion(data)
+        }
+    }
+    
+    func sendDevice(deviceAddress: String, command: String?, completion: @escaping (_ sucess: Bool) -> Void){
+        //TODO : Implement
+    }
+    
+    func connectDevice(deviceAddress: String, hostip: String, shouldWait: Bool, completion: (_ data: NSDictionary?)->Void){
+        //TODO : Implement
+    }
     
 }
