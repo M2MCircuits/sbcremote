@@ -10,24 +10,15 @@ import UIKit
 
 class OptionTableViewCell: UITableViewCell {
 
-    
-
     @IBOutlet weak var nameLabel: UITextField!
     @IBOutlet weak var Hlabel: UITextField!
     @IBOutlet weak var Llabel: UITextField!
     @IBOutlet weak var typeButton: UIButton!
 
     //@IBOutlet weak var typeButton: UIButton!
-    
-    
-    
-    var pinNumber = 0;
-    
-    var typeNumber = 0;
-    
-
-    @IBAction func typePress(sender: UIButton) {
-        
+    var pinNumber = 0
+    var typeNumber = 0
+    @IBAction func typePress(_ sender: UIButton) {
         /*
         typeNumber++;
         
@@ -39,9 +30,8 @@ class OptionTableViewCell: UITableViewCell {
         sender.setTitle(getType(typeNumber), forState: UIControlState.Normal);
  
         */
-        
     }
-    
+
     /*
     @IBAction func TypeButtonPress(sender: UIButton) {
         
@@ -57,34 +47,29 @@ class OptionTableViewCell: UITableViewCell {
         
     }
     */
-    
-    func getType(type: Int) -> String
-    {
-        if(type == 0)
-        {
+
+    func getType(_ type: Int) -> String {
+        if type == 0 {
             return "Ignore"
         }
-        
-        if(type == 1)
-        {
+
+        if type == 1 {
             return "OUT"
         }
         
-        if(type == 2)
-        {
+        if type == 2 {
             return "IN"
         }
-        
+
         return "Unknown"
     }
-    
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state

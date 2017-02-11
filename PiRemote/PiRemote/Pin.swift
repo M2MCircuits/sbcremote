@@ -19,7 +19,6 @@ class Pin {
     // Name of High
     // Name of Low
     
-    
     var name: String
     
     var Hname: String
@@ -31,9 +30,6 @@ class Pin {
     var function: Bool
     
     var isGPIO: Bool
-    
-    
-    
     
     //type 0: Ignore
     //type 1: Control
@@ -60,8 +56,6 @@ class Pin {
         }
         
         self.on = false;
-        
-        
     }
     
     init() {
@@ -73,14 +67,11 @@ class Pin {
         self.stateName = "Off";
         self.function = false;
         self.isGPIO = false;
-        
-        
         self.on = false;
-        
         
     }
     
-    func changeFunction(newF: Bool)
+    func changeFunction(_ newF: Bool)
     {
         function = newF;
         
@@ -95,11 +86,9 @@ class Pin {
                 type = 2;
             }
         }
-        
-        
     }
     
-    func typeFunction(t: Int) -> Bool
+    func typeFunction(_ t: Int) -> Bool
     {
         if(t == 1)
         {
@@ -123,11 +112,11 @@ class Pin {
         return;
     }
     
-    func setFromData(data: NSDictionary)
+    func setFromData(_ data: NSDictionary)
     {
         print("\nPin setting data from outside");
         
-        on = data.valueForKey("value") as! Bool;
+        on = data.value(forKey: "value") as! Bool;
         print("Value set to ", terminator: "");
         stateName = Lname;
         
@@ -138,7 +127,7 @@ class Pin {
         
         print(stateName);
         
-        let t = data.valueForKey("function") as! String;
+        let t = data.value(forKey: "function") as! String;
         
         type = 0;
         
@@ -154,16 +143,9 @@ class Pin {
             function = true;
         }
         
-        
-        
-        
-        
-        typeFunction(type);
-        
         print("Type set to ", terminator: "");
         print(type);
         return;
-        
     }
     
     func changeType()
@@ -181,22 +163,20 @@ class Pin {
         
     }
     
-    
-    func setName(newName: String)
+    func setName(_ newName: String)
     {
         name = newName;
     }
     
-    func setHname(newName: String)
+    func setHname(_ newName: String)
     {
         Hname = newName;
     }
     
-    func setLname(newName: String)
+    func setLname(_ newName: String)
     {
         Lname = newName;
     }
-    
     
     
     class func getEmpty() -> [Pin]
@@ -211,12 +191,7 @@ class Pin {
             pins += [p];
         }
         
-        
         return pins;
-        
-        
-        
     }
-    
     
 }

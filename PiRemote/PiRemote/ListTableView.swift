@@ -8,12 +8,4 @@
 import UIKit
 
 class ListTableView: UITableView {
-    
-    
-    
-    
-    
-    
-    
-   
 }
