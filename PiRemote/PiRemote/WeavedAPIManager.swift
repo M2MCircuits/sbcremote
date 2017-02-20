@@ -18,20 +18,19 @@ class WeavedAPIManager {
         self.baseApiUrl = "https://api.weaved.com/v22/api"
         self.API = APIManager()
     }
-    
-    func logInUser(username: String, userpw: String, completion: @escaping (_ sucess: Bool) -> Void){
+
+    // GET user/login/:username/:password
+    func logInUser(username: String, userpw: String, callback: @escaping (_ data: NSDictionary?) -> Void){
         let endpointURL = "/user/login/" + username + "/" + userpw
-        self.API.getRequest(url: baseApiUrl + endpointURL) { (data) in
-            if (data != nil){
-                //TODO: Handle data
-                completion(true)
-            }
-            else{
-                completion(false)
-            }
-        }
+        let weavedHeaderFields = ["apikey" : "WeavedDemoKey$2015"]
+        self.API.getRequest(url: baseApiUrl + endpointURL, extraHeaderFields: weavedHeaderFields, completion: callback)
     }
-    
-    
-    
+
+    // GET device/list/all
+    func listDevices(token: String, callback: @escaping (_ data: NSDictionary?) -> Void) {
+        let endpointURL = "/device/list/all"
+        let weavedHeaderFields = ["apikey" : "WeavedDemoKey$2015", "token" : token]
+        self.API.getRequest(url: baseApiUrl + endpointURL, extraHeaderFields: weavedHeaderFields, completion: callback)
+    }
+
 }

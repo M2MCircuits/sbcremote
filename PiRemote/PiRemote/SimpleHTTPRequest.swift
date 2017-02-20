@@ -12,7 +12,12 @@ import Foundation
 class SimpleHTTPRequest : NSObject {
     
     
-    func simpleAPIRequest(toUrl: String, HTTPMethod: String, jsonBody: [String: AnyObject]?, completionHandler: @escaping (_ sucess: Bool, _ data: NSDictionary?, _ error: Error?)->Void){
+    func simpleAPIRequest(
+        toUrl: String,
+        HTTPMethod: String,
+        jsonBody: [String: AnyObject]?,
+        extraHeaderFields: [String: String]?,
+        completionHandler: @escaping (_ sucess: Bool, _ data: NSDictionary?, _ error: Error?) -> Void) {
         
         //Creates URL Session
         let session = URLSession.shared
@@ -23,11 +28,14 @@ class SimpleHTTPRequest : NSObject {
             return
         }
         
-        //Creates request with fields set for JSON
+        //Creates request with fields
         var request = URLRequest(url: url)
         request.httpMethod = HTTPMethod
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
+        for (fieldName, fieldValue) in extraHeaderFields! {
+            request.setValue(fieldValue, forHTTPHeaderField: fieldName)
+        }
         
         //Serializes any parameters in the httpbody if there are any.
         if let HTTPBody = jsonBody{
@@ -38,17 +46,16 @@ class SimpleHTTPRequest : NSObject {
             }
         }
         
-        
         //Retrieves data returned.
         let task = session.dataTask(with: request as URLRequest){
             data, response, downloadError in
+
             //Connectivity issues
             if let error = downloadError {
                 completionHandler(false, nil, downloadError)
                 print("Error communicating with server via HTTP")
                 print(error)
             }
-            
             
             guard let resp = response as? HTTPURLResponse else{
                 //Something went really wrong.
@@ -61,8 +68,7 @@ class SimpleHTTPRequest : NSObject {
                 completionHandler(false, nil, nil)
                 return
             }
-            
-            
+
             var jsonResult : Any?
             do{
                 jsonResult = try JSONSerialization.jsonObject(with: data!, options: [])
