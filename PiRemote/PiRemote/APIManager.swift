@@ -13,18 +13,21 @@ class APIManager{
     
     let network = SimpleHTTPRequest()
     
-    func getRequest(url: String, completion: @escaping (_ data: NSDictionary?)-> Void){
-        self.network.simpleAPIRequest(toUrl: url, HTTPMethod: "GET", jsonBody: nil) { sucess, data, err in
-            if sucess{
-                guard self.checkResponse(data: data!) != false else{
+    func getRequest(url: String, extraHeaderFields: [String: String]?, completion: @escaping (_ data: NSDictionary?) -> Void) {
+
+        self.network.simpleAPIRequest(toUrl: url, HTTPMethod: "GET", jsonBody: nil, extraHeaderFields: extraHeaderFields, completionHandler: {
+            sucess, data, err in
+                if sucess {
+                    guard self.checkResponse(data: data!) != false else {
+                        completion(nil)
+                        return
+                    }
+                    completion(data!)
+                } else {
+                    if err != nil { print(err!) }
                     completion(nil)
-                    return
                 }
-                completion(data!)
-                
-            }
-        }
-        
+        })
     }
  
     
