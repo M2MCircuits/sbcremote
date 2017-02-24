@@ -68,16 +68,17 @@ class SimpleHTTPRequest : NSObject {
                 return
             }
             
-            guard resp.statusCode == 200 else {
-                print("request status code : \(resp.statusCode)")
-                completionHandler(false, nil, nil)
-                return
-            }
 
-            var jsonResult : Any?
             do{
-                jsonResult = try JSONSerialization.jsonObject(with: data!, options: [])
-                completionHandler(true, jsonResult as? NSDictionary, nil)
+                guard let jsonResult = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary else{
+                    print("Failed to cast json result to dictionary")
+                    completionHandler(false, nil, nil)
+                    return
+                }
+                
+                completionHandler(true, jsonResult, nil)
+                
+                
             }catch{
                 completionHandler(false, nil, nil)
                 }

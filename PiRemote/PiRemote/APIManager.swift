@@ -17,38 +17,16 @@ class APIManager{
 
         self.network.simpleAPIRequest(toUrl: url, HTTPMethod: "GET", jsonBody: nil, extraHeaderFields: extraHeaderFields, completionHandler: {
             sucess, data, err in
-                if sucess {
-                    guard self.checkResponse(data: data!) != false else {
-                        completion(nil)
-                        return
-                    }
-                    completion(data!)
-                } else {
-                    if err != nil { print(err!) }
-                    completion(nil)
-                }
+            
+            if sucess{
+                completion(data!)
+            }else{
+                completion(nil)
+            }
         })
     }
  
-    
-    
-    /**
-     Checks if the returned data was a sucessful result.
-     Does not check if the network actually made connection, but instead if the response is sucessful
-     
-     - parameter data,: NSDictionary
-     - returns: Bool indicating if the the communication was sucessful or not.
-     */
-    func checkResponse(data: NSDictionary)->Bool{
-        let returnedData = data["status"] as! String
-        //f represents failure.
-        if returnedData[returnedData.startIndex] != "f"{
-            return true
-        }else{
-            return false
-        }
-    }
-    
+
     
     /**
      Escapes information in a dictionary and returns string. Works for parameters or JSON Body.
