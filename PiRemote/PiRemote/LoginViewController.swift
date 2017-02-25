@@ -104,29 +104,27 @@ class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDat
         loginIndicator.startAnimating();
 
         let tbc = self.parent as! MyTabBarController;
-        
         tbc.setIP();
-        
         let weavedAPIManager = WeavedAPIManager();
 
         weavedAPIManager.logInUser(username: usern, userpw: passw, callback: {
-            data in
+            sucess, response, data in
+            DispatchQueue.main.async {
                 self.loginIndicator.stopAnimating();
-                if (data != nil) {
-                    if data!["status"] as! String == "true" {
-                        tbc.weavedToken = data!["token"] as! String
-                        self.displayMessage.text = tbc.weavedToken
-                        self.logButton.setTitle("Logged In", for: UIControlState())
-                        self.password.text = ""
-                        self.reloadInputViews();
-                        self.listDevices();
-                    } else {
-                        self.displayMessage.text = data!["reason"] as? String;
-                    }
-                } else {
-                    //TODO: when status 403 - login fail
-                    self.displayMessage.text = "Error: no internet connection";
+                self.displayMessage.text = response
+                guard data != nil else{
+                    return
                 }
+                
+                let data = data!
+                tbc.weavedToken = data["token"] as! String
+                self.logButton.setTitle("Logged In", for: UIControlState())
+                self.password.text = ""
+                self.reloadInputViews();
+                self.listDevices();
+                //Fills out the user information with the data returned from response
+                MainUser.sharedInstance.getUserInformationFromResponse(dictionary: data)
+            }
         })
     }
     
@@ -144,23 +142,9 @@ class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDat
         weavedAPIManager.listDevices(token: tbc.weavedToken, callback: {
             data in
             if (data != nil) {
-                let allDevices = Set(data!["devices"] as! [NSDictionary])
-                var sshDevices = Set<NSDictionary>();
-                for device in allDevices {
-                    if device["servicetitle"] as! String == "SSH" {
-                        sshDevices.insert(device)
-                    }
-                }
-                self.devices = allDevices.subtracting(sshDevices)
-
-                for device in self.devices! {
-                    print(device["devicealias"] as! String);
-                }
-
-                // Sets up devices and devCount, and tells the table to reload
-                //  self.devTable.reloadData();
-
-                self.displayMessage.text = "\(allDevices.count) Devices Found (\(sshDevices.count) SSH)";
+                let deviceManager = WeavedDeviceManager()
+                let (sshDevices, nonsshDevices) = deviceManager.createDevicesFromAPIResponse(data: data!)
+                self.displayMessage.text = "\(sshDevices.count + nonsshDevices.count) Devices Found (\(sshDevices.count) SSH)";
             } else {
                 self.displayMessage.text = "Error: failed to get device list";
             }

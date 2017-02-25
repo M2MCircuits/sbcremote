@@ -11,7 +11,12 @@ import Foundation
 
 class SimpleHTTPRequest : NSObject {
     
-    
+    /**
+     Base request function for communicating with sever via HTTP. Only for simple, non-media related transmission
+     
+     - parameter url: (String), HTTPMethod(String), jsonBody([String: AnyObject], completionhandler
+     - returns: success, error, dictionary optional with json information via callback.
+     */
     func simpleAPIRequest(
         toUrl: String,
         HTTPMethod: String,
@@ -63,16 +68,17 @@ class SimpleHTTPRequest : NSObject {
                 return
             }
             
-            guard resp.statusCode == 200 else {
-                print("request status code : \(resp.statusCode)")
-                completionHandler(false, nil, nil)
-                return
-            }
 
-            var jsonResult : Any?
             do{
-                jsonResult = try JSONSerialization.jsonObject(with: data!, options: [])
-                completionHandler(true, jsonResult as? NSDictionary, nil)
+                guard let jsonResult = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary else{
+                    print("Failed to cast json result to dictionary")
+                    completionHandler(false, nil, nil)
+                    return
+                }
+                
+                completionHandler(true, jsonResult, nil)
+                
+                
             }catch{
                 completionHandler(false, nil, nil)
                 }
