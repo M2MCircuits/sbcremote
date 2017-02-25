@@ -21,7 +21,7 @@
                         <color key="sectionIndexBackgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PinTableViewCell" id="yc1-O3-jvf" customClass="PinTableViewCell" customModule="PiPremote" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="56" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yc1-O3-jvf" id="ZM0-zF-WQh">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -232,6 +232,7 @@
                                 </state>
                                 <connections>
                                     <action selector="logPress:" destination="Quz-7m-Y6X" eventType="touchUpInside" id="GOF-H1-MP3"/>
+                                    <segue destination="TKw-YT-88J" kind="show" id="AZa-rJ-RmW"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Hello World!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RvW-3I-1SX">
@@ -275,6 +276,46 @@
             </objects>
             <point key="canvasLocation" x="2704.8000000000002" y="-1013.3433283358322"/>
         </scene>
+        <!--Devices Table View Controller-->
+        <scene sceneID="E2N-J1-PKb">
+            <objects>
+                <tableViewController id="TKw-YT-88J" customClass="DevicesTableViewController" customModule="PiPremote" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="5zE-OH-Bjc">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="deviceCell" textLabel="dyG-W7-WyD" style="IBUITableViewCellStyleDefault" id="BUP-M4-lme" customClass="DeviceTableViewCell" customModule="PiPremote">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BUP-M4-lme" id="hna-XB-n2r">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" restorationIdentifier="deviceCell" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dyG-W7-WyD">
+                                            <rect key="frame" x="15" y="0.0" width="345" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="deviceName" destination="dyG-W7-WyD" id="3kf-aO-22Y"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="TKw-YT-88J" id="Pqz-WQ-e8l"/>
+                            <outlet property="delegate" destination="TKw-YT-88J" id="oVC-51-GR8"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jIN-cU-bQA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3507" y="-1015"/>
+        </scene>
         <!--PiRemote-->
         <scene sceneID="pQL-W5-Pp7">
             <objects>
@@ -303,6 +344,6 @@
         <image name="PinsImg" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="jKd-77-VZt"/>
+        <segue reference="wla-LK-aor"/>
     </inferredMetricsTieBreakers>
 </document>

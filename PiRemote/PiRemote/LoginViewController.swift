@@ -9,7 +9,7 @@
 
 import UIKit
 
-class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class LoginViewController: UIViewController {
 
     //A table view of the devices found on the current Weaved login
     //@IBOutlet var devTable: UITableView!
@@ -150,44 +150,7 @@ class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDat
             }
         })
     }
-    
-    //The number of cells in the device table gets set to the number of devices
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4;//devices.count;
-    }
-   
-    //THIS is the method called when the table needs to define a cell at a certain index
-    //it gets called when a cell is scrolled off the screen I think
-    //it also gets called for every cell when the table is reloaded I think
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cellIdentifier = "ListTableViewCell";
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ListTableViewCell
-        
-       /* cell.setName("nothing");//devices[indexPath.row]["devicealias"] as! String);
-        cell.tag = indexPath.row;
-        cell.devLogButton.tag = indexPath.row;
-        */
-        return cell
-    }
-    
-    //when a device is selected from the table after logging in to Weaved,
-    //we should call this function, which will attempt to contact the device.
-    //if successful, it will make some sort of signal on the login screen
-    //if successful, it will also perhaps make some sort of segue to the control screen
-    //it will set some variables that can be accessed from any of the view controllers
-    //  -variables declaring if the iPhone is logged into Weaved
-    //  -if we are logged into a Pi
-    //  -if we are making successful connections to the Pi?
-    //  -information required to access the Pi, and control the pins
-    //if unsuccessful, it will signal the login screen somehow with a fail message
-   /* func getListCellAtIndex(_ index: Int) -> ListTableViewCell
-    {
-        let path = IndexPath(row: index, section: 0);
-        let cell = devTable.cellForRow(at: path) as! ListTableViewCell;
-        return cell;
-    }
-    */
+
     //lock or unlock all of the login buttons in the device table
     func setListButtonEnabled(_ enable: Bool)
     {
@@ -306,75 +269,6 @@ class LoginViewController: UIViewController, UITableViewDelegate, UITableViewDat
         task.resume();
     }
 */
-    func devFetchTest()
-    {
-        let tbc = self.parent as! MyTabBarController;
-        tbc.session = URLSession.shared;
-
-        let urlText = tbc.devProxy + "/*";
-        //let cell = getListCellAtIndex(devIndex);
-        let myUrl = URL(string: urlText);
-        var request = URLRequest(url:myUrl!);
-        //let usrn = cell.userNameLabel.text!;
-        //let pass = cell.passwordLabel.text!;
-        
-        //cell.passwordLabel.text! = "";
-        
-        //print("Username: " + usrn + "\nPassword: " + pass);
-        
-        //let loginString = NSString(format: "%@:%@", usrn, pass);
-        //let loginData: Data = loginString.data(using: String.Encoding.utf8.rawValue)!;
-    /*    tbc.base64LoginString = loginData.base64EncodedString(options: []) as NSString;
-        
-        request.setValue("Basic \(tbc.base64LoginString)", forHTTPHeaderField: "Authorization")
-
-        //set some headers
-        request.httpMethod = "GET";
-        //var urlData: NSData? = NSURLConnection.sendSynchronousRequest(request, returningResponse:&response, error:&reponseError);
-        
-        //cell.spinner.startAnimating();
-        
-        let task = tbc.session.dataTask(with: request) {
-            urlData, response, error in
-            
-            DispatchQueue.main.async {
-                
-                //cell.spinner.stopAnimating();
-                
-                if(urlData == nil) {
-                    print("nil on fetch from Pi");
-                    return;
-                }
-                
-                let res = response as! HTTPURLResponse;
-                print(res);
-                
-                var jsonData: [String: AnyObject];
-                
-                //jsonData is where the data for the response is kept
-                do {
-                    jsonData = try JSONSerialization.jsonObject(with: urlData!, options:JSONSerialization.ReadingOptions.mutableContainers) as! [String: AnyObject]
-                } catch {
-                    print("jsonData from devFetchTest() failure");
-                    return;
-                }
-                
-                print("successful fetch from Pi");
-
-                let pinarray = jsonData["GPIO"] as! [String: AnyObject];
-                
-                print(pinarray["0"] ?? "No value for pin 0");
-                
-                tbc.getPins();
-                
-                //println(jsonData);
-                //println(urlData);
-                //println(res);
-                
-            } // end dispatch
-        } // end task
-        task.resume();*/
-    }
 
     /*
     // MARK: - Navigation
