@@ -11,55 +11,61 @@ import UIKit
 
 class LoginViewController: UIViewController {
 
-    //A table view of the devices found on the current Weaved login
-    //@IBOutlet var devTable: UITableView!
-    
-    //these are "links" to the username and password text boxes
-    //they should've been called "usernamebox" or something like that, but too late
-    @IBOutlet weak var username: UITextField!
-    @IBOutlet weak var password: UITextField!
-    
-    //these are "links" to the Login button and the activity indicator next to the Login button
-    @IBOutlet weak var loginIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var logButton: UIButton!
-    
-    //Indicator for fetching the list of weaved devices
-    //@IBOutlet weak var listFetchIndicator: UIActivityIndicatorView!
-    
-    @IBOutlet weak var ErrorLabel: UILabel!
+    // Link to views shown in storyboard
     @IBOutlet weak var displayMessage: UILabel!
+    @IBOutlet weak var logButton: UIButton!
+    @IBOutlet weak var loginIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var passwordBox: UITextField!
+    @IBOutlet weak var usernameBox: UITextField!
 
-    //an array of weaved devices, set by the HTTP request in listDevices()
-    var devices: Set<NSDictionary>!
+    // Local variables
+    var isLoginSuccess: Bool!
 
-    //index of the device we will log in to
-    var devIndex = 0
-
-    // When the login button is pressed, this method is called.
-    @IBAction func logPress(_ sender: UIButton) {
-        
-        sender.isEnabled = false;
-        
-        
-        self.view.endEditing(true);
-
-        
-        let usern = username.text;
-
-        let passw = password.text;
-        
-        if(passw == "")
-        {
-            self.displayMessage.text = "Please enter a password.";
-            sender.isEnabled = true;
-            return;
-        }
-        
-        logInToWeaved(usern!,passw: passw!);
-        
-        
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+        isLoginSuccess = false
     }
-    
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+
+    // Login Button
+    @IBAction func handleTapLogin() {
+        let passw = passwordBox.text
+        let usern = usernameBox.text
+        let weavedAPIManager = WeavedAPIManager();
+        let tbc = self.parent as! MyTabBarController;
+        tbc.setIP();
+
+        if(passw == "") {
+            self.displayMessage.text = "Please enter a password.";
+            return
+        }
+
+        loginIndicator.startAnimating();
+
+        weavedAPIManager.logInUser(username: usern!, userpw: passw!, callback: {
+            sucess, response, data in
+                DispatchQueue.main.async {
+                    self.loginIndicator.stopAnimating();
+                    self.displayMessage.text = response
+                    guard data != nil else{
+                        return
+                    }
+
+                    // Fills out the user information with the data returned from response
+                    MainUser.sharedInstance.getUserInformationFromResponse(dictionary: data!)
+
+                    self.isLoginSuccess = true
+                    // Supported by iOS <6.0
+                    self.performSegue(withIdentifier: "SHOW DEVICES", sender: self)
+                }
+        })
+    }
+
     // when the "login" button next to a Weaved device is pressed
     @IBAction func devLoginButtonPress(_ sender: UIButton) {
       
@@ -75,101 +81,15 @@ class LoginViewController: UIViewController {
         */
         
         //devWebiopiLogin(sender);
-        
-        
-    }
-    
-    //this is a test label I use to print information on the login attempt
-    //@IBOutlet weak var logSuccessLabel: UILabel!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        
-        //set the table to use the Login screen view controller as a datasource and delegate
-        //that way I can control it from this view controller
-        //self.devTable.dataSource = self;
-        //self.devTable.delegate = self;
-        
-        // Do any additional setup after loading the view.
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-    func logInToWeaved(_ usern: String, passw: String)
-    {
-        loginIndicator.startAnimating();
-
-        let tbc = self.parent as! MyTabBarController;
-        tbc.setIP();
-        let weavedAPIManager = WeavedAPIManager();
-
-        weavedAPIManager.logInUser(username: usern, userpw: passw, callback: {
-            sucess, response, data in
-            DispatchQueue.main.async {
-                self.loginIndicator.stopAnimating();
-                self.displayMessage.text = response
-                guard data != nil else{
-                    return
-                }
-                
-                let data = data!
-                tbc.weavedToken = data["token"] as! String
-                self.logButton.setTitle("Logged In", for: UIControlState())
-                self.password.text = ""
-                self.reloadInputViews();
-                self.listDevices();
-                //Fills out the user information with the data returned from response
-                MainUser.sharedInstance.getUserInformationFromResponse(dictionary: data)
-            }
-        })
-    }
-    
-    
-    //this method requests a list of devices from Weaved
-    //it receives among other things an array of devices, which includes their names, addresses, stuff like that
-    //It puts that array into the variable called 'devices', and sets devCount to the number of devices
-    //Then it tells the table to reload itself, and the table uses 'devices' and devCount to do so
-    //So the actual listing is done by the tableview methods
-    func listDevices()
-    {
-        let tbc = self.parent as! MyTabBarController;
-        let weavedAPIManager = WeavedAPIManager();
-
-        weavedAPIManager.listDevices(token: tbc.weavedToken, callback: {
-            data in
-            if (data != nil) {
-                let deviceManager = WeavedDeviceManager()
-                let (sshDevices, nonsshDevices) = deviceManager.createDevicesFromAPIResponse(data: data!)
-                self.displayMessage.text = "\(sshDevices.count + nonsshDevices.count) Devices Found (\(sshDevices.count) SSH)";
-            } else {
-                self.displayMessage.text = "Error: failed to get device list";
-            }
-        })
-    }
-
-    //lock or unlock all of the login buttons in the device table
-    func setListButtonEnabled(_ enable: Bool)
-    {
-        var nCells = devices.count;
-        
-        if (nCells == 0) {
-            return;
-        }
-       /*
-        nCells = nCells - 1;
-        for index in 0...nCells {
-            let cell = getListCellAtIndex(index);
-            cell.devLogButton.isEnabled = enable;
-        }
-        */
-        return;
-    }
-    
 /*
+     // Users weaved devices, set by the HTTP request in listDevices()
+     var devices: Set<NSDictionary>!
+
+     //index of the device we will log in to
+     var devIndex = 0
+
     //this is incorrectly labeled as WebiopiLogin
     func devWebiopiLogin(_ sen: UIButton)
     {
@@ -280,21 +200,6 @@ class LoginViewController: UIViewController {
     }
     */
 
-    //display a disappearing message to user
-    func displayMessage(_ msg:String) {
-    
-        self.ErrorLabel.text = msg;
-        self.delay(3.0) {
-        UIView.animate(withDuration: 1.0, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-            self.ErrorLabel.alpha = 0.0
-            },
-                completion:{ (finished: Bool) -> Void in
-                    self.ErrorLabel.text = "";
-                    self.ErrorLabel.alpha = 1.0;
-                }
-            )
-        }
-    }
     //because persistant text is annoying
     func delay(_ delay:Double, closure:@escaping ()->()) {
         DispatchQueue.main.asyncAfter(
