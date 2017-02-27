@@ -9,6 +9,8 @@
 import UIKit
 import Foundation
 
+// DEPRECATED: No connection to storyboard.
+// TODO: Evaluate code to see what can be learned/reused
 class MyTabBarController: UITabBarController {
 
     
@@ -150,16 +152,7 @@ class MyTabBarController: UITabBarController {
                         
                     }
                     
-                    //println(self.testValue);
-                    
-                    //self.printPinList();
-                    
-                    let optionView = self.childViewControllers[1] as! OptionTableViewController;
-                    
-                    optionView.pins = self.tabBarPins;
-                    optionView.tableView.reloadData();
-                    optionView.syncWithTable();
-                    
+
                     //sleep(10000);
                     //self.getPins();
             } // end dispatch
@@ -167,7 +160,7 @@ class MyTabBarController: UITabBarController {
 
         task.resume();
     }
-    
+    /*
     func setFunction(_ sender: UIButton, newFunction: Bool)
     {
         let nS = newFunction ? "out" : "in";
@@ -197,7 +190,7 @@ class MyTabBarController: UITabBarController {
             urlData, response, error in
             
             DispatchQueue.main.async {
-                let optionView = self.childViewControllers[1] as! OptionTableViewController;
+                let optionView = OptionTableViewController()
                 let cell = optionView.getCellAtIndex(pinNumber);
                 let res = response as! HTTPURLResponse!;
                 
@@ -237,7 +230,7 @@ class MyTabBarController: UITabBarController {
         
         task.resume();
     }
-    
+
     func setPin(_ pinNumber: Int, newState: Bool)
     {
         let nS = newState ? "1" : "0";
@@ -266,8 +259,8 @@ class MyTabBarController: UITabBarController {
             
             DispatchQueue.main.async {
                     
-                    let pinView = self.childViewControllers[0] as! PinTableViewController;
-                    let cell = pinView.getCellForPinNumber(pinNumber);
+                    let pinView = PinTableViewController()
+                    //let cell = pinView.getCellForPinNumber(pinNumber);
                     let res = response as! HTTPURLResponse!;
                     
                     if(res == nil) {
@@ -307,7 +300,7 @@ class MyTabBarController: UITabBarController {
         } // end task
         task.resume();
     }
-
+*/
     func printPinList()
     {
         for p in tabBarPins {
@@ -315,13 +308,13 @@ class MyTabBarController: UITabBarController {
         }
         print("");
     }
-    
+    /*
     //sets one pin to HIGH or LOW (not on the pi, just in this program)
     func setPinValue(_ pinNumber: Int, value: Bool)
     {
         tabBarPins[pinNumber].on = value;
-        let optionView = self.childViewControllers[1] as! OptionTableViewController;
-        let pinView = self.childViewControllers[0] as! PinTableViewController;
+        let optionView = OptionTableViewController()
+        let pinView = PinTableViewController()
         
         optionView.pins[pinNumber].on = value;
         pinView.pins[pinNumber].on = value;
@@ -329,16 +322,5 @@ class MyTabBarController: UITabBarController {
         optionView.tableView.reloadData();
         pinView.tableView.reloadData();
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
     */
-
-
 }
