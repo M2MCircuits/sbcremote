@@ -216,22 +216,13 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f76-YV-LDc">
-                                <rect key="frame" x="0.0" y="514" width="375" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="VbJ-5q-Ckt"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="14"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xZX-HV-27a">
                                 <rect key="frame" x="106" y="200" width="113" height="30"/>
                                 <state key="normal" title="Login">
                                     <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="logPress:" destination="Quz-7m-Y6X" eventType="touchUpInside" id="GOF-H1-MP3"/>
+                                    <action selector="handleTapLogin" destination="Quz-7m-Y6X" eventType="touchDown" id="V8a-z2-tje"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Hello World!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RvW-3I-1SX">
@@ -245,7 +236,6 @@
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="qYn-oJ-7PC" firstAttribute="top" secondItem="f76-YV-LDc" secondAttribute="bottom" constant="83" id="1co-AB-wGh"/>
                             <constraint firstItem="rax-XX-Pzk" firstAttribute="top" secondItem="qNu-c2-1Qh" secondAttribute="bottom" constant="60" id="66X-S1-OUM"/>
                             <constraint firstItem="xZX-HV-27a" firstAttribute="top" secondItem="wD5-8g-gOl" secondAttribute="bottom" constant="10" id="7W9-a0-HL4"/>
                             <constraint firstItem="wD5-8g-gOl" firstAttribute="centerX" secondItem="U8O-ix-Ht1" secondAttribute="centerX" id="7zn-Qo-d3U"/>
@@ -263,17 +253,60 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Login" image="LoginImg" selectedImage="LoginImg" id="MBA-zC-Jci"/>
                     <connections>
-                        <outlet property="ErrorLabel" destination="f76-YV-LDc" id="aHx-SV-kFy"/>
                         <outlet property="displayMessage" destination="RvW-3I-1SX" id="aTR-DB-BaD"/>
                         <outlet property="logButton" destination="xZX-HV-27a" id="avF-nD-laU"/>
                         <outlet property="loginIndicator" destination="U8O-ix-Ht1" id="MCt-I2-CHG"/>
-                        <outlet property="password" destination="wD5-8g-gOl" id="MIj-Hj-YVp"/>
-                        <outlet property="username" destination="FT1-3W-OS9" id="hjn-7a-BgE"/>
+                        <outlet property="passwordBox" destination="wD5-8g-gOl" id="o9b-lk-adB"/>
+                        <outlet property="usernameBox" destination="FT1-3W-OS9" id="uVD-EA-uPk"/>
+                        <segue destination="TKw-YT-88J" kind="show" identifier="SHOW DEVICES" id="eDi-rx-C7H"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ug6-17-QEk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2704.8000000000002" y="-1013.3433283358322"/>
+        </scene>
+        <!--Devices Table View Controller-->
+        <scene sceneID="E2N-J1-PKb">
+            <objects>
+                <tableViewController id="TKw-YT-88J" customClass="DevicesTableViewController" customModule="PiPremote" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="5zE-OH-Bjc">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DEVICE CELL" textLabel="dyG-W7-WyD" style="IBUITableViewCellStyleDefault" id="BUP-M4-lme" customClass="DeviceTableViewCell" customModule="PiPremote">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BUP-M4-lme" id="hna-XB-n2r">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" restorationIdentifier="deviceCell" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dyG-W7-WyD">
+                                            <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="deviceName" destination="dyG-W7-WyD" id="3kf-aO-22Y"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="TKw-YT-88J" id="Pqz-WQ-e8l"/>
+                            <outlet property="delegate" destination="TKw-YT-88J" id="oVC-51-GR8"/>
+                        </connections>
+                    </tableView>
+                    <connections>
+                        <outlet property="devicesTableView" destination="5zE-OH-Bjc" id="2wn-MB-Gwg"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jIN-cU-bQA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3507" y="-1015"/>
         </scene>
         <!--PiRemote-->
         <scene sceneID="pQL-W5-Pp7">
@@ -303,6 +336,6 @@
         <image name="PinsImg" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="jKd-77-VZt"/>
+        <segue reference="wla-LK-aor"/>
     </inferredMetricsTieBreakers>
 </document>

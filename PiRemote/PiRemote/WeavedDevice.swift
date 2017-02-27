@@ -20,7 +20,15 @@ class WeavedDevice{
     var state: String;
     var service : String
     
-    
+    init()
+    {
+        alias = ""
+        address = ""
+        ownerUserName = ""
+        state = ""
+        service = ""
+    }
+
     init(deviceData: NSDictionary)
     {
         alias = deviceData["devicealias"] as! String;
