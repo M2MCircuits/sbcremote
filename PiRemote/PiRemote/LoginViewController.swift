@@ -12,6 +12,7 @@ import UIKit
 class LoginViewController: UIViewController {
 
     // Link to views shown in storyboard
+    @IBOutlet weak var deviceName: UILabel!
     @IBOutlet weak var displayMessage: UILabel!
     @IBOutlet weak var logButton: UIButton!
     @IBOutlet weak var loginIndicator: UIActivityIndicatorView!
@@ -19,12 +20,18 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var usernameBox: UITextField!
 
     // Local variables
+    var segueIdDeviceDetails = "SHOW DEVICE DETAILS"
+    var segueIdDevicesTable = "SHOW DEVICES"
     var isLoginSuccess: Bool!
+    var webiopiDeviceName: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         isLoginSuccess = false
+        if (webiopiDeviceName != nil) {
+            deviceName.text = webiopiDeviceName!
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -36,53 +43,47 @@ class LoginViewController: UIViewController {
     @IBAction func handleTapLogin() {
         let passw = passwordBox.text
         let usern = usernameBox.text
-        let weavedAPIManager = WeavedAPIManager();
-        let tbc = self.parent as! MyTabBarController;
-        tbc.setIP();
 
         if(passw == "") {
             self.displayMessage.text = "Please enter a password.";
             return
         }
 
-        loginIndicator.startAnimating();
+        if (self.title == "Weaved Login") {
+            logIntoWeaved(username: usern!, password: passw!)
+        } else {
+            logIntoWebIOPi(username: usern!, password: passw!)
+        }
+    }
 
-        weavedAPIManager.logInUser(username: usern!, userpw: passw!, callback: {
+    func logIntoWeaved (username: String, password: String) {
+        let weavedAPIManager = WeavedAPIManager();
+        weavedAPIManager.logInUser(username: username, userpw: password, callback: {
             sucess, response, data in
-                DispatchQueue.main.async {
-                    self.loginIndicator.stopAnimating();
-                    self.displayMessage.text = response
-                    guard data != nil else{
-                        return
-                    }
-
-                    // Fills out the user information with the data returned from response
-                    MainUser.sharedInstance.getUserInformationFromResponse(dictionary: data!)
-
-                    self.isLoginSuccess = true
-                    // Supported by iOS <6.0
-                    self.performSegue(withIdentifier: "SHOW DEVICES", sender: self)
+            DispatchQueue.main.async {
+                self.loginIndicator.stopAnimating();
+                self.displayMessage.text = response
+                guard data != nil else{
+                    return
                 }
+
+                // Fills out the user information with the data returned from response
+                MainUser.sharedInstance.getUserInformationFromResponse(dictionary: data!)
+
+                self.isLoginSuccess = true
+
+                // Supported by iOS <6.0
+                self.performSegue(withIdentifier: self.segueIdDevicesTable, sender: self)
+            }
         })
     }
 
-    // when the "login" button next to a Weaved device is pressed
-    @IBAction func devLoginButtonPress(_ sender: UIButton) {
-      
-        self.view.endEditing(true);
-        /*
-        let cell = getListCellAtIndex(sender.tag);
-        
-        if(cell.passwordLabel.text == "")
-        {
-            // self.displayMessage.text = "Please enter a password.";
-            return;
-        }
-        */
-        
-        //devWebiopiLogin(sender);
-    }
 
+    func logIntoWebIOPi(username: String, password: String) {
+        // TODO: Implement
+        // Supported by iOS <6.0
+        self.performSegue(withIdentifier: self.segueIdDeviceDetails, sender: self)
+    }
 /*
      // Users weaved devices, set by the HTTP request in listDevices()
      var devices: Set<NSDictionary>!
@@ -189,16 +190,6 @@ class LoginViewController: UIViewController {
         task.resume();
     }
 */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
     //because persistant text is annoying
     func delay(_ delay:Double, closure:@escaping ()->()) {

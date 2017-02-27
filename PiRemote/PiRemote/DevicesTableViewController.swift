@@ -13,6 +13,7 @@ class DevicesTableViewController: UITableViewController {
     @IBOutlet var devicesTableView: UITableView!
 
     // Local Variables
+    var currentDevice: WeavedDevice!
     var sshDevices: [WeavedDevice]!
     var nonSshDevices: [WeavedDevice]!
 
@@ -34,6 +35,13 @@ class DevicesTableViewController: UITableViewController {
                     self.devicesTableView.reloadData()
                 }
         })
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "LOGIN WEBIOPI") {
+            let webiopiVC = segue.destination as! LoginViewController
+            webiopiVC.webiopiDeviceName = self.currentDevice.alias
+        }
     }
 
     // UITableViewDataSource Functions
@@ -60,6 +68,13 @@ class DevicesTableViewController: UITableViewController {
     }
 
     // UITableViewDelegate Functions
+    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
 
+        let allDevices = sshDevices + nonSshDevices
+        self.currentDevice = allDevices[indexPath.row]
+        return indexPath
+    }
+
+    
 }
 
