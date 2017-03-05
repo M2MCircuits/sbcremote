@@ -13,18 +13,18 @@ class DevicesTableViewController: UITableViewController {
     @IBOutlet var devicesTableView: UITableView!
 
     // Local Variables
-    var currentDevice: WeavedDevice!
-    var sshDevices: [WeavedDevice]!
-    var nonSshDevices: [WeavedDevice]!
+    var currentDevice: RemoteDevice!
+    var sshDevices: [RemoteDevice]!
+    var nonSshDevices: [RemoteDevice]!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         let weavedToken = MainUser.sharedInstance.token
-        let weavedAPIManager = WeavedAPIManager()
-        let deviceManager = WeavedDeviceManager()
-        self.sshDevices = [WeavedDevice()]
-        self.nonSshDevices = [WeavedDevice()]
+        let weavedAPIManager = RemoteAPIManager()
+        let deviceManager = RemoteDeviceManager()
+        self.sshDevices = [RemoteDevice()]
+        self.nonSshDevices = [RemoteDevice()]
         weavedAPIManager.listDevices(token: weavedToken!, callback: {
             data in
                 guard data != nil else {

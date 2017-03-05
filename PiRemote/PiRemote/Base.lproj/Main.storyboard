@@ -21,7 +21,7 @@
                         <color key="sectionIndexBackgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PinTableViewCell" id="yc1-O3-jvf" customClass="PinTableViewCell" customModule="PiPremote" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="56" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yc1-O3-jvf" id="ZM0-zF-WQh">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -223,10 +223,10 @@
             </objects>
             <point key="canvasLocation" x="1881" y="-1015"/>
         </scene>
-        <!--Weaved Login-->
+        <!--Remote Login-->
         <scene sceneID="mgV-s7-h5q">
             <objects>
-                <viewController title="Weaved Login" id="Quz-7m-Y6X" customClass="LoginViewController" customModule="PiPremote" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Remote Login" id="Quz-7m-Y6X" customClass="LoginViewController" customModule="PiPremote" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="qNu-c2-1Qh"/>
                         <viewControllerLayoutGuide type="bottom" id="qYn-oJ-7PC"/>
@@ -235,8 +235,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Weaved lets you connect remotely to your devices" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RvW-3I-1SX">
-                                <rect key="frame" x="16" y="323" width="343" height="90"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Remot3.it lets you connect remotely to your devices" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RvW-3I-1SX">
+                                <rect key="frame" x="16" y="323" width="343" height="87"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <accessibility key="accessibilityConfiguration" label="test"/>
                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="23"/>
@@ -250,8 +250,8 @@
                                 </constraints>
                                 <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </activityIndicatorView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Log in to Weaved" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rax-XX-Pzk">
-                                <rect key="frame" x="119" y="122" width="136" height="30"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Log in to Remot3.it" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rax-XX-Pzk">
+                                <rect key="frame" x="16" y="122" width="343" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="Pzo-zV-ehq"/>
                                 </constraints>
@@ -259,7 +259,7 @@
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" misplaced="YES" preservesSuperviewLayoutMargins="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FT1-3W-OS9">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" misplaced="YES" preservesSuperviewLayoutMargins="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="weaved@borlandfarms.com" borderStyle="roundedRect" placeholder="Username" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FT1-3W-OS9">
                                 <rect key="frame" x="44" y="162" width="286" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
@@ -267,7 +267,7 @@
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wD5-8g-gOl">
                                 <rect key="frame" x="44" y="202" width="286" height="30"/>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleAspectFit" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xZX-HV-27a">
@@ -298,7 +298,7 @@
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Login" image="LoginImg" selectedImage="LoginImg" id="MBA-zC-Jci"/>
-                    <navigationItem key="navigationItem" title="Weaved Login" id="y0A-20-rAH"/>
+                    <navigationItem key="navigationItem" title="Remot3.it Login" id="y0A-20-rAH"/>
                     <connections>
                         <outlet property="displayMessage" destination="RvW-3I-1SX" id="aTR-DB-BaD"/>
                         <outlet property="logButton" destination="xZX-HV-27a" id="avF-nD-laU"/>
