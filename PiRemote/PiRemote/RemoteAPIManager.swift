@@ -9,7 +9,7 @@
 import Foundation
 
 
-class WeavedAPIManager {
+class RemoteAPIManager {
     
     var baseApiUrl : String!
     var API : APIManager!

@@ -49,7 +49,7 @@ class LoginViewController: UIViewController {
             return
         }
 
-        if (self.title == "Weaved Login") {
+        if (self.title == "Remote Login") {
             logIntoWeaved(username: usern!, password: passw!)
         } else {
             logIntoWebIOPi(username: usern!, password: passw!)
@@ -57,7 +57,7 @@ class LoginViewController: UIViewController {
     }
 
     func logIntoWeaved (username: String, password: String) {
-        let weavedAPIManager = WeavedAPIManager();
+        let weavedAPIManager = RemoteAPIManager();
         weavedAPIManager.logInUser(username: username, userpw: password, callback: {
             sucess, response, data in
             DispatchQueue.main.async {

@@ -1,8 +1,8 @@
 //
-//  WeavedDevice.swift
+//  RemoteITDevice.swift
 //  PiRemote
 //
-//  Authors: Hunter Heard, Josh Binkley
+//  Authors: Hunter Heard, Josh Binkley, Muhammad Martinez
 //  Copyright (c) 2016 JLL Consulting. All rights reserved.
 //
 
@@ -11,7 +11,7 @@ import Foundation
 import UIKit
 
 
-class WeavedDevice{
+class RemoteDevice{
     
     
     var alias: String;

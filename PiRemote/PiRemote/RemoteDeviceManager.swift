@@ -1,5 +1,5 @@
 //
-//  WeavedDeviceManager.swift
+//  RemoteDeviceManager.swift
 //  PiRemote
 //
 //  Created by Victor Anyirah on 2/22/17.
@@ -9,15 +9,15 @@
 import Foundation
 
 
-class WeavedDeviceManager{
+class RemoteDeviceManager{
     
     
-    func createDevicesFromAPIResponse(data : NSDictionary) ->(SSH: [WeavedDevice], NOTSSH: [WeavedDevice]){
-        var SSHdeviceStorage = [WeavedDevice]()
-        var deviceStorage = [WeavedDevice]()
+    func createDevicesFromAPIResponse(data : NSDictionary) ->(SSH: [RemoteDevice], NOTSSH: [RemoteDevice]){
+        var SSHdeviceStorage = [RemoteDevice]()
+        var deviceStorage = [RemoteDevice]()
         let devices = data["devices"] as! NSArray
         for deviceData in devices{
-            let device = WeavedDevice(deviceData: deviceData as! NSDictionary)
+            let device = RemoteDevice(deviceData: deviceData as! NSDictionary)
             if device.service == "SSH"{
                 SSHdeviceStorage.append(device)
             }else{

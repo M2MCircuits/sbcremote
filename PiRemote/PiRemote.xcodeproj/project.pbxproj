@@ -8,12 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		2447F0891E5E39E800EE1B69 /* MainUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2447F0881E5E39E700EE1B69 /* MainUser.swift */; };
-		2447F08B1E5E418E00EE1B69 /* WeavedDeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2447F08A1E5E418E00EE1B69 /* WeavedDeviceManager.swift */; };
 		24C6D94D1E44D11D00C3365D /* SimpleHTTPRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C6D94C1E44D11D00C3365D /* SimpleHTTPRequest.swift */; };
-		24C6D94F1E44D7B500C3365D /* WeavedAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C6D94E1E44D7B500C3365D /* WeavedAPIManager.swift */; };
 		24C6D9511E44DC5000C3365D /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C6D9501E44DC5000C3365D /* APIManager.swift */; };
 		5A279FD01CBFE60800272E05 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A279FCF1CBFE60800272E05 /* LoginViewController.swift */; };
-		5A279FD21CC0790700272E05 /* WeavedDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A279FD11CC0790700272E05 /* WeavedDevice.swift */; };
 		5A279FD61CC150B400272E05 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A279FD51CC150B400272E05 /* ListTableViewCell.swift */; };
 		5AD0606E1CAD8E9800BD6930 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD0606D1CAD8E9800BD6930 /* AppDelegate.swift */; };
 		5AD060731CAD8E9800BD6930 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5AD060711CAD8E9800BD6930 /* Main.storyboard */; settings = {ASSET_TAGS = (Login, ); }; };
@@ -28,6 +25,9 @@
 		5AD0609A1CAE026D00BD6930 /* MyTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD060991CAE026D00BD6930 /* MyTabBarController.swift */; };
 		C0626AEF1E63A9BE00B9A84F /* DeviceSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0626AEE1E63A9BE00B9A84F /* DeviceSetupViewController.swift */; };
 		C0626AF11E63C26300B9A84F /* DeviceDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0626AF01E63C26300B9A84F /* DeviceDetailsViewController.swift */; };
+		C0C1C1721E6CC90F005DE3B2 /* RemoteAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C1C1711E6CC90F005DE3B2 /* RemoteAPIManager.swift */; };
+		C0C1C1751E6CC923005DE3B2 /* RemoteDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C1C1731E6CC923005DE3B2 /* RemoteDevice.swift */; };
+		C0C1C1761E6CC923005DE3B2 /* RemoteDeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C1C1741E6CC923005DE3B2 /* RemoteDeviceManager.swift */; };
 		C0C7912F1E6215AC00D94A13 /* DevicesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C7912E1E6215AC00D94A13 /* DevicesTableViewController.swift */; };
 		C0C791311E62217200D94A13 /* DeviceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C791301E62217200D94A13 /* DeviceTableViewCell.swift */; };
 /* End PBXBuildFile section */
@@ -44,12 +44,9 @@
 
 /* Begin PBXFileReference section */
 		2447F0881E5E39E700EE1B69 /* MainUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainUser.swift; sourceTree = "<group>"; };
-		2447F08A1E5E418E00EE1B69 /* WeavedDeviceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeavedDeviceManager.swift; sourceTree = "<group>"; };
 		24C6D94C1E44D11D00C3365D /* SimpleHTTPRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleHTTPRequest.swift; sourceTree = "<group>"; };
-		24C6D94E1E44D7B500C3365D /* WeavedAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeavedAPIManager.swift; sourceTree = "<group>"; };
 		24C6D9501E44DC5000C3365D /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		5A279FCF1CBFE60800272E05 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LoginViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		5A279FD11CC0790700272E05 /* WeavedDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = WeavedDevice.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5A279FD51CC150B400272E05 /* ListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ListTableViewCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5AD060681CAD8E9800BD6930 /* PiPremote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PiPremote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AD0606C1CAD8E9800BD6930 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -68,6 +65,9 @@
 		5AD060991CAE026D00BD6930 /* MyTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MyTabBarController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C0626AEE1E63A9BE00B9A84F /* DeviceSetupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceSetupViewController.swift; sourceTree = "<group>"; };
 		C0626AF01E63C26300B9A84F /* DeviceDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceDetailsViewController.swift; sourceTree = "<group>"; };
+		C0C1C1711E6CC90F005DE3B2 /* RemoteAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteAPIManager.swift; sourceTree = "<group>"; };
+		C0C1C1731E6CC923005DE3B2 /* RemoteDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteDevice.swift; sourceTree = "<group>"; };
+		C0C1C1741E6CC923005DE3B2 /* RemoteDeviceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteDeviceManager.swift; sourceTree = "<group>"; };
 		C0C7912E1E6215AC00D94A13 /* DevicesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevicesTableViewController.swift; sourceTree = "<group>"; };
 		C0C791301E62217200D94A13 /* DeviceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -93,12 +93,12 @@
 		24C6D9491E44D09300C3365D /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				C0C1C1731E6CC923005DE3B2 /* RemoteDevice.swift */,
+				C0C1C1741E6CC923005DE3B2 /* RemoteDeviceManager.swift */,
+				C0C1C1711E6CC90F005DE3B2 /* RemoteAPIManager.swift */,
 				5AD0608D1CAD96B100BD6930 /* Pin.swift */,
 				24C6D94C1E44D11D00C3365D /* SimpleHTTPRequest.swift */,
-				24C6D94E1E44D7B500C3365D /* WeavedAPIManager.swift */,
 				24C6D9501E44DC5000C3365D /* APIManager.swift */,
-				5A279FD11CC0790700272E05 /* WeavedDevice.swift */,
-				2447F08A1E5E418E00EE1B69 /* WeavedDeviceManager.swift */,
 				2447F0881E5E39E700EE1B69 /* MainUser.swift */,
 			);
 			name = Model;
@@ -301,14 +301,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				24C6D94F1E44D7B500C3365D /* WeavedAPIManager.swift in Sources */,
 				5AD060981CADF71C00BD6930 /* OptionTableViewCell.swift in Sources */,
 				C0C7912F1E6215AC00D94A13 /* DevicesTableViewController.swift in Sources */,
 				5AD0608E1CAD96B100BD6930 /* Pin.swift in Sources */,
 				5AD0609A1CAE026D00BD6930 /* MyTabBarController.swift in Sources */,
 				24C6D94D1E44D11D00C3365D /* SimpleHTTPRequest.swift in Sources */,
-				5A279FD21CC0790700272E05 /* WeavedDevice.swift in Sources */,
 				5A279FD61CC150B400272E05 /* ListTableViewCell.swift in Sources */,
+				C0C1C1721E6CC90F005DE3B2 /* RemoteAPIManager.swift in Sources */,
 				5AD0606E1CAD8E9800BD6930 /* AppDelegate.swift in Sources */,
 				C0C791311E62217200D94A13 /* DeviceTableViewCell.swift in Sources */,
 				C0626AF11E63C26300B9A84F /* DeviceDetailsViewController.swift in Sources */,
@@ -318,8 +317,9 @@
 				5AD060921CADA2BB00BD6930 /* PinTableViewController.swift in Sources */,
 				2447F0891E5E39E800EE1B69 /* MainUser.swift in Sources */,
 				5AD060941CADC36200BD6930 /* PinUISwitch.swift in Sources */,
-				2447F08B1E5E418E00EE1B69 /* WeavedDeviceManager.swift in Sources */,
 				5A279FD01CBFE60800272E05 /* LoginViewController.swift in Sources */,
+				C0C1C1761E6CC923005DE3B2 /* RemoteDeviceManager.swift in Sources */,
+				C0C1C1751E6CC923005DE3B2 /* RemoteDevice.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
