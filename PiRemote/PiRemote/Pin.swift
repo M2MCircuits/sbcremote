@@ -27,14 +27,15 @@ class Pin {
     var type: Int
     
     //false = IN, true = OUT
-    var function: Bool
-    
+    var function: String
+
+    // TODO: Based on old MyTabBarController code, omit pins 0, 1, 14, 15, 27+ and set type to 0.
     var isGPIO: Bool
-    
+
     //type 0: Ignore
     //type 1: Control
     //type 2: Monitor
-    
+
     var on: Bool
     
     
@@ -47,12 +48,12 @@ class Pin {
         self.Lname = Lname;
         self.type = type;
         self.stateName = Lname;
-        self.function = false;
+        self.function = "IN";
         self.isGPIO = false;
         
         if(type == 1)
         {
-            self.function = true;
+            self.function = "OUT";
         }
         
         self.on = false;
@@ -65,19 +66,19 @@ class Pin {
         self.Lname = "Off";
         self.type = 0;
         self.stateName = "Off";
-        self.function = false;
+        self.function = "IN";
         self.isGPIO = false;
         self.on = false;
         
     }
     
-    func changeFunction(_ newF: Bool)
+    func changeFunction(_ newF: String)
     {
         function = newF;
         
         if(type != 0)
         {
-            if(function)
+            if(function == "OUT")
             {
                 type = 1;
             }
@@ -87,17 +88,7 @@ class Pin {
             }
         }
     }
-    
-    func typeFunction(_ t: Int) -> Bool
-    {
-        if(t == 1)
-        {
-            return true;
-        }
-        
-        return false;
-    }
-    
+
     func changeState()
     {
         if(on)
@@ -112,45 +103,25 @@ class Pin {
         return;
     }
     
-    func setFromData(_ data: NSDictionary)
+    func setFromData(_ data: [String: AnyObject]) -> Pin
     {
-        print("\nPin setting data from outside");
-        
-        on = data.value(forKey: "value") as! Bool;
-        print("Value set to ", terminator: "");
-        stateName = Lname;
-        
-        if(on)
-        {
-            stateName = Hname;
+        function = data["function"] as! String;
+        on = data["value"] as! Bool;
+        stateName = on ? Hname : Lname;
+
+        if(function == "IN") { 
+            type = 2
+        } else if(function == "OUT") {
+            type = 1
+        } else {
+            type = 0
         }
-        
-        print(stateName);
-        
-        let t = data.value(forKey: "function") as! String;
-        
-        type = 0;
-        
-        if(t == "IN")
-        {
-            type = 2;
-            function = false;
-        }
-        
-        if(t == "OUT")
-        {
-            type = 1;
-            function = true;
-        }
-        
-        print("Type set to ", terminator: "");
-        print(type);
-        return;
+
+        return self
     }
     
     func changeType()
     {
-        
         type = type + 1;
         
         if(type > 2)
@@ -158,9 +129,7 @@ class Pin {
             type = 1;
         }
         
-        function = typeFunction(type);
-        
-        
+        function = type == 1 ? "OUT" : "IN";
     }
     
     func setName(_ newName: String)

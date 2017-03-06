@@ -26,7 +26,21 @@ class APIManager{
             }
         })
     }
- 
+
+    func postRequest(url: String, extraHeaderFields: [String: String]?, payload: [String: AnyObject]?, completion: @escaping (_ data: NSDictionary?) -> Void) {
+
+        self.network.simpleAPIRequest(toUrl: url, HTTPMethod: "POST", jsonBody: payload, extraHeaderFields: extraHeaderFields, completionHandler: {
+            sucess, data, err in
+
+            if sucess{
+                completion(data!)
+            }else{
+                print(err.debugDescription)
+                completion(nil)
+            }
+        })
+    }
+
 
     
     /**

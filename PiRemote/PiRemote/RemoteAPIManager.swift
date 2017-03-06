@@ -28,8 +28,8 @@ class RemoteAPIManager {
     // GET user/login/:username/:password
     func logInUser(username: String, userpw: String, callback: @escaping (_ sucess : Bool, _ response: String, _ data: NSDictionary?) -> Void){
         let endpointURL = "/user/login/" + username + "/" + userpw
-        let weavedHeaderFields = ["apikey" : "WeavedDemoKey$2015"]
-        self.API.getRequest(url: baseApiUrl + endpointURL, extraHeaderFields: weavedHeaderFields, completion: { data in
+        let remoteHeaderFields = ["apikey" : "WeavedDemoKey$2015"]
+        self.API.getRequest(url: baseApiUrl + endpointURL, extraHeaderFields: remoteHeaderFields, completion: { data in
         
             guard data != nil else{
                 callback(false, self.ErrorResponse, nil)
@@ -80,8 +80,8 @@ class RemoteAPIManager {
     // GET device/list/all
     func listDevices(token: String, callback: @escaping (_ data: NSDictionary?) -> Void) {
         let endpointURL = "/device/list/all"
-        let weavedHeaderFields = ["apikey" : "WeavedDemoKey$2015", "token" : token]
-        self.API.getRequest(url: baseApiUrl + endpointURL, extraHeaderFields: weavedHeaderFields, completion: {data in
+        let remoteHeaderFields = ["apikey" : "WeavedDemoKey$2015", "token" : token]
+        self.API.getRequest(url: baseApiUrl + endpointURL, extraHeaderFields: remoteHeaderFields, completion: {data in
             guard data != nil else{
                 callback(nil)
                 return

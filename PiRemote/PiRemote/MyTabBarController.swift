@@ -96,70 +96,7 @@ class MyTabBarController: UITabBarController {
         } // end task
         task.resume();
     }
-    
-    func getPins()
-    {
-        let urlText = devProxy + "/*";
-        let myUrl = URL(string: urlText);
-        var request = URLRequest(url:myUrl!);
-        
-        request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
-        
-        //set some headers
-        request.httpMethod = "GET";
-        
-        //var urlData: NSData? = NSURLConnection.sendSynchronousRequest(request, returningResponse:&response, error:&reponseError);
-        
-        let task = URLSession.shared.dataTask(with: request) {
-            urlData, response, error -> Void in
 
-            DispatchQueue.main.async {
-                    if(urlData == nil) {
-                        print("nil on fetch from Pi");
-                        return;
-                    }
-                    
-                    print("successful fetch from Pi");
-                
-                    //jsonData is where the data for the response is kept
-                    let jsonData = try! JSONSerialization.jsonObject(with: urlData!, options:JSONSerialization.ReadingOptions.mutableContainers) as! [String: AnyObject]
-                
-                    let GPIOdata = jsonData["GPIO"] as! [String: AnyObject];
-                    //print(GPIOdata);
-                    
-                    for index in 0 ... 27 {
-                        //print("setting pin ", terminator: "");
-                        //print(index);
-
-                        self.tabBarPins[index].setFromData(GPIOdata[String(index)] as! NSDictionary);
-                        
-                        //set the name to the pin number
-                        self.tabBarPins[index].setName(String(index));
-                        self.tabBarPins[index].isGPIO = true;
-                        
-                        //Determines by the index if it's actually a GPIO number
-                        if(index < 2 || index == 14 || index == 15 || index > 27) {
-                            self.tabBarPins[index].isGPIO = false;
-                            self.tabBarPins[index].type = 0;
-                        }
-                        
-                        //self.printPinList();
-                        
-                        //print(self.tabBarPins[index].on);
-                        //println(self.tabBarPins[index].type);
-                        //self.testValue = self.testValue - 1;
-                        //println(self.testValue);
-                        
-                    }
-                    
-
-                    //sleep(10000);
-                    //self.getPins();
-            } // end dispatch
-        } // end task
-
-        task.resume();
-    }
     /*
     func setFunction(_ sender: UIButton, newFunction: Bool)
     {
@@ -301,26 +238,4 @@ class MyTabBarController: UITabBarController {
         task.resume();
     }
 */
-    func printPinList()
-    {
-        for p in tabBarPins {
-            print("\(p.name) \(p.stateName) \(p.type)");
-        }
-        print("");
-    }
-    /*
-    //sets one pin to HIGH or LOW (not on the pi, just in this program)
-    func setPinValue(_ pinNumber: Int, value: Bool)
-    {
-        tabBarPins[pinNumber].on = value;
-        let optionView = OptionTableViewController()
-        let pinView = PinTableViewController()
-        
-        optionView.pins[pinNumber].on = value;
-        pinView.pins[pinNumber].on = value;
-        
-        optionView.tableView.reloadData();
-        pinView.tableView.reloadData();
-    }
-    */
 }

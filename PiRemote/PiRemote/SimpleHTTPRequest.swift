@@ -36,21 +36,26 @@ class SimpleHTTPRequest : NSObject {
         //Creates request with fields
         var request = URLRequest(url: url)
         request.httpMethod = HTTPMethod
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        for (fieldName, fieldValue) in extraHeaderFields! {
-            request.setValue(fieldValue, forHTTPHeaderField: fieldName)
+        //request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        //request.addValue("application/json", forHTTPHeaderField: "Accept")
+
+        if extraHeaderFields != nil {
+            for (fieldName, fieldValue) in extraHeaderFields! {
+                request.setValue(fieldValue, forHTTPHeaderField: fieldName)
+            }
         }
         
         //Serializes any parameters in the httpbody if there are any.
         if let HTTPBody = jsonBody{
             do {
+
+                //let params = ["username":"webiopi", "password":"raspberry"] as [String: String] // HTTPBody
                 request.httpBody = try JSONSerialization.data(withJSONObject: HTTPBody, options: [])
             } catch _ as NSError {
                 request.httpBody = nil
             }
         }
-        
+
         //Retrieves data returned.
         let task = session.dataTask(with: request as URLRequest){
             data, response, downloadError in
@@ -67,7 +72,11 @@ class SimpleHTTPRequest : NSObject {
                 completionHandler(false, nil, nil)
                 return
             }
-            
+
+            guard data != nil else {
+                completionHandler(false, nil, nil)
+                return
+            }
 
             do{
                 guard let jsonResult = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary else{
