@@ -13,19 +13,18 @@ class DevicesTableViewController: UITableViewController {
     @IBOutlet var devicesTableView: UITableView!
 
     // Local Variables
-    var currentDevice: RemoteDevice!
     var sshDevices: [RemoteDevice]!
     var nonSshDevices: [RemoteDevice]!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        let weavedToken = MainUser.sharedInstance.token
-        let weavedAPIManager = RemoteAPIManager()
+        let remoteToken = MainUser.sharedInstance.token
+        let remoteAPIManager = RemoteAPIManager()
         let deviceManager = RemoteDeviceManager()
         self.sshDevices = [RemoteDevice()]
         self.nonSshDevices = [RemoteDevice()]
-        weavedAPIManager.listDevices(token: weavedToken!, callback: {
+        remoteAPIManager.listDevices(token: remoteToken!, callback: {
             data in
                 guard data != nil else {
                     return
@@ -35,13 +34,6 @@ class DevicesTableViewController: UITableViewController {
                     self.devicesTableView.reloadData()
                 }
         })
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "LOGIN WEBIOPI") {
-            let webiopiVC = segue.destination as! LoginViewController
-            webiopiVC.webiopiDeviceName = self.currentDevice.alias
-        }
     }
 
     // UITableViewDataSource Functions
@@ -69,9 +61,8 @@ class DevicesTableViewController: UITableViewController {
 
     // UITableViewDelegate Functions
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-
         let allDevices = sshDevices + nonSshDevices
-        self.currentDevice = allDevices[indexPath.row]
+        MainUser.sharedInstance.currentDevice = allDevices[indexPath.row]
         return indexPath
     }
 
