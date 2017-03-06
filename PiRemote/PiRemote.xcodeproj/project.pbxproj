@@ -19,8 +19,6 @@
 		5AD060841CAD8E9800BD6930 /* Attempt2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD060831CAD8E9800BD6930 /* Attempt2Tests.swift */; };
 		5AD0608E1CAD96B100BD6930 /* Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD0608D1CAD96B100BD6930 /* Pin.swift */; };
 		5AD060901CAD9E7700BD6930 /* PinTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD0608F1CAD9E7700BD6930 /* PinTableViewCell.swift */; };
-		5AD060921CADA2BB00BD6930 /* PinTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD060911CADA2BB00BD6930 /* PinTableViewController.swift */; };
-		5AD060941CADC36200BD6930 /* PinUISwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD060931CADC36200BD6930 /* PinUISwitch.swift */; };
 		5AD060981CADF71C00BD6930 /* OptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD060971CADF71C00BD6930 /* OptionTableViewCell.swift */; };
 		5AD0609A1CAE026D00BD6930 /* MyTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD060991CAE026D00BD6930 /* MyTabBarController.swift */; };
 		C0626AEF1E63A9BE00B9A84F /* DeviceSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0626AEE1E63A9BE00B9A84F /* DeviceSetupViewController.swift */; };
@@ -59,8 +57,6 @@
 		5AD060831CAD8E9800BD6930 /* Attempt2Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Attempt2Tests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5AD0608D1CAD96B100BD6930 /* Pin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Pin.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5AD0608F1CAD9E7700BD6930 /* PinTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinTableViewCell.swift; sourceTree = "<group>"; };
-		5AD060911CADA2BB00BD6930 /* PinTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PinTableViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		5AD060931CADC36200BD6930 /* PinUISwitch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PinUISwitch.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5AD060971CADF71C00BD6930 /* OptionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionTableViewCell.swift; sourceTree = "<group>"; };
 		5AD060991CAE026D00BD6930 /* MyTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MyTabBarController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C0626AEE1E63A9BE00B9A84F /* DeviceSetupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceSetupViewController.swift; sourceTree = "<group>"; };
@@ -109,7 +105,6 @@
 			children = (
 				5AD060971CADF71C00BD6930 /* OptionTableViewCell.swift */,
 				5AD0608F1CAD9E7700BD6930 /* PinTableViewCell.swift */,
-				5AD060931CADC36200BD6930 /* PinUISwitch.swift */,
 				5A279FD51CC150B400272E05 /* ListTableViewCell.swift */,
 				C0C791301E62217200D94A13 /* DeviceTableViewCell.swift */,
 			);
@@ -119,7 +114,6 @@
 		24C6D94B1E44D0A300C3365D /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				5AD060911CADA2BB00BD6930 /* PinTableViewController.swift */,
 				5AD060991CAE026D00BD6930 /* MyTabBarController.swift */,
 				5A279FCF1CBFE60800272E05 /* LoginViewController.swift */,
 				C0C7912E1E6215AC00D94A13 /* DevicesTableViewController.swift */,
@@ -314,9 +308,7 @@
 				24C6D9511E44DC5000C3365D /* APIManager.swift in Sources */,
 				5AD060901CAD9E7700BD6930 /* PinTableViewCell.swift in Sources */,
 				C0626AEF1E63A9BE00B9A84F /* DeviceSetupViewController.swift in Sources */,
-				5AD060921CADA2BB00BD6930 /* PinTableViewController.swift in Sources */,
 				2447F0891E5E39E800EE1B69 /* MainUser.swift in Sources */,
-				5AD060941CADC36200BD6930 /* PinUISwitch.swift in Sources */,
 				5A279FD01CBFE60800272E05 /* LoginViewController.swift in Sources */,
 				C0C1C1761E6CC923005DE3B2 /* RemoteDeviceManager.swift in Sources */,
 				C0C1C1751E6CC923005DE3B2 /* RemoteDevice.swift in Sources */,

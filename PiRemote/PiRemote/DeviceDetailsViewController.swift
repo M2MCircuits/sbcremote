@@ -8,7 +8,9 @@
 
 import UIKit
 
-class DeviceDetailViewController: UIViewController {
+class DeviceDetailViewController: UIViewController, UITableViewDataSource {
+
+    @IBOutlet weak var pinTable: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,5 +18,15 @@ class DeviceDetailViewController: UIViewController {
     }
 
 
+    // UITableViewDataSource Functions
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PIN CELL", for: indexPath) as! PinTableViewCell
+
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3;
+    }
 
 }
