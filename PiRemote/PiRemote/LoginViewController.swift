@@ -23,14 +23,13 @@ class LoginViewController: UIViewController {
     var segueIdDeviceDetails = "SHOW DEVICE DETAILS"
     var segueIdDevicesTable = "SHOW DEVICES"
     var isLoginSuccess: Bool!
-    var webiopiDeviceName: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         isLoginSuccess = false
-        if (webiopiDeviceName != nil) {
-            deviceName.text = webiopiDeviceName!
+        if (MainUser.sharedInstance.currentDevice != nil) {
+            deviceName.text = MainUser.sharedInstance.currentDevice?.alias
         }
     }
 
@@ -49,7 +48,7 @@ class LoginViewController: UIViewController {
             return
         }
 
-        if (self.title == "Weaved Login") {
+        if (self.title == "Remote Login") {
             logIntoWeaved(username: usern!, password: passw!)
         } else {
             logIntoWebIOPi(username: usern!, password: passw!)
@@ -57,7 +56,7 @@ class LoginViewController: UIViewController {
     }
 
     func logIntoWeaved (username: String, password: String) {
-        let weavedAPIManager = WeavedAPIManager();
+        let weavedAPIManager = RemoteAPIManager();
         weavedAPIManager.logInUser(username: username, userpw: password, callback: {
             sucess, response, data in
             DispatchQueue.main.async {
