@@ -14,6 +14,8 @@ class WebAPIManager {
     var baseApiUrl: String!
     var base64LoginString: String!
     var deviceIP: String!
+    var webHeaderFields: [String: String]
+
     let errorResponse = "No device selected to use WebAPIManager"
 
     init() {
@@ -26,6 +28,7 @@ class WebAPIManager {
         let loginString = String(format: "%@:%@", "webiopi", "raspberry")
         let loginData = loginString.data(using: String.Encoding.utf8)!
         self.base64LoginString = loginData.base64EncodedString()
+        self.webHeaderFields = ["Authorization" : "Basic " + self.base64LoginString!]
     }
 
     // GET /GPIO/:gpioNumber/function
@@ -35,7 +38,6 @@ class WebAPIManager {
         }
 
         let endpointURL = "/GPIO/\(gpioNumber)/function"
-        let webHeaderFields = ["Authorization" : self.base64LoginString!]
         self.api.getRequest(url: baseApiUrl + endpointURL, extraHeaderFields: webHeaderFields, completion: {
             data in
                 guard data != nil else{
@@ -55,7 +57,6 @@ class WebAPIManager {
         }
 
         let endpointURL = "/GPIO/\(gpioNumber)/function/\(functionType)"
-        let webHeaderFields = ["Authorization" : self.base64LoginString!]
         self.api.postRequest(url: baseApiUrl + endpointURL, extraHeaderFields: webHeaderFields, payload: nil, completion: {
             data in
                 guard data != nil else{
@@ -75,7 +76,6 @@ class WebAPIManager {
         }
 
         let endpointURL = "/GPIO/\(gpioNumber)/value"
-        let webHeaderFields = ["Authorization" : self.base64LoginString!]
         self.api.getRequest(url: baseApiUrl + endpointURL, extraHeaderFields: webHeaderFields, completion: {
             data in
                 guard data != nil else{
@@ -95,7 +95,6 @@ class WebAPIManager {
         }
 
         let endpointURL = "/GPIO/\(gpioNumber)/value/\(newValue)"
-        let webHeaderFields = ["Authorization" : "Basic " + self.base64LoginString!]
         self.api.postRequest(url: baseApiUrl + endpointURL, extraHeaderFields: webHeaderFields, payload: nil, completion: {
             data in
                 guard data != nil else{
@@ -125,7 +124,6 @@ class WebAPIManager {
         }
 
         let endpointURL = "/*"
-        let webHeaderFields = ["Authorization" : "Basic " + self.base64LoginString!]
         self.api.getRequest(url: baseApiUrl + endpointURL, extraHeaderFields: webHeaderFields, completion: {
             data in
             guard data != nil else{

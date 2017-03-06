@@ -36,8 +36,6 @@ class SimpleHTTPRequest : NSObject {
         //Creates request with fields
         var request = URLRequest(url: url)
         request.httpMethod = HTTPMethod
-        //request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        //request.addValue("application/json", forHTTPHeaderField: "Accept")
 
         if extraHeaderFields != nil {
             for (fieldName, fieldValue) in extraHeaderFields! {
