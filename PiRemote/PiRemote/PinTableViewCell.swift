@@ -9,64 +9,19 @@
 import UIKit
 
 class PinTableViewCell: UITableViewCell {
-    //MARK: Properties
-    
+
     @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var HLnameLabel: UILabel!
-    @IBOutlet weak var onState: PinUISwitch!
+    @IBOutlet weak var numberLabel: UILabel!
+    @IBOutlet weak var statusSwitch: UISwitch!
+    @IBOutlet weak var typeLabel: UILabel!
 
-    @IBOutlet weak var spinner: UIActivityIndicatorView!
-    
-    var Hlabel: String!
-    var Llabel: String!
-    
-    /*
-    @IBAction func switchMethod(sender: PinUISwitch) {
-        
-        if(sender.on)
-        {
-            HLnameLabel.text = Hlabel;
-        }
-        else
-        {
-            HLnameLabel.text = Llabel;
-        }
-    
-    }
-    */
-    
-    
-    @IBAction func switchTrip(_ sender: PinUISwitch) {
-        
-//        if(sender.on)
-//        {
-//            HLnameLabel.text = Hlabel;
-//        }
-//        else
-//        {
-//            HLnameLabel.text = Llabel;
-//        }
-        
-    }
-    
-    
-    //var pinNum: Int
-    
-    
-
-    
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
 
-    
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    @IBAction func onTogglePinStatus(_ sender: Any, forEvent event: UIEvent) {
+            // TODO: Implement such that new value is communicated to webiopi
     }
 
 }

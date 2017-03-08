@@ -23,14 +23,13 @@ class LoginViewController: UIViewController {
     var segueIdDeviceDetails = "SHOW DEVICE DETAILS"
     var segueIdDevicesTable = "SHOW DEVICES"
     var isLoginSuccess: Bool!
-    var webiopiDeviceName: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         isLoginSuccess = false
-        if (webiopiDeviceName != nil) {
-            deviceName.text = webiopiDeviceName!
+        if (MainUser.sharedInstance.currentDevice != nil) {
+            deviceName.text = MainUser.sharedInstance.currentDevice?.alias
         }
     }
 

@@ -16,10 +16,11 @@ class MainUser{
    
     private init(){}
 
-    // Weaved
+    // Remot3.it
     var email : String?
     var apiKey: String?
     var token: String?
+    var currentDevice: RemoteDevice?
 
     func getUserInformationFromResponse(dictionary : NSDictionary){
         self.email = dictionary["email"] as? String
