@@ -25,7 +25,8 @@ class Pin {
     var Lname: String
     var stateName: String
     var type: Int
-    
+    var gpioNumber: Int
+
     //false = IN, true = OUT
     var function: String
 
@@ -50,6 +51,7 @@ class Pin {
         self.stateName = Lname;
         self.function = "IN";
         self.isGPIO = false;
+        self.gpioNumber = -1;
         
         if(type == 1)
         {
@@ -69,6 +71,7 @@ class Pin {
         self.function = "IN";
         self.isGPIO = false;
         self.on = false;
+        self.gpioNumber = -1;
         
     }
     
@@ -145,6 +148,11 @@ class Pin {
     func setLname(_ newName: String)
     {
         Lname = newName;
+    }
+
+    func setGPIONumber(_ newNumber: Int) -> Pin {
+        gpioNumber = newNumber;
+        return self
     }
     
     

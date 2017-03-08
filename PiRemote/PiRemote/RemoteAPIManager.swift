@@ -41,12 +41,13 @@ class RemoteAPIManager {
             }
             
             var response : String
-            if self.checkResponse(data: data!) == true{
+            let jsonData = data as! NSDictionary
+            if self.checkResponse(data: jsonData) == true{
                 response = self.SucessResponse
-                callback(true, response, data!)
+                callback(true, response, jsonData)
             }
             else{
-                response = data!["reason"] as! String
+                response = jsonData["reason"] as! String
                 // If it fails we simply show the string. No need to show the data.
                 callback(false, response, nil)
             }
@@ -90,9 +91,10 @@ class RemoteAPIManager {
                 callback(nil)
                 return
             }
-            
-            if self.checkResponse(data: data!) == true{
-                callback(data!)
+
+            let jsonData = data as! NSDictionary
+            if self.checkResponse(data: jsonData) == true{
+                callback(jsonData)
             }else{
                 callback(nil)
             }

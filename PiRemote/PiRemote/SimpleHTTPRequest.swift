@@ -22,7 +22,7 @@ class SimpleHTTPRequest : NSObject {
         HTTPMethod: String,
         jsonBody: [String: AnyObject]?,
         extraHeaderFields: [String: String]?,
-        completionHandler: @escaping (_ sucess: Bool, _ data: NSDictionary?, _ error: Error?) -> Void) {
+        completionHandler: @escaping (_ sucess: Bool, _ data: Any?, _ error: Error?) -> Void) {
         
         //Creates URL Session
         let session = URLSession.shared
@@ -46,8 +46,6 @@ class SimpleHTTPRequest : NSObject {
         //Serializes any parameters in the httpbody if there are any.
         if let HTTPBody = jsonBody{
             do {
-
-                //let params = ["username":"webiopi", "password":"raspberry"] as [String: String] // HTTPBody
                 request.httpBody = try JSONSerialization.data(withJSONObject: HTTPBody, options: [])
             } catch _ as NSError {
                 request.httpBody = nil
@@ -64,35 +62,30 @@ class SimpleHTTPRequest : NSObject {
                 print("Error communicating with server via HTTP")
                 print(error)
             }
-            
-            guard let resp = response as? HTTPURLResponse else{
-                //Something went really wrong.
+
+            // Something went really wrong. Possibly server-side.
+            guard (response as? HTTPURLResponse) != nil else {
                 completionHandler(false, nil, nil)
                 return
             }
 
+            // TODO: Not all responses may return data on success. Should investigate.
             guard data != nil else {
                 completionHandler(false, nil, nil)
                 return
             }
 
-            do{
-                guard let jsonResult = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary else{
+            do {
+                guard let jsonResult = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary else {
                     print("Failed to cast json result to dictionary")
                     completionHandler(false, nil, nil)
                     return
                 }
-                
                 completionHandler(true, jsonResult, nil)
-                
-                
-            }catch{
-                completionHandler(false, nil, nil)
-                }
+            } catch {
+                completionHandler(true, data!, nil)
             }
-        
+        }
         task.resume()
-        
     }
-    
 }

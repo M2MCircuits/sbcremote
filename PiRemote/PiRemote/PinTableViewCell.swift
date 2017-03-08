@@ -19,9 +19,4 @@ class PinTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
-
-    @IBAction func onTogglePinStatus(_ sender: Any, forEvent event: UIEvent) {
-            // TODO: Implement such that new value is communicated to webiopi
-    }
-
 }

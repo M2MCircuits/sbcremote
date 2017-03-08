@@ -10,11 +10,13 @@ import UIKit
 
 class DeviceDetailViewController: UIViewController, UITableViewDataSource {
 
+    @IBOutlet weak var deviceNameLabel: UILabel!
     @IBOutlet weak var pinTable: UITableView!
 
     // Local variables
     var pinConfig: [String: Int]!
     var pins: [Int: Pin]!
+    var webiopi: WebAPIManager!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +24,8 @@ class DeviceDetailViewController: UIViewController, UITableViewDataSource {
         deviceNameLabel.text = MainUser.sharedInstance.currentDevice?.deviceAlias
         pinConfig? = ["SPI0": 0]
         pins = [0: Pin()]
+        webiopi = WebAPIManager()
+
         fetchDeviceState()
     }
 
@@ -30,13 +34,14 @@ class DeviceDetailViewController: UIViewController, UITableViewDataSource {
             return
         }
 
-        let webiopi = WebAPIManager()
+        print("[DEBUG] Sending get request /*")
         webiopi.getFullGPIOState(callback: {
             data in
+                print("[DEBUG] Response received for /*")
                 if (data != nil) {
                     for (gpioNumber, gpioData) in data!["GPIO"] as! [String: [String:AnyObject]] {
                         let i = Int(gpioNumber)!
-                        let pin = Pin().setFromData(gpioData)
+                        let pin = Pin().setGPIONumber(i).setFromData(gpioData)
                         self.pins[i] = pin
                     }
                     self.pinTable.reloadData()
@@ -44,6 +49,15 @@ class DeviceDetailViewController: UIViewController, UITableViewDataSource {
         })
     }
 
+    @IBAction func onToggleSwitch(_ sender: UISwitch) {
+        let pinNumber = pins[sender.tag]?.gpioNumber
+        let pinValue = sender.isOn ? "IN" : "OUT"
+        webiopi.setFunction(gpioNumber: pinNumber!, functionType: pinValue, callback: {
+                newFunction in
+                    print("DONE")
+                    print(newFunction!)
+        })
+    }
 
     // UITableViewDataSource Functions
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -57,6 +71,7 @@ class DeviceDetailViewController: UIViewController, UITableViewDataSource {
         cell.nameLabel.text = pins[i]?.name
         cell.numberLabel.text = String(i)
         cell.statusSwitch.isOn = (pins[i]?.on)!
+        cell.statusSwitch.tag = indexPath.row
         cell.typeLabel.text = pins[i]?.function
 
         return cell

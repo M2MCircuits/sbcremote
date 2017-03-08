@@ -328,7 +328,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="UyT-gc-Bdv" id="2fM-TE-gYv">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pin Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nC2-kq-tph">
@@ -357,7 +357,7 @@
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <rect key="contentStretch" x="0.0" y="0.0" width="0.75" height="0.75"/>
                                                     <connections>
-                                                        <action selector="onTogglePinStatus:forEvent:" destination="UyT-gc-Bdv" eventType="valueChanged" id="3tv-4i-KbP"/>
+                                                        <action selector="onToggleSwitch:" destination="eAF-Vh-bmA" eventType="valueChanged" id="bdR-ef-A6A"/>
                                                     </connections>
                                                 </switch>
                                             </subviews>
@@ -381,6 +381,7 @@
                         <barButtonItem key="backBarButtonItem" title="My Devices" id="WBH-4B-3Kg"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="deviceNameLabel" destination="CIy-xe-ZVk" id="G1N-mK-tuV"/>
                         <outlet property="pinTable" destination="kOI-yq-mVd" id="x9s-xW-4Rm"/>
                     </connections>
                 </viewController>

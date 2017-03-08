@@ -23,7 +23,7 @@ class RemoteDevice{
     var localUrl: String
     var ownerUsername: String
     var serviceTitle: String
-    var webEnabled: Bool
+    var webEnabled: String
 
     init() {
         deviceAddress = ""
@@ -35,7 +35,7 @@ class RemoteDevice{
         localUrl = ""
         ownerUsername = ""
         serviceTitle = ""
-        webEnabled = false
+        webEnabled = "0" // = false
     }
 
     init(deviceData: NSDictionary) {
@@ -48,7 +48,7 @@ class RemoteDevice{
         localUrl = deviceData["localurl"] as! String
         ownerUsername = deviceData["ownerusername"] as! String
         serviceTitle = deviceData["servicetitle"] as! String
-        webEnabled = deviceData["webenabled"] as! Bool
+        webEnabled = deviceData["webenabled"] as! String
     }
 }
 

@@ -13,26 +13,42 @@ class WebAPIManager {
     var api: APIManager!
     var baseApiUrl: String!
     var base64LoginString: String!
-    var deviceIP: String!
-    var webHeaderFields: [String: String]
+    var webHeaderFields: [String: String]!
 
     let errorResponse = "No device selected to use WebAPIManager"
 
-    init() {
-        api = APIManager()
-        deviceIP = "192.168.2.9" // MainUser.sharedInstance.currentDevice[]
-        // TODO: Allow different port numbers (8000 is default)
-        baseApiUrl = "http://" + deviceIP + ":8000"
+    convenience init() {
+        // Connects to pi via its external ip address. If the pi is connected to a router, it must be exposed using Port
+        // Forwarding. When testing in the simulator, be sure to do so on different networks. It may not work on certain
+        // public networks possibly due to their added security.
+        //
+        // Details: http://superuser.com/questions/284051/what-is-port-forwarding-and-what-is-it-used-for
+        let deviceIP = MainUser.sharedInstance.currentDevice?.deviceLastip
 
-        // TODO: Use user inputted login
+        // This is the default port number used by webiopi.
+        // TODO: Allow user to specifiy custom port number
+        self.init(ipAddress: deviceIP, port: "8000")
+    }
+
+    init(ipAddress: String?, port: String?) {
+        guard (ipAddress != nil) else {
+            print("ERROR: Cannot find device because ip address is null")
+            return
+        }
+
+        api = APIManager()
+        baseApiUrl = "http://" + ipAddress! + ":" + port!
+
+        // This is the default login set by webiopi.
+        // TODO: User login data from webiopi login scene
         let loginString = String(format: "%@:%@", "webiopi", "raspberry")
         let loginData = loginString.data(using: String.Encoding.utf8)!
-        self.base64LoginString = loginData.base64EncodedString()
-        self.webHeaderFields = ["Authorization" : "Basic " + self.base64LoginString!]
+        base64LoginString = loginData.base64EncodedString()
+        webHeaderFields = ["Authorization" : "Basic " + base64LoginString]
     }
 
     // GET /GPIO/:gpioNumber/function
-    func getFunction(gpioNumber: Int, callback: @escaping (_ data: NSDictionary?) -> Void) {
+    func getFunction(gpioNumber: Int, callback: @escaping (_ function: String?) -> Void) {
         guard baseApiUrl != nil else {
             return
         }
@@ -45,13 +61,12 @@ class WebAPIManager {
                     callback(nil)
                     return
                 }
-
-                callback(data!)
+                callback(String(data: data as! Data, encoding: String.Encoding.utf8))
         })
     }
 
     // POST /GPIO/:gpioNumber/function/:(in or out or pwm)
-    func setFunction(gpioNumber: Int, functionType: String, callback: @escaping (_ data: NSDictionary?) -> Void) {
+    func setFunction(gpioNumber: Int, functionType: String, callback: @escaping (_ newFunction: String?) -> Void) {
         guard baseApiUrl != nil else {
             return
         }
@@ -64,13 +79,12 @@ class WebAPIManager {
                     callback(nil)
                     return
                 }
-
-                callback(data!)
+                callback(String(data: data as! Data, encoding: String.Encoding.utf8))
         })
     }
 
     // GET /GPIO/:gpioNumber/value
-    func getValue(gpioNumber: Int, callback: @escaping (_ data: NSDictionary?) -> Void) {
+    func getValue(gpioNumber: Int, callback: @escaping (_ value: Int?) -> Void) {
         guard baseApiUrl != nil else {
             return
         }
@@ -83,18 +97,19 @@ class WebAPIManager {
                     callback(nil)
                     return
                 }
-
-                callback(data!)
+                // TODO: Hasn't been tested yet. If data is being returned as nil you can either decode it directly as 
+                // Int, or as String then cast to Int
+                callback(data as! Int?)
         })
     }
 
     // POST /GPIO/:gpioNumber/value/:(0 or 1)
-    func setValue(gpioNumber: Int, newValue: Int, callback: @escaping (_ data: NSDictionary?) -> Void) {
+    func setValue(gpioNumber: Int, value: Int, callback: @escaping (_ newValue: Int?) -> Void) {
         guard baseApiUrl != nil else {
             return
         }
 
-        let endpointURL = "/GPIO/\(gpioNumber)/value/\(newValue)"
+        let endpointURL = "/GPIO/\(gpioNumber)/value/\(value)"
         self.api.postRequest(url: baseApiUrl + endpointURL, extraHeaderFields: webHeaderFields, payload: nil, completion: {
             data in
                 guard data != nil else{
@@ -102,8 +117,9 @@ class WebAPIManager {
                     callback(nil)
                     return
                 }
-
-                callback(data!)
+                // TODO: Hasn't been tested yet. If data is being returned as nil you can either decode it directly as
+                // Int, or as String then cast to Int
+                callback(data as! Int?)
         })
     }
 
@@ -126,13 +142,12 @@ class WebAPIManager {
         let endpointURL = "/*"
         self.api.getRequest(url: baseApiUrl + endpointURL, extraHeaderFields: webHeaderFields, completion: {
             data in
-            guard data != nil else{
-                print(self.errorResponse)
-                callback(nil)
-                return
-            }
-
-            callback(data!)
+                guard data != nil else{
+                    print(self.errorResponse)
+                    callback(nil)
+                    return
+                }
+                callback(data as! NSDictionary?)
         })
     }
 }
