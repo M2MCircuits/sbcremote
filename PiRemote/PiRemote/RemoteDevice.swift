@@ -12,32 +12,43 @@ import UIKit
 
 
 class RemoteDevice{
-    
-    
-    var alias: String;
-    var address: String;
-    var ownerUserName: String;
-    var state: String;
-    var service : String
-    
-    init()
-    {
-        alias = ""
-        address = ""
-        ownerUserName = ""
-        state = ""
-        service = ""
+
+    // Descriptions can be found at http://docs.weaved.com/docs/devicelistall
+    var deviceAddress: String
+    var deviceAlias: String
+    var deviceLastip: String
+    var deviceState: String
+    var deviceType: String
+    var lastInternalip: String
+    var localUrl: String
+    var ownerUsername: String
+    var serviceTitle: String
+    var webEnabled: Bool
+
+    init() {
+        deviceAddress = ""
+        deviceAlias = ""
+        deviceLastip = ""
+        deviceState = ""
+        deviceType = ""
+        lastInternalip = ""
+        localUrl = ""
+        ownerUsername = ""
+        serviceTitle = ""
+        webEnabled = false
     }
 
-    init(deviceData: NSDictionary)
-    {
-        alias = deviceData["devicealias"] as! String;
-        address = deviceData["deviceaddress"] as! String;
-        ownerUserName = deviceData["ownerusername"] as! String;
-        state = deviceData["devicestate"] as! String
-        service = deviceData["servicetitle"] as! String
+    init(deviceData: NSDictionary) {
+        deviceAddress = deviceData["deviceaddress"] as! String
+        deviceAlias = deviceData["devicealias"] as! String
+        deviceLastip = deviceData["devicelastip"] as! String
+        deviceState = deviceData["devicestate"] as! String
+        deviceType = deviceData["devicetype"] as! String
+        lastInternalip = deviceData["lastinternalip"] as! String
+        localUrl = deviceData["localurl"] as! String
+        ownerUsername = deviceData["ownerusername"] as! String
+        serviceTitle = deviceData["servicetitle"] as! String
+        webEnabled = deviceData["webenabled"] as! Bool
     }
-    
-    
 }
 

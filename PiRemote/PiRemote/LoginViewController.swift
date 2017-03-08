@@ -29,7 +29,7 @@ class LoginViewController: UIViewController {
         // Do any additional setup after loading the view.
         isLoginSuccess = false
         if (MainUser.sharedInstance.currentDevice != nil) {
-            deviceName.text = MainUser.sharedInstance.currentDevice?.alias
+            deviceName.text = MainUser.sharedInstance.currentDevice?.deviceAlias
         }
     }
 

@@ -19,6 +19,7 @@ class DeviceDetailViewController: UIViewController, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        deviceNameLabel.text = MainUser.sharedInstance.currentDevice?.deviceAlias
         pinConfig? = ["SPI0": 0]
         pins = [0: Pin()]
         fetchDeviceState()

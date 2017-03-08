@@ -12,13 +12,13 @@ import Foundation
 class RemoteDeviceManager{
     
     
-    func createDevicesFromAPIResponse(data : NSDictionary) ->(SSH: [RemoteDevice], NOTSSH: [RemoteDevice]){
+    func createDevicesFromAPIResponse(data: NSDictionary) ->(SSH: [RemoteDevice], NOTSSH: [RemoteDevice]){
         var SSHdeviceStorage = [RemoteDevice]()
         var deviceStorage = [RemoteDevice]()
         let devices = data["devices"] as! NSArray
         for deviceData in devices{
             let device = RemoteDevice(deviceData: deviceData as! NSDictionary)
-            if device.service == "SSH"{
+            if device.serviceTitle == "SSH"{
                 SSHdeviceStorage.append(device)
             }else{
                 deviceStorage.append(device)
