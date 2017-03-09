@@ -10,26 +10,30 @@ import Foundation
 
 
 class RemoteAPIManager {
-    
-    var baseApiUrl : String!
-    var API : APIManager!
-    var token : String?
 
-    
+    var api : APIManager!
+    var baseApiUrl : String!
+    var token : String?
+    var remoteHeaderFields: [String: String]
+
     let SucessResponse = "Sucessfully logged in!"
     let ErrorResponse = "There was an error logging in"
     
     init() {
-        self.baseApiUrl = "https://api.weaved.com/v22/api"
-        self.API = APIManager()
+        api = APIManager()
+        baseApiUrl = "https://api.weaved.com/v22/api"
+        remoteHeaderFields = [
+            "apikey": "WeavedDemoKey$2015",
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        ]
     }
 
 
     // GET user/login/:username/:password
     func logInUser(username: String, userpw: String, callback: @escaping (_ sucess : Bool, _ response: String, _ data: NSDictionary?) -> Void){
         let endpointURL = "/user/login/" + username + "/" + userpw
-        let weavedHeaderFields = ["apikey" : "WeavedDemoKey$2015"]
-        self.API.getRequest(url: baseApiUrl + endpointURL, extraHeaderFields: weavedHeaderFields, completion: { data in
+        self.api.getRequest(url: baseApiUrl + endpointURL, extraHeaderFields: remoteHeaderFields, completion: { data in
         
             guard data != nil else{
                 callback(false, self.ErrorResponse, nil)
@@ -37,12 +41,13 @@ class RemoteAPIManager {
             }
             
             var response : String
-            if self.checkResponse(data: data!) == true{
+            let jsonData = data as! NSDictionary
+            if self.checkResponse(data: jsonData) == true{
                 response = self.SucessResponse
-                callback(true, response, data!)
+                callback(true, response, jsonData)
             }
             else{
-                response = data!["reason"] as! String
+                response = jsonData["reason"] as! String
                 // If it fails we simply show the string. No need to show the data.
                 callback(false, response, nil)
             }
@@ -80,15 +85,16 @@ class RemoteAPIManager {
     // GET device/list/all
     func listDevices(token: String, callback: @escaping (_ data: NSDictionary?) -> Void) {
         let endpointURL = "/device/list/all"
-        let weavedHeaderFields = ["apikey" : "WeavedDemoKey$2015", "token" : token]
-        self.API.getRequest(url: baseApiUrl + endpointURL, extraHeaderFields: weavedHeaderFields, completion: {data in
+        remoteHeaderFields["token"] = token
+        self.api.getRequest(url: baseApiUrl + endpointURL, extraHeaderFields: remoteHeaderFields, completion: {data in
             guard data != nil else{
                 callback(nil)
                 return
             }
-            
-            if self.checkResponse(data: data!) == true{
-                callback(data!)
+
+            let jsonData = data as! NSDictionary
+            if self.checkResponse(data: jsonData) == true{
+                callback(jsonData)
             }else{
                 callback(nil)
             }

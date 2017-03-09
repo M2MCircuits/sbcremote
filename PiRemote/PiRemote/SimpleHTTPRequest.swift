@@ -22,7 +22,7 @@ class SimpleHTTPRequest : NSObject {
         HTTPMethod: String,
         jsonBody: [String: AnyObject]?,
         extraHeaderFields: [String: String]?,
-        completionHandler: @escaping (_ sucess: Bool, _ data: NSDictionary?, _ error: Error?) -> Void) {
+        completionHandler: @escaping (_ sucess: Bool, _ data: Any?, _ error: Error?) -> Void) {
         
         //Creates URL Session
         let session = URLSession.shared
@@ -36,10 +36,11 @@ class SimpleHTTPRequest : NSObject {
         //Creates request with fields
         var request = URLRequest(url: url)
         request.httpMethod = HTTPMethod
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        for (fieldName, fieldValue) in extraHeaderFields! {
-            request.setValue(fieldValue, forHTTPHeaderField: fieldName)
+
+        if extraHeaderFields != nil {
+            for (fieldName, fieldValue) in extraHeaderFields! {
+                request.setValue(fieldValue, forHTTPHeaderField: fieldName)
+            }
         }
         
         //Serializes any parameters in the httpbody if there are any.
@@ -50,7 +51,7 @@ class SimpleHTTPRequest : NSObject {
                 request.httpBody = nil
             }
         }
-        
+
         //Retrieves data returned.
         let task = session.dataTask(with: request as URLRequest){
             data, response, downloadError in
@@ -61,31 +62,30 @@ class SimpleHTTPRequest : NSObject {
                 print("Error communicating with server via HTTP")
                 print(error)
             }
-            
-            guard let resp = response as? HTTPURLResponse else{
-                //Something went really wrong.
+
+            // Something went really wrong. Possibly server-side.
+            guard (response as? HTTPURLResponse) != nil else {
                 completionHandler(false, nil, nil)
                 return
             }
-            
 
-            do{
-                guard let jsonResult = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary else{
+            // TODO: Not all responses may return data on success. Should investigate.
+            guard data != nil else {
+                completionHandler(false, nil, nil)
+                return
+            }
+
+            do {
+                guard let jsonResult = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary else {
                     print("Failed to cast json result to dictionary")
                     completionHandler(false, nil, nil)
                     return
                 }
-                
                 completionHandler(true, jsonResult, nil)
-                
-                
-            }catch{
-                completionHandler(false, nil, nil)
-                }
+            } catch {
+                completionHandler(true, data!, nil)
             }
-        
+        }
         task.resume()
-        
     }
-    
 }
