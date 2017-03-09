@@ -15,11 +15,20 @@
 # limitations under the License.
 #
 import webapp2
+from basehelper import MainHelperClass
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         self.response.write('Hello PiRemote!')
 
+
+class APNSHandler(MainHelperClass):
+	def post(self):
+		self.writeResponse("You just hit the APNS endpoint")
+	def get(self):
+		self.writeResponse("This endpoint is POST only.")
+
 app = webapp2.WSGIApplication([
-    ('/', MainHandler)
+    ('/', MainHandler),
+    ('/apns', APNSHandler)
 ], debug=True)
