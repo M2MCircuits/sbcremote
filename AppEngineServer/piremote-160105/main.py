@@ -26,9 +26,13 @@ class APNSHandler(MainHelperClass):
 	def post(self):
 		self.writeResponse("You just hit the APNS endpoint")
 	def get(self):
-		self.writeResponse("This endpoint is POST only.")
+		self.writeResponse("This endpoint is POST only.")\
+
+class UserHandler(MainHelperClass):
+	def get(self)
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
-    ('/apns', APNSHandler)
+    ('/apns', APNSHandler),
+    ('/user/d{1,30}', UserHandler)
 ], debug=True)
