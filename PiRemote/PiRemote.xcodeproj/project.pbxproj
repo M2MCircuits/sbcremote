@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2447F0891E5E39E800EE1B69 /* MainUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2447F0881E5E39E700EE1B69 /* MainUser.swift */; };
+		2484B3CB1E79E708000770E5 /* AppEngineManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2484B3CA1E79E707000770E5 /* AppEngineManager.swift */; };
+		2484B3CD1E79E81D000770E5 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2484B3CC1E79E81D000770E5 /* Constants.swift */; };
 		24C6D94D1E44D11D00C3365D /* SimpleHTTPRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C6D94C1E44D11D00C3365D /* SimpleHTTPRequest.swift */; };
 		24C6D9511E44DC5000C3365D /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C6D9501E44DC5000C3365D /* APIManager.swift */; };
 		5A279FD01CBFE60800272E05 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A279FCF1CBFE60800272E05 /* LoginViewController.swift */; };
@@ -40,6 +42,8 @@
 
 /* Begin PBXFileReference section */
 		2447F0881E5E39E700EE1B69 /* MainUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainUser.swift; sourceTree = "<group>"; };
+		2484B3CA1E79E707000770E5 /* AppEngineManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppEngineManager.swift; sourceTree = "<group>"; };
+		2484B3CC1E79E81D000770E5 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		24C6D94C1E44D11D00C3365D /* SimpleHTTPRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleHTTPRequest.swift; sourceTree = "<group>"; };
 		24C6D9501E44DC5000C3365D /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		5A279FCF1CBFE60800272E05 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LoginViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -88,6 +92,8 @@
 				C0C1C1731E6CC923005DE3B2 /* RemoteDevice.swift */,
 				C0C1C1741E6CC923005DE3B2 /* RemoteDeviceManager.swift */,
 				C0C1C1711E6CC90F005DE3B2 /* RemoteAPIManager.swift */,
+				2484B3CA1E79E707000770E5 /* AppEngineManager.swift */,
+				2484B3CC1E79E81D000770E5 /* Constants.swift */,
 				5AD0608D1CAD96B100BD6930 /* Pin.swift */,
 				24C6D94C1E44D11D00C3365D /* SimpleHTTPRequest.swift */,
 				24C6D9501E44DC5000C3365D /* APIManager.swift */,
@@ -290,8 +296,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0C1C1781E6CFBF3005DE3B2 /* WebAPIManager.swift in Sources */,
+				2484B3CD1E79E81D000770E5 /* Constants.swift in Sources */,
 				C0C7912F1E6215AC00D94A13 /* DevicesTableViewController.swift in Sources */,
 				5AD0608E1CAD96B100BD6930 /* Pin.swift in Sources */,
+				2484B3CB1E79E708000770E5 /* AppEngineManager.swift in Sources */,
 				24C6D94D1E44D11D00C3365D /* SimpleHTTPRequest.swift in Sources */,
 				C0C1C1721E6CC90F005DE3B2 /* RemoteAPIManager.swift in Sources */,
 				5AD0606E1CAD8E9800BD6930 /* AppDelegate.swift in Sources */,
