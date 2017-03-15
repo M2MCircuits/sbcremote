@@ -23,16 +23,44 @@ class MainHandler(webapp2.RequestHandler):
 
 
 class APNSHandler(MainHelperClass):
-	def post(self):
-		self.writeResponse("You just hit the APNS endpoint")
-	def get(self):
-		self.writeResponse("This endpoint is POST only.")\
+	def post(self, serviceID):
+		account = self.validateAccount(serviceID)
+		if account:
+			self.sendAPN("Testing", account.token, None)
+			self.writeResponse("You just hit the APNS endpoint. Your serviceID is " + serviceID)
+		else:
+			self.writeResponse("Invalid serviceID")
 
-class UserHandler(MainHelperClass):
-	def get(self)
+	def get(self, serviceID):
+		self.writeResponse("This endpoint is POST only. Your service ID is " + serviceID)
+
+
+class AccountHandler(MainHelperClass):
+	def get(self, serviceID):
+		account = self.validateAccount(serviceID)
+		if account:
+			data = self.jsonifyAccount(account)
+			self.writeSucessfulResponse("data", data)
+		else:
+			self.writeErrorResponse("Invalid serviceID")
+
+	def post(self, serviceID):
+		json_req = self.jsonifyRequestBody()
+		data = json_req["data"]
+		acc = Account()
+		try:
+			acc.name = data["name"]
+			acc.email = data["email"]
+			acc.serviceID = data["service_id"]
+			acc.token = data["token"]
+			acc.key = ndb.Key(Account, serviceID)
+			acc.put()
+			self.writeSucessfulResponse("data", "Account sucessfully created")
+		except:
+			self.writeErrorResponse("Account data not fully provided.")
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
-    ('/apns', APNSHandler),
-    ('/user/d{1,30}', UserHandler)
+    ('/apns/(\S*)', APNSHandler),
+    ('/user/(\S*)', AccountHandler)
 ], debug=True)

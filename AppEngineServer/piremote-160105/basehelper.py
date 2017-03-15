@@ -36,6 +36,15 @@ class MainHelperClass(webapp2.RequestHandler):
     def jsonifyRequestBody(self, requestBody):
         return json.loads(requestBody)
 
+    def validateAccount(self, serviceID):
+        key = ndb.Key(Account, serviceID)
+        profile = key.get()
+        if profile:
+            return profile
+        else:
+            return None
+
+
 
     def sendAPN(self, alert, token, customdata):
         logging.info("APN getting setup..")
