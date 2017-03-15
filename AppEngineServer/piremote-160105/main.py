@@ -49,18 +49,39 @@ class AccountHandler(MainHelperClass):
 		data = json_req["data"]
 		acc = Account()
 		try:
-			acc.name = data["name"]
 			acc.email = data["email"]
-			acc.serviceID = data["service_id"]
-			acc.token = data["token"]
+			acc.serviceID = serviceID
 			acc.key = ndb.Key(Account, serviceID)
 			acc.put()
 			self.writeSucessfulResponse("data", "Account sucessfully created")
 		except:
 			self.writeErrorResponse("Account data not fully provided.")
 
+class APNPhoneTokenHandler(MainHelperClass):
+    def post(self):
+        requestBody = self.jsonifyRequestBody()
+        email = requestBody["email"]
+        parsed_token = self.parseToken(requestBody["token"])
+        if not email or not parseToken:
+        	self.writeErrorResponse("Seems like something went wrong. (User Auth)")
+        	return
+        results = Account.query(Account.email == email).fetch()
+        for acc in results:
+            acc.phone_token = parsed_token
+            acc.put()
+        self.writeSucessfulResponse("info", "Sucess, user token has been inputed.")
+
+    def parseToken(self, token):
+    	if not token:
+    		return None
+        startString = token[1:len(token) - 1]
+        endString = startString.replace(" ", "")
+        return endString
+
+
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
-    ('/apns/(\S*)', APNSHandler),
-    ('/user/(\S*)', AccountHandler)
+    ('/apn/(\S*)', APNSHandler),
+    ('/account/(\S*)', AccountHandler),
+    ("/token", APNPhoneTokenHandler)
 ], debug=True)

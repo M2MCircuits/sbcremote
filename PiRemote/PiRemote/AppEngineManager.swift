@@ -21,9 +21,9 @@ class AppEngineManager {
     func postDeviceInfo(device: RemoteDevice, completion: @escaping (_ sucess : Bool) -> Void){
         let user = MainUser.sharedInstance
         let jsonBody = ["email" : user.email!,
-                        "service_id" : device.deviceAddress,
                         ]
-        self.api.postRequest(url: AppEngineConstants.BaseURL, extraHeaderFields: nil, payload: jsonBody as [String : AnyObject]?) { (data) in
+        let url = AppEngineConstants.BaseURL + "/account/" + device.deviceAddress
+        self.api.postRequest(url: url, extraHeaderFields: nil, payload: jsonBody as [String : AnyObject]?) { (data) in
             guard data != nil else{
                 completion(false)
                 return
@@ -43,7 +43,30 @@ class AppEngineManager {
         }
     }
     
-    func 
+    func registerPhoneToken(phoneToken : NSData, completion: @escaping (_ sucess: Bool)-> Void){
+        let param = ["token" : "\(phoneToken)",
+                    "email" : MainUser.sharedInstance.email]
+        let url = AppEngineConstants.BaseURL + "/token"
+        self.api.postRequest(url: url, extraHeaderFields: nil, payload: param as [String : AnyObject]?) { (data) in
+            
+            guard data != nil else{
+                completion(false)
+                return
+            }
+
+            guard let jsonData = data as! NSDictionary? else{
+                completion(false)
+                return
+            }
+            
+            if jsonData["response"] as! String == "Sucess"{
+                completion(true)
+            }else{
+                completion(false)
+            }
+        }
+        
+    }
     
     
     
