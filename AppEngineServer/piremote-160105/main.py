@@ -26,6 +26,7 @@ class APNSHandler(MainHelperClass):
 	def post(self, serviceID):
 		account = self.validateAccount(serviceID)
 		if account:
+			#TODO: Re-write
 			self.sendAPN("Testing", account.token, None)
 			self.writeResponse("You just hit the APNS endpoint. Your serviceID is " + serviceID)
 		else:
@@ -36,6 +37,14 @@ class APNSHandler(MainHelperClass):
 
 
 class AccountHandler(MainHelperClass):
+	def jsonifyAccount(account):
+		returnDict = {
+						"email" : account.email,
+						"service_id" : account.serviceID,
+		}
+		return returnDict
+
+
 	def get(self, serviceID):
 		account = self.validateAccount(serviceID)
 		if account:
