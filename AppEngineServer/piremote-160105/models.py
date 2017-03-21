@@ -2,7 +2,6 @@ from google.appengine.ext import ndb
 
 
 class Account(ndb.model):
-	name = ndb.StringProperty()
 	email = ndb.StringProperty()
-	service_id = ndb.IntegerProperty()
-	token = ndb.StringProperty()
+	serviceID = ndb.IntegerProperty()
+	phone_token = ndb.StringProperty(default=None, repeated=True)
