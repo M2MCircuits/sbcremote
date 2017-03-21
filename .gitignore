@@ -4,7 +4,6 @@
 
 #App Engine Configs
 *.pyc
-*.yaml
 
 # Xcode per-user config
 *.mode1
