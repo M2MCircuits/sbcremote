@@ -26,14 +26,20 @@ class APNSHandler(MainHelperClass):
 	def post(self, serviceID):
 		account = self.validateAccount(serviceID)
 		if account:
-			#TODO: Re-write
-			self.sendAPN("Testing", account.token, None)
+			for phone_token in account.token:
+				self.sendAPN("Testing", token, None)
 			self.writeResponse("You just hit the APNS endpoint. Your serviceID is " + serviceID)
 		else:
 			self.writeResponse("Invalid serviceID")
 
 	def get(self, serviceID):
-		self.writeResponse("This endpoint is POST only. Your service ID is " + serviceID)
+		account = self.validateAccount(serviceID)
+		if account:
+			for phone_token in account.token:
+				self.sendAPN("Testing", token, None)
+			self.writeResponse("You just hit the APNS endpoint. Your serviceID is " + serviceID)
+		else:
+			self.writeResponse("Invalid serviceID")
 
 
 class AccountHandler(MainHelperClass):
@@ -56,6 +62,10 @@ class AccountHandler(MainHelperClass):
 	def post(self, serviceID):
 		json_req = self.jsonifyRequestBody()
 		data = json_req["data"]
+		accountExists = self.validateAccount(serviceID)
+		if accountExists:
+			self.writeErrorResponse("data", "Account already exists")
+			return
 		acc = Account()
 		try:
 			acc.email = data["email"]
@@ -67,16 +77,21 @@ class AccountHandler(MainHelperClass):
 			self.writeErrorResponse("Account data not fully provided.")
 
 class APNPhoneTokenHandler(MainHelperClass):
-    def post(self):
+	# TODO in Testing:  Check if this can be called before serviceID is recieved.
+    def post(self, serviceID):
         requestBody = self.jsonifyRequestBody()
-        email = requestBody["email"]
         parsed_token = self.parseToken(requestBody["token"])
-        if not email or not parseToken:
+        if not parseToken:
         	self.writeErrorResponse("Seems like something went wrong. (User Auth)")
         	return
-        results = Account.query(Account.email == email).fetch()
-        for acc in results:
-            acc.phone_token = parsed_token
+        accKey = ndb.Key(Account, serviceID)
+        acc = accKey.get()
+        if acc:
+        	# Hacky...
+			# Why? Because technically the phone token can change for the same device (rare but possible), but
+			# the old token would still be mapped to the account. We never remove them. Only add. 
+			# Best we can do as the Pi can only hold it's address for security purposes.
+            acc.phone_token += parsed_token
             acc.put()
         self.writeSucessfulResponse("info", "Sucess, user token has been inputed.")
 
@@ -92,5 +107,5 @@ app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/apn/(\S*)', APNSHandler),
     ('/account/(\S*)', AccountHandler),
-    ("/token", APNPhoneTokenHandler)
+    ('/token/(\S*)', APNPhoneTokenHandler)
 ], debug=True)
