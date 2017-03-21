@@ -22,6 +22,7 @@ class AppEngineManager {
         let user = MainUser.sharedInstance
         let jsonBody = ["email" : user.email!,
                         ]
+        // Warning. BaseURL is not valid.
         let url = AppEngineConstants.BaseURL + "/account/" + device.deviceAddress
         self.api.postRequest(url: url, extraHeaderFields: nil, payload: jsonBody as [String : AnyObject]?) { (data) in
             guard data != nil else{
@@ -46,6 +47,7 @@ class AppEngineManager {
     func registerPhoneToken(phoneToken : NSData, completion: @escaping (_ sucess: Bool)-> Void){
         let param = ["token" : "\(phoneToken)",
                     "email" : MainUser.sharedInstance.email]
+        //Warning: Currently does not work.
         let url = AppEngineConstants.BaseURL + "/token"
         self.api.postRequest(url: url, extraHeaderFields: nil, payload: param as [String : AnyObject]?) { (data) in
             
