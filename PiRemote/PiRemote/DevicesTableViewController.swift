@@ -18,7 +18,13 @@ class DevicesTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+
+        // Additional navigation setup
+        let logoutButton = UIBarButtonItem(title: "Logout", style: UIBarButtonItemStyle.plain, target: self, action: #selector(DevicesTableViewController.onLogout))
+
+        self.navigationItem.leftBarButtonItem = logoutButton
+
+        // Pull latest devices from Remote.it account
         let remoteToken = MainUser.sharedInstance.token
         let remoteAPIManager = RemoteAPIManager()
         let deviceManager = RemoteDeviceManager()
@@ -66,6 +72,11 @@ class DevicesTableViewController: UITableViewController {
         return indexPath
     }
 
+    // Local Functions
+    func onLogout(sender: UIButton!) {
+        self.navigationController?.popViewController(animated: true)
+        // TODO: Implement login info reset
+    }
     
 }
 

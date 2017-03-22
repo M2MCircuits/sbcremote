@@ -10,11 +10,18 @@ import UIKit
 
 class DeviceSetupViewController: UIViewController {
     
-    @IBOutlet weak var deviceNameLabel: UILabel!
-    
+
     override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        super.viewDidLoad();
+
+        // Additional navigation setup
+        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(DeviceSetupViewController.onFinishSetup))
+
+        self.navigationItem.rightBarButtonItem = doneButton
     }
 
+    func onFinishSetup(sender: UIButton!) {
+        // TODO: Implement saving the layout
+        self.navigationController?.popViewController(animated: true)
+    }
 }
