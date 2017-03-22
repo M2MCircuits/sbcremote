@@ -10,7 +10,6 @@ import UIKit
 
 class DeviceDetailViewController: UIViewController, UITableViewDataSource {
 
-    @IBOutlet weak var deviceNameLabel: UILabel!
     @IBOutlet weak var pinTable: UITableView!
 
     // Local variables
@@ -21,12 +20,25 @@ class DeviceDetailViewController: UIViewController, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        deviceNameLabel.text = MainUser.sharedInstance.currentDevice?.apiData["deviceAlias"]
+        let deviceName = MainUser.sharedInstance.currentDevice?.apiData["deviceAlias"]
+
+        // Additional navigation setup
+        let setupButton = UIBarButtonItem(image: UIImage(named: "cog"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(DeviceDetailViewController.onViewSetup))
+
+        self.navigationItem.rightBarButtonItem = setupButton
+        self.navigationItem.title = String(format: "%@ Info", deviceName!)
+        
+        // Initialize pin list
         pinConfig? = ["SPI0": 0]
         pins = [0: Pin()]
         webiopi = WebAPIManager()
 
         fetchDeviceState()
+    }
+
+    func onViewSetup() {
+        // Supported by iOS <6.0
+        self.performSegue(withIdentifier: "CURRENT DEVICE SETUP", sender: self)
     }
 
     func fetchDeviceState() {
