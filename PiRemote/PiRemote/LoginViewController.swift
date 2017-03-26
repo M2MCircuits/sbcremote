@@ -20,8 +20,6 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var usernameBox: UITextField!
 
     // Local variables
-    var segueIdDeviceDetails = "SHOW DEVICE DETAILS"
-    var segueIdDevicesTable = "SHOW DEVICES"
     var isLoginSuccess: Bool!
 
     override func viewDidLoad() {
@@ -72,7 +70,7 @@ class LoginViewController: UIViewController {
                 self.isLoginSuccess = true
 
                 // Supported by iOS <6.0
-                self.performSegue(withIdentifier: self.segueIdDevicesTable, sender: self)
+                self.performSegue(withIdentifier: SegueTypes.idToDevicesTable, sender: self)
             }
         })
     }
@@ -81,7 +79,7 @@ class LoginViewController: UIViewController {
     func logIntoWebIOPi(username: String, password: String) {
         // TODO: Implement. (We're using username as 'webiopi' and password as 'raspberry' for all pi's at the moment.
         // Supported by iOS <6.0
-        self.performSegue(withIdentifier: self.segueIdDeviceDetails, sender: self)
+        self.performSegue(withIdentifier: SegueTypes.idToDeviceDetails, sender: self)
     }
 
     //because persistant text is annoying

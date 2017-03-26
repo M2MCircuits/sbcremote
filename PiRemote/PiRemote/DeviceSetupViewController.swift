@@ -22,6 +22,6 @@ class DeviceSetupViewController: UIViewController {
 
     func onFinishSetup(sender: UIButton!) {
         // TODO: Implement saving the layout
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
 }

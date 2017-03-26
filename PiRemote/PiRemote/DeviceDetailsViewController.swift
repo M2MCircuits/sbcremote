@@ -34,41 +34,12 @@ class DeviceDetailViewController: UIViewController, UITableViewDataSource {
         webiopi = WebAPIManager()
 
         fetchDeviceState()
+        self.pinTable.reloadData()
     }
 
     func onViewSetup() {
         // Supported by iOS <6.0
-        self.performSegue(withIdentifier: "CURRENT DEVICE SETUP", sender: self)
-    }
-
-    func fetchDeviceState() {
-        guard MainUser.sharedInstance.currentDevice != nil else {
-            return
-        }
-
-        print("[DEBUG] Sending get request /*")
-        webiopi.getFullGPIOState(callback: {
-            data in
-                print("[DEBUG] Response received for /*")
-                if (data != nil) {
-                    for (pinId, pinData) in data!["GPIO"] as! [String: [String:AnyObject]] {
-                        let i = Int(pinId)!
-                        let pin = Pin(id: i, apiData: pinData)
-                        self.pins[i] = pin
-                    }
-                    self.pinTable.reloadData()
-                }
-        })
-    }
-
-    @IBAction func onToggleSwitch(_ sender: UISwitch) {
-        let pinNumber = pins[sender.tag]?.id
-        let pinValue = sender.isOn ? "IN" : "OUT"
-        webiopi.setFunction(gpioNumber: pinNumber!, functionType: pinValue, callback: {
-                newFunction in
-                    print("DONE")
-                    print(newFunction!)
-        })
+        self.performSegue(withIdentifier: SegueTypes.idToDeviceSetup, sender: self)
     }
 
     // UITableViewDataSource Functions
@@ -96,4 +67,42 @@ class DeviceDetailViewController: UIViewController, UITableViewDataSource {
         return self.pins.count
     }
 
+    // Local Functions
+    func buildPins() {
+        let stateJson = MainUser.sharedInstance.currentDevice!.stateJson
+        for (pinId, pinData) in stateJson! {
+            let i = Int(pinId)!
+            let pin = Pin(id: i, apiData: pinData)
+            self.pins[i] = pin
+        }
+    }
+
+    func fetchDeviceState() {
+        guard MainUser.sharedInstance.currentDevice?.stateJson != nil else {
+            print("[DEBUG] Sending get request /*")
+
+            webiopi.getFullGPIOState(callback: { data in
+                print("[DEBUG] Response received for /*")
+
+                if (data != nil) {
+                    MainUser.sharedInstance.currentDevice!.stateJson = data!["GPIO"] as! [String: [String:AnyObject]]
+                    self.buildPins()
+                }
+            })
+
+            return
+        }
+
+        self.buildPins()
+    }
+
+    @IBAction func onToggleSwitch(_ sender: UISwitch) {
+        let pinNumber = pins[sender.tag]?.id
+        let pinValue = sender.isOn ? "IN" : "OUT"
+        webiopi.setFunction(gpioNumber: pinNumber!, functionType: pinValue, callback: {
+                newFunction in
+                    print("DONE")
+                    print(newFunction!)
+        })
+    }
 }
