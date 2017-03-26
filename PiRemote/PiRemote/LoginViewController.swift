@@ -46,11 +46,7 @@ class LoginViewController: UIViewController {
             return
         }
 
-        if (self.title == "Remote Login") {
-            logIntoWeaved(username: usern!, password: passw!)
-        } else {
-            logIntoWebIOPi(username: usern!, password: passw!)
-        }
+        logIntoWeaved(username: usern!, password: passw!)
     }
 
     func logIntoWeaved (username: String, password: String) {
@@ -73,13 +69,6 @@ class LoginViewController: UIViewController {
                 self.performSegue(withIdentifier: SegueTypes.idToDevicesTable, sender: self)
             }
         })
-    }
-
-
-    func logIntoWebIOPi(username: String, password: String) {
-        // TODO: Implement. (We're using username as 'webiopi' and password as 'raspberry' for all pi's at the moment.
-        // Supported by iOS <6.0
-        self.performSegue(withIdentifier: SegueTypes.idToDeviceDetails, sender: self)
     }
 
     //because persistant text is annoying

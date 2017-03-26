@@ -47,10 +47,6 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
         dialogMessage = "Enter login for this devices WebIOPi server."
     }
 
-    @IBAction func unwindToTable(segue: UIStoryboardSegue) {
-
-    }
-
     // UITableViewDataSource Functions
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! DeviceTableViewCell
@@ -80,38 +76,33 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
         MainUser.sharedInstance.currentDevice = allDevices[indexPath.row]
 
         // Get a reference to the view controller for the popover
-        let popoverContent = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WEBIOPI_DIALOG")
+        let content = storyboard?.instantiateViewController(withIdentifier: "WEB_DIALOG") as! WebLoginViewController
+        content.modalPresentationStyle = .popover
+        content.onLoginSuccess = {() -> () in
+            self.performSegue(withIdentifier: SegueTypes.idToDeviceDetails, sender: nil)
+        }
 
-        // Set the presentation style
-        var nav = UINavigationController(rootViewController: popoverContent)
-        nav.modalPresentationStyle = UIModalPresentationStyle.popover
-        var popover = nav.popoverPresentationController!
-        popoverContent.preferredContentSize = CGSize(width: 500, height: 600)
-        popover.delegate = self
-        popover.sourceView = self.view
-        popover.sourceRect = CGRect(x: 100, y: 100, width: 300, height: 300)
+        // Container for the content
+        let popover = content.popoverPresentationController
+        popover?.delegate = self
+        popover?.permittedArrowDirections = .up
+        popover?.sourceView = self.view
+        // TODO: Center popover based on device
+        popover?.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 360, height: 420)
 
-        self.present(nav, animated: true, completion: nil)
-        /*
-
-         popoverVC.popoverPresentationController?.sourceRect = CGRect(x: 10, y: 10, width: 335, height: 335)
-         popoverVC.modalPresentationStyle = UIModalPresentationStyle.popover
-         popoverVC.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.up
-         popoverVC.popoverPresentationController?.delegate = self
-
-         // present the popover
-         self.present(popoverVC, animated: true, completion: nil)
-         
-         */
-        // Supported by iOS <6.0
-//        self.performSegue(withIdentifier: SegueTypes.idToWebLogin, sender: self)
+        self.present(content, animated: true, completion: nil)
         
         return indexPath
     }
 
+    // Prevents popover from changing style based on the iOS device
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
+    }
+
     // Local Functions
     func logout(sender: UIButton!) {
-        _ = self.navigationController?.popViewController(animated: true)
+        self.dismiss(animated: true, completion: nil)
         // TODO: Implement login info reset
     }
 }

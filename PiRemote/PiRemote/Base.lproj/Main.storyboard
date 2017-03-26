@@ -31,7 +31,7 @@
         <!--Device Setup-->
         <scene sceneID="V4F-eB-Zel">
             <objects>
-                <viewController title="Device Setup" id="h8r-q7-MFG" customClass="DeviceSetupViewController" customModule="PiPremote" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="De" title="Device Setup" id="h8r-q7-MFG" customClass="DeviceSetupViewController" customModule="PiPremote" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Xux-RA-ZU0"/>
                         <viewControllerLayoutGuide type="bottom" id="5x0-LJ-ygw"/>
@@ -41,7 +41,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TK8-aI-JDU" userLabel="Device Settings">
-                                <rect key="frame" x="0.0" y="64" width="375" height="168"/>
+                                <rect key="frame" x="0.0" y="75" width="375" height="155"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Device Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="q6r-4q-QOF">
@@ -62,6 +62,12 @@
                                         <rect key="frame" x="123" y="76" width="128" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Set WebIOPi Login"/>
+                                        <connections>
+                                            <action selector="onSetWebLogin:" destination="h8r-q7-MFG" eventType="touchUpInside" id="ka8-rc-xhh"/>
+                                            <segue destination="6JH-BG-EKY" kind="popoverPresentation" identifier="SHOW_WEBIOPI_LOGIN" popoverAnchorView="yie-cq-K5M" id="cAD-A2-Uqr">
+                                                <popoverArrowDirection key="popoverArrowDirection" up="YES"/>
+                                            </segue>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="New device not connected to Remot3.it" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xkl-EP-xdU" userLabel="warning message">
                                         <rect key="frame" x="57" y="114" width="302" height="41"/>
@@ -83,7 +89,7 @@
                                 </accessibility>
                             </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kG9-4R-fhm" userLabel="Pin Diagram">
-                                <rect key="frame" x="0.0" y="231" width="375" height="436"/>
+                                <rect key="frame" x="0.0" y="240" width="375" height="427"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pin Setup" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0g8-Vp-t3i">
@@ -110,11 +116,11 @@
                                         </state>
                                     </button>
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hKq-ry-qaP">
-                                        <rect key="frame" x="0.0" y="37" width="375" height="290"/>
+                                        <rect key="frame" x="0.0" y="37" width="375" height="282"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </scrollView>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dWb-Tk-yGu" userLabel="Current Pin Settings">
-                                        <rect key="frame" x="0.0" y="327" width="375" height="109"/>
+                                        <rect key="frame" x="0.0" y="318" width="375" height="109"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="#" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="avO-Ci-DUK">
@@ -173,12 +179,12 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <toolbarItems/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <navigationItem key="navigationItem" title="Device Setup" id="aPg-aM-cj4"/>
                     <nil key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QoU-ua-DDH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4881" y="-233"/>
+            <point key="canvasLocation" x="5165.6000000000004" y="-233.43328335832086"/>
         </scene>
         <!--App Nav-->
         <scene sceneID="KFk-LC-bCc">
@@ -275,7 +281,7 @@
                         <outlet property="loginIndicator" destination="U8O-ix-Ht1" id="MCt-I2-CHG"/>
                         <outlet property="passwordBox" destination="wD5-8g-gOl" id="o9b-lk-adB"/>
                         <outlet property="usernameBox" destination="FT1-3W-OS9" id="uVD-EA-uPk"/>
-                        <segue destination="xgT-cx-99m" kind="show" identifier="REMOTE_LOGIN_SUCCESS" id="eDi-rx-C7H"/>
+                        <segue destination="xgT-cx-99m" kind="show" identifier="SHOW_DEVICES_TABLE" id="eDi-rx-C7H"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ug6-17-QEk" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -285,7 +291,7 @@
         <!--My Devices-->
         <scene sceneID="E2N-J1-PKb">
             <objects>
-                <tableViewController storyboardIdentifier="SHOW_DEVICE_DETAILS" title="My Devices" id="TKw-YT-88J" customClass="DevicesTableViewController" customModule="PiPremote" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="DEVICE_TABLE" title="My Devices" id="TKw-YT-88J" customClass="DevicesTableViewController" customModule="PiPremote" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="46" sectionHeaderHeight="28" sectionFooterHeight="28" id="5zE-OH-Bjc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -295,7 +301,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="Add Device"/>
                             <connections>
-                                <segue destination="h8r-q7-MFG" kind="show" id="16W-E1-nEf"/>
+                                <segue destination="qbv-to-qD5" kind="show" identifier="SHOW_DEVICE_SETUP" id="16W-E1-nEf"/>
                             </connections>
                         </button>
                         <prototypes>
@@ -347,25 +353,25 @@
                     <connections>
                         <outlet property="devicesTableView" destination="5zE-OH-Bjc" id="2wn-MB-Gwg"/>
                         <segue destination="6JH-BG-EKY" kind="popoverPresentation" identifier="SHOW_WEBIOPI_LOGIN" popoverAnchorView="5zE-OH-Bjc" id="6OX-KP-xtE">
-                            <popoverArrowDirection key="popoverArrowDirection" down="YES"/>
+                            <popoverArrowDirection key="popoverArrowDirection"/>
                         </segue>
-                        <segue destination="7qf-g4-rVd" kind="show" id="Cdj-rI-35J"/>
+                        <segue destination="7qf-g4-rVd" kind="show" identifier="SHOW_DEVICE_DETAILS" id="O9K-7r-kvL"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jIN-cU-bQA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4278" y="-1015"/>
         </scene>
-        <!--WEBIOPI_DIALOG-->
+        <!--WebIOPi Login-->
         <scene sceneID="CmD-TG-jfp">
             <objects>
-                <viewController storyboardIdentifier="WEBIOPI_DIALOG" title="WEBIOPI_DIALOG" id="6JH-BG-EKY" customClass="WebLoginViewController" customModule="PiPremote" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WEB_DIALOG" title="WebIOPi Login" id="6JH-BG-EKY" customClass="WebLoginViewController" customModule="PiPremote" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="MNf-5o-i7f"/>
                         <viewControllerLayoutGuide type="bottom" id="H7o-5w-js3"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="LzG-LV-a4W">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                    <view key="view" contentMode="redraw" id="LzG-LV-a4W">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="360"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="WebIOPi Login" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PaC-Zb-hi9">
@@ -436,7 +442,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9pM-e7-dNE">
-                                <rect key="frame" x="0.0" y="276" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="316" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="2Eh-cv-OME"/>
@@ -448,7 +454,7 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="1aG-Wa-tYP"/>
                                     <barButtonItem title="Login" style="done" id="DxM-I3-Wnx">
                                         <connections>
-                                            <action selector="onLogin:" destination="6JH-BG-EKY" id="OdF-IW-oJX"/>
+                                            <action selector="onAction:" destination="6JH-BG-EKY" id="VRe-ox-s2Q"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="56W-u5-ynJ"/>
@@ -483,20 +489,20 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="320"/>
+                    <size key="freeformSize" width="320" height="360"/>
                     <connections>
                         <outlet property="errorView" destination="XTq-CN-0Pt" id="s7q-5Y-mex"/>
                         <outlet property="passwordBox" destination="hPV-gO-L8N" id="Y7W-lX-W0r"/>
                         <outlet property="portBox" destination="pwr-r8-kBo" id="gcH-z2-2iv"/>
                         <outlet property="saveLoginSwitch" destination="L1R-PF-hiu" id="29X-rY-MSg"/>
                         <outlet property="usernameBox" destination="mBP-Ud-6GZ" id="JMm-1P-ypB"/>
-                        <segue destination="IJq-R4-iqG" kind="unwind" identifier="UNWIND_WEB_TO_DEVICES" unwindAction="unwindToTableWithSegue:" id="DTv-5D-ap6"/>
+                        <segue destination="IJq-R4-iqG" kind="unwind" identifier="UNWIND_TO_TABLE" unwindAction="unwindToTableWithSegue:" id="zwj-4m-wQK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3sX-Bx-KWi" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="IJq-R4-iqG" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="4276.8000000000002" y="-1596.7016491754125"/>
+            <point key="canvasLocation" x="5165" y="-877"/>
         </scene>
         <!--Device Info-->
         <scene sceneID="cbM-Tn-fD1">
@@ -519,7 +525,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="53"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="UyT-gc-Bdv" id="2fM-TE-gYv">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="52.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="52"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pin Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nC2-kq-tph">
@@ -591,9 +597,10 @@
                     </view>
                     <navigationItem key="navigationItem" title="Device Info" id="whv-7l-Vww"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="pinTable" destination="kOI-yq-mVd" id="x9s-xW-4Rm"/>
-                        <segue destination="h8r-q7-MFG" kind="showDetail" identifier="CURRENT_DEVICE_SETUP" id="tTg-IC-9Ek"/>
+                        <segue destination="qbv-to-qD5" kind="showDetail" identifier="SHOW_DEVICE_SETUP" id="tTg-IC-9Ek"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ded-zD-2KY" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -603,6 +610,7 @@
         <!--Navigation Controller-->
         <scene sceneID="5fD-W5-TSI">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KBK-4g-fBX" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="xgT-cx-99m" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="beP-Xt-0Sp">
@@ -614,7 +622,6 @@
                         <segue destination="TKw-YT-88J" kind="relationship" relationship="rootViewController" id="oLd-wH-IWn"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="KBK-4g-fBX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3409" y="-1466"/>
         </scene>
@@ -636,6 +643,24 @@
             </objects>
             <point key="canvasLocation" x="5166" y="-1467"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="bPv-Ff-UKL">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="qbv-to-qD5" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="baP-YO-3KT">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="h8r-q7-MFG" kind="relationship" relationship="rootViewController" id="MJ3-US-lbh"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kNU-1P-zUo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4278" y="-233"/>
+        </scene>
     </scenes>
     <resources>
         <image name="LoginImg" width="24" height="24"/>
@@ -651,6 +676,7 @@
         <image name="warning" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="16W-E1-nEf"/>
+        <segue reference="tTg-IC-9Ek"/>
+        <segue reference="cAD-A2-Uqr"/>
     </inferredMetricsTieBreakers>
 </document>
