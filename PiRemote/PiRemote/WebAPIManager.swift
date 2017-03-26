@@ -145,7 +145,8 @@ class WebAPIManager {
                     callback(nil)
                     return
                 }
-                callback(data as! NSDictionary?)
+
+                callback(data as! NSDictionary)
         })
     }
 }

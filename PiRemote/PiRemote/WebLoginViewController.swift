@@ -18,6 +18,9 @@ class WebLoginViewController: UIViewController,
     @IBOutlet weak var saveLoginSwitch: UISwitch!
     @IBOutlet weak var usernameBox: UITextField!
 
+    // Local Variables
+    var onLoginSuccess: (()->Void)! // callback
+
     required init?(coder aDecoder: NSCoder) {
         // Setup properties (if any)
 
@@ -27,6 +30,8 @@ class WebLoginViewController: UIViewController,
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup loading the view, typically from a nib
+        // TODO: Debug why errorView is not showing/hiding
+        //self.errorView!.isHidden = true
     }
 
     override func didReceiveMemoryWarning() {
@@ -34,13 +39,17 @@ class WebLoginViewController: UIViewController,
         // Dispose of resources that can be recreated.
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == SegueTypes.idToWebLogin {
-
-        }
+    // Local Functions
+    @IBAction func onCancel(_ sender: UIBarButtonItem) {
+        self.dismiss(animated: true, completion: nil)
     }
 
-    @IBAction func onLogin(_ sender: UIBarButtonItem) {
+    @IBAction func onAction(_ sender: Any) {
+        handleLogin()
+        // TODO: Implement case for DeviceSetup
+    }
+
+    func handleLogin() {
         // Validate login by getting the device's state
         let deviceIP = MainUser.sharedInstance.currentDevice?.deviceLastip
         let username = (usernameBox.text?.isEmpty)! ? usernameBox.placeholder : usernameBox.text
@@ -59,13 +68,8 @@ class WebLoginViewController: UIViewController,
 
             // Login Succeeded
             MainUser.sharedInstance.currentDevice!.gpioJson = data!["GPIO"] as! [String: [String:AnyObject]]
-
-            self.performSegue(withIdentifier: SegueTypes.idUnwindToDevicesTable, sender: nil)
+            self.onLoginSuccess()
         });
-    }
-
-    @IBAction func onCancel(_ sender: UIBarButtonItem) {
-        self.dismiss(animated: true, completion: nil)
     }
 
     // Prevents popover from changing style based on the iOS device

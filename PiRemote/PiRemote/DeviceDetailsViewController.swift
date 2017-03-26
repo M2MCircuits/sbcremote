@@ -23,8 +23,10 @@ class DeviceDetailViewController: UIViewController, UITableViewDataSource {
         let deviceName = MainUser.sharedInstance.currentDevice?.deviceAlias
 
         // Additional navigation setup
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(DeviceDetailViewController.onCancel))
         let setupButton = UIBarButtonItem(image: UIImage(named: "cog"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(DeviceDetailViewController.onViewSetup))
 
+        self.navigationItem.leftBarButtonItem = cancelButton
         self.navigationItem.rightBarButtonItem = setupButton
         self.navigationItem.title = String(format: "%@ Info", deviceName!)
         
@@ -37,9 +39,15 @@ class DeviceDetailViewController: UIViewController, UITableViewDataSource {
         self.pinTable.reloadData()
     }
 
-    func onViewSetup() {
-        // Supported by iOS <6.0
-        self.performSegue(withIdentifier: SegueTypes.idToDeviceSetup, sender: self)
+
+    @IBAction func onToggleSwitch(_ sender: UISwitch) {
+        let pinNumber = pins[sender.tag]?.gpioNumber
+        let pinValue = sender.isOn ? "IN" : "OUT"
+        webiopi.setFunction(gpioNumber: pinNumber!, functionType: pinValue, callback: {
+            newFunction in
+            print("DONE")
+            print(newFunction!)
+        })
     }
 
     // UITableViewDataSource Functions
@@ -96,13 +104,13 @@ class DeviceDetailViewController: UIViewController, UITableViewDataSource {
         self.buildPins()
     }
 
-    @IBAction func onToggleSwitch(_ sender: UISwitch) {
-        let pinNumber = pins[sender.tag]?.gpioNumber
-        let pinValue = sender.isOn ? "IN" : "OUT"
-        webiopi.setFunction(gpioNumber: pinNumber!, functionType: pinValue, callback: {
-                newFunction in
-                    print("DONE")
-                    print(newFunction!)
-        })
+    func onCancel() {
+        self.dismiss(animated: true, completion: nil)
     }
+
+    func onViewSetup() {
+        // Supported by iOS <6.0
+        self.performSegue(withIdentifier: SegueTypes.idToDeviceSetup, sender: self)
+    }
+
 }
