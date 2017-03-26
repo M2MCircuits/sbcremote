@@ -10,10 +10,11 @@ import Foundation
 
 class WebAPIManager {
 
+    // Local Variables
     var api: APIManager!
     var baseApiUrl: String!
-    var base64LoginString: String!
     var webHeaderFields: [String: String]!
+    var webPort: String!
 
     let errorResponse = "No device selected to use WebAPIManager"
 
@@ -25,25 +26,22 @@ class WebAPIManager {
         // Details: http://superuser.com/questions/284051/what-is-port-forwarding-and-what-is-it-used-for
         let deviceIP = MainUser.sharedInstance.currentDevice?.apiData["deviceLastIP"]
 
-        // This is the default port number used by webiopi.
-        // TODO: Allow user to specifiy custom port number
-        self.init(ipAddress: deviceIP, port: "8000")
+        // WebIOPi default settings
+        self.init(ipAddress: deviceIP, port: "8000", username: "webiopi", password: "raspberry")
     }
 
-    init(ipAddress: String?, port: String?) {
+    init(ipAddress: String?, port: String?, username: String?, password: String?) {
         guard (ipAddress != nil) else {
             print("ERROR: Cannot find device because ip address is null")
             return
         }
 
+        let loginString = String(format: "%@:%@", username!, password!)
+        let loginData = loginString.data(using: String.Encoding.utf8)!
+        let base64LoginString = loginData.base64EncodedString()
+
         api = APIManager()
         baseApiUrl = "http://" + ipAddress! + ":" + port!
-
-        // This is the default login set by webiopi.
-        // TODO: User login data from webiopi login scene
-        let loginString = String(format: "%@:%@", "webiopi", "raspberry")
-        let loginData = loginString.data(using: String.Encoding.utf8)!
-        base64LoginString = loginData.base64EncodedString()
         webHeaderFields = ["Authorization" : "Basic " + base64LoginString]
     }
 
