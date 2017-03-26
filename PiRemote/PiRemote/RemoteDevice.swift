@@ -13,30 +13,23 @@ import UIKit
 
 class RemoteDevice{
 
+    // Remote.it variables
     // Descriptions can be found at http://docs.weaved.com/docs/devicelistall
-    var deviceAddress: String
-    var deviceAlias: String
-    var deviceLastip: String
-    var deviceState: String
-    var deviceType: String
-    var lastInternalip: String
-    var localUrl: String
-    var ownerUsername: String
-    var serviceTitle: String
-    var webEnabled: String
+    var deviceAddress: String!
+    var deviceAlias: String!
+    var deviceLastip: String!
+    var deviceState: String!
+    var deviceType: String!
+    var lastInternalip: String!
+    var localUrl: String!
+    var ownerUsername: String!
+    var serviceTitle: String!
+    var webEnabled: String!
 
-    init() {
-        deviceAddress = ""
-        deviceAlias = ""
-        deviceLastip = ""
-        deviceState = ""
-        deviceType = ""
-        lastInternalip = ""
-        localUrl = ""
-        ownerUsername = ""
-        serviceTitle = ""
-        webEnabled = "0" // = false
-    }
+    // App Variables
+    var gpioJson: [String: [String:AnyObject]]!
+
+    init() { }
 
     init(deviceData: NSDictionary) {
         deviceAddress = deviceData["deviceaddress"] as! String
