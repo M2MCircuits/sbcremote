@@ -20,6 +20,8 @@
 		5AD060841CAD8E9800BD6930 /* Attempt2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD060831CAD8E9800BD6930 /* Attempt2Tests.swift */; };
 		5AD0608E1CAD96B100BD6930 /* Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD0608D1CAD96B100BD6930 /* Pin.swift */; };
 		5AD060901CAD9E7700BD6930 /* PinTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD0608F1CAD9E7700BD6930 /* PinTableViewCell.swift */; };
+		C02614181E86EC71002B725F /* WebLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02614171E86EC71002B725F /* WebLoginViewController.swift */; };
+		C026141A1E86F016002B725F /* SegueTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02614191E86F016002B725F /* SegueTypes.swift */; };
 		C0626AEF1E63A9BE00B9A84F /* DeviceSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0626AEE1E63A9BE00B9A84F /* DeviceSetupViewController.swift */; };
 		C0626AF11E63C26300B9A84F /* DeviceDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0626AF01E63C26300B9A84F /* DeviceDetailsViewController.swift */; };
 		C0C1C1721E6CC90F005DE3B2 /* RemoteAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C1C1711E6CC90F005DE3B2 /* RemoteAPIManager.swift */; };
@@ -58,6 +60,8 @@
 		5AD060831CAD8E9800BD6930 /* Attempt2Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Attempt2Tests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5AD0608D1CAD96B100BD6930 /* Pin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Pin.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5AD0608F1CAD9E7700BD6930 /* PinTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinTableViewCell.swift; sourceTree = "<group>"; };
+		C02614171E86EC71002B725F /* WebLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebLoginViewController.swift; sourceTree = "<group>"; };
+		C02614191E86F016002B725F /* SegueTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueTypes.swift; sourceTree = "<group>"; };
 		C0626AEE1E63A9BE00B9A84F /* DeviceSetupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceSetupViewController.swift; sourceTree = "<group>"; };
 		C0626AF01E63C26300B9A84F /* DeviceDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceDetailsViewController.swift; sourceTree = "<group>"; };
 		C0C1C1711E6CC90F005DE3B2 /* RemoteAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteAPIManager.swift; sourceTree = "<group>"; };
@@ -99,6 +103,7 @@
 				24C6D9501E44DC5000C3365D /* APIManager.swift */,
 				2447F0881E5E39E700EE1B69 /* MainUser.swift */,
 				C0C1C1771E6CFBF3005DE3B2 /* WebAPIManager.swift */,
+				C02614191E86F016002B725F /* SegueTypes.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -119,6 +124,7 @@
 				C0C7912E1E6215AC00D94A13 /* DevicesTableViewController.swift */,
 				C0626AEE1E63A9BE00B9A84F /* DeviceSetupViewController.swift */,
 				C0626AF01E63C26300B9A84F /* DeviceDetailsViewController.swift */,
+				C02614171E86EC71002B725F /* WebLoginViewController.swift */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -299,6 +305,7 @@
 				C0C7912F1E6215AC00D94A13 /* DevicesTableViewController.swift in Sources */,
 				5AD0608E1CAD96B100BD6930 /* Pin.swift in Sources */,
 				2484B3CB1E79E708000770E5 /* AppEngineManager.swift in Sources */,
+				C02614181E86EC71002B725F /* WebLoginViewController.swift in Sources */,
 				24C6D94D1E44D11D00C3365D /* SimpleHTTPRequest.swift in Sources */,
 				C0C1C1721E6CC90F005DE3B2 /* RemoteAPIManager.swift in Sources */,
 				5AD0606E1CAD8E9800BD6930 /* AppDelegate.swift in Sources */,
@@ -310,6 +317,7 @@
 				241C59CE1E81A94100BBF2B2 /* SysConstants.swift in Sources */,
 				2447F0891E5E39E800EE1B69 /* MainUser.swift in Sources */,
 				5A279FD01CBFE60800272E05 /* LoginViewController.swift in Sources */,
+				C026141A1E86F016002B725F /* SegueTypes.swift in Sources */,
 				C0C1C1761E6CC923005DE3B2 /* RemoteDeviceManager.swift in Sources */,
 				C0C1C1751E6CC923005DE3B2 /* RemoteDevice.swift in Sources */,
 			);

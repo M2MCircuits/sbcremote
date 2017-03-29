@@ -69,8 +69,8 @@ class SimpleHTTPRequest : NSObject {
                 return
             }
 
-            // TODO: Not all responses may return data on success. Should investigate.
-            guard data != nil else {
+            // Status 200 = OK
+            guard (response as? HTTPURLResponse)?.statusCode == 200 else {
                 completionHandler(false, nil, nil)
                 return
             }

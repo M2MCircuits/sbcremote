@@ -8,17 +8,26 @@
 
 import UIKit
 
-class DevicesTableViewController: UITableViewController {
+class DevicesTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate  {
 
     @IBOutlet var devicesTableView: UITableView!
 
     // Local Variables
+    let cellId = "DEVICE CELL"
+
+    var dialogMessage: String!
     var sshDevices: [RemoteDevice]!
     var nonSshDevices: [RemoteDevice]!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+
+        // Additional navigation setup
+        let logoutButton = UIBarButtonItem(title: "Logout", style: UIBarButtonItemStyle.plain, target: self, action: #selector(DevicesTableViewController.logout))
+
+        self.navigationItem.leftBarButtonItem = logoutButton
+
+        // Pull latest devices from Remote.it account
         let remoteToken = MainUser.sharedInstance.token
         let remoteAPIManager = RemoteAPIManager()
         let deviceManager = RemoteDeviceManager()
@@ -34,11 +43,13 @@ class DevicesTableViewController: UITableViewController {
                     self.devicesTableView.reloadData()
                 }
         })
+
+        dialogMessage = "Enter login for this devices WebIOPi server."
     }
 
     // UITableViewDataSource Functions
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "DEVICE CELL", for: indexPath) as! DeviceTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! DeviceTableViewCell
 
         // Debugging purposes only
         cell.deviceName.text = "Section: \(indexPath.section) Row: \(indexPath.row)"
@@ -63,9 +74,36 @@ class DevicesTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         let allDevices = sshDevices + nonSshDevices
         MainUser.sharedInstance.currentDevice = allDevices[indexPath.row]
+
+        // Get a reference to the view controller for the popover
+        let content = storyboard?.instantiateViewController(withIdentifier: "WEB_DIALOG") as! WebLoginViewController
+        content.modalPresentationStyle = .popover
+        content.onLoginSuccess = {() -> () in
+            self.performSegue(withIdentifier: SegueTypes.idToDeviceDetails, sender: nil)
+        }
+
+        // Container for the content
+        let popover = content.popoverPresentationController
+        popover?.delegate = self
+        popover?.permittedArrowDirections = .up
+        popover?.sourceView = self.view
+        // TODO: Center popover based on device
+        popover?.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 360, height: 420)
+
+        self.present(content, animated: true, completion: nil)
+        
         return indexPath
     }
 
-    
+    // Prevents popover from changing style based on the iOS device
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
+    }
+
+    // Local Functions
+    func logout(sender: UIButton!) {
+        self.dismiss(animated: true, completion: nil)
+        // TODO: Implement login info reset
+    }
 }
 
