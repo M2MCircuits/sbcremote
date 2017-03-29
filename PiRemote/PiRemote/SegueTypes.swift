@@ -12,6 +12,7 @@ class SegueTypes {
     static let idToDeviceDetails = "SHOW_DEVICE_DETAILS"
     static let idToDeviceSetup = "SHOW_DEVICE_SETUP"
     static let idToDevicesTable = "SHOW_DEVICES_TABLE"
+    static let idToPinSettings = "SHOW_PIN_SETTINGS"
     static let idToWebLogin = "SHOW_WEBIOPI_LOGIN"
 
 }

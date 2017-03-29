@@ -31,6 +31,8 @@
 		C0C1C1781E6CFBF3005DE3B2 /* WebAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C1C1771E6CFBF3005DE3B2 /* WebAPIManager.swift */; };
 		C0C7912F1E6215AC00D94A13 /* DevicesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C7912E1E6215AC00D94A13 /* DevicesTableViewController.swift */; };
 		C0C791311E62217200D94A13 /* DeviceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C791301E62217200D94A13 /* DeviceTableViewCell.swift */; };
+		C0D323471E8B7938005ADAA2 /* PinSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D323461E8B7938005ADAA2 /* PinSettingsView.swift */; };
+		C0D323491E8B795B005ADAA2 /* PinSettingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0D323481E8B795B005ADAA2 /* PinSettingsView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +75,8 @@
 		C0C1C1771E6CFBF3005DE3B2 /* WebAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebAPIManager.swift; sourceTree = "<group>"; };
 		C0C7912E1E6215AC00D94A13 /* DevicesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevicesTableViewController.swift; sourceTree = "<group>"; };
 		C0C791301E62217200D94A13 /* DeviceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceTableViewCell.swift; sourceTree = "<group>"; };
+		C0D323461E8B7938005ADAA2 /* PinSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinSettingsView.swift; sourceTree = "<group>"; };
+		C0D323481E8B795B005ADAA2 /* PinSettingsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PinSettingsView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +118,8 @@
 			children = (
 				5AD0608F1CAD9E7700BD6930 /* PinTableViewCell.swift */,
 				C0C791301E62217200D94A13 /* DeviceTableViewCell.swift */,
+				C0D323461E8B7938005ADAA2 /* PinSettingsView.swift */,
+				C0D323481E8B795B005ADAA2 /* PinSettingsView.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -295,6 +301,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0D323491E8B795B005ADAA2 /* PinSettingsView.xib in Resources */,
 				5AD060731CAD8E9800BD6930 /* Main.storyboard in Resources */,
 				5AD060781CAD8E9800BD6930 /* LaunchScreen.xib in Resources */,
 				5AD060751CAD8E9800BD6930 /* Images.xcassets in Resources */,
@@ -330,6 +337,7 @@
 				5AD060901CAD9E7700BD6930 /* PinTableViewCell.swift in Sources */,
 				C0626AEF1E63A9BE00B9A84F /* DeviceSetupViewController.swift in Sources */,
 				241C59CE1E81A94100BBF2B2 /* SysConstants.swift in Sources */,
+				C0D323471E8B7938005ADAA2 /* PinSettingsView.swift in Sources */,
 				2447F0891E5E39E800EE1B69 /* MainUser.swift in Sources */,
 				5A279FD01CBFE60800272E05 /* LoginViewController.swift in Sources */,
 				C026141A1E86F016002B725F /* SegueTypes.swift in Sources */,
