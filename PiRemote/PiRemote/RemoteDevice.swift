@@ -25,6 +25,10 @@ class RemoteDevice{
     var serviceTitle: String
     var webEnabled: String
 
+    // Local Variables
+    var layout: PinLayout
+    var shouldPersistState: Bool // Attempt to restore previous pin values on restart
+
     init() {
         deviceAddress = ""
         deviceAlias = ""
@@ -36,6 +40,7 @@ class RemoteDevice{
         ownerUsername = ""
         serviceTitle = ""
         webEnabled = "0" // = false
+        layout = PinLayout()
     }
 
     init(deviceData: NSDictionary) {

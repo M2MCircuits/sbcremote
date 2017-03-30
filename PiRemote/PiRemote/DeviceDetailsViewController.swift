@@ -70,7 +70,7 @@ class DeviceDetailViewController: UIViewController, UITableViewDataSource {
 
         cell.nameLabel.text = pins[i]?.name
         cell.numberLabel.text = String(i)
-        cell.statusSwitch.isOn = (pins[i]?.on)!
+        cell.statusSwitch.isOn = (pins[i]?.value == 1)!
         cell.statusSwitch.tag = indexPath.row
         cell.typeLabel.text = pins[i]?.function
 

@@ -20,6 +20,7 @@
 		5AD060841CAD8E9800BD6930 /* Attempt2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD060831CAD8E9800BD6930 /* Attempt2Tests.swift */; };
 		5AD0608E1CAD96B100BD6930 /* Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD0608D1CAD96B100BD6930 /* Pin.swift */; };
 		5AD060901CAD9E7700BD6930 /* PinTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD0608F1CAD9E7700BD6930 /* PinTableViewCell.swift */; };
+		C001CE231E8CB8A200DAA710 /* PinLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C001CE221E8CB8A200DAA710 /* PinLayout.swift */; };
 		C0626AEF1E63A9BE00B9A84F /* DeviceSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0626AEE1E63A9BE00B9A84F /* DeviceSetupViewController.swift */; };
 		C0626AF11E63C26300B9A84F /* DeviceDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0626AF01E63C26300B9A84F /* DeviceDetailsViewController.swift */; };
 		C0C1C1721E6CC90F005DE3B2 /* RemoteAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C1C1711E6CC90F005DE3B2 /* RemoteAPIManager.swift */; };
@@ -58,6 +59,7 @@
 		5AD060831CAD8E9800BD6930 /* Attempt2Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Attempt2Tests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5AD0608D1CAD96B100BD6930 /* Pin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Pin.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5AD0608F1CAD9E7700BD6930 /* PinTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinTableViewCell.swift; sourceTree = "<group>"; };
+		C001CE221E8CB8A200DAA710 /* PinLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinLayout.swift; sourceTree = "<group>"; };
 		C0626AEE1E63A9BE00B9A84F /* DeviceSetupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceSetupViewController.swift; sourceTree = "<group>"; };
 		C0626AF01E63C26300B9A84F /* DeviceDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceDetailsViewController.swift; sourceTree = "<group>"; };
 		C0C1C1711E6CC90F005DE3B2 /* RemoteAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteAPIManager.swift; sourceTree = "<group>"; };
@@ -89,16 +91,13 @@
 		24C6D9491E44D09300C3365D /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				C001CE211E8CB7C100DAA710 /* API */,
 				C0C1C1731E6CC923005DE3B2 /* RemoteDevice.swift */,
 				C0C1C1741E6CC923005DE3B2 /* RemoteDeviceManager.swift */,
 				241C59CD1E81A94100BBF2B2 /* SysConstants.swift */,
-				C0C1C1711E6CC90F005DE3B2 /* RemoteAPIManager.swift */,
-				2484B3CA1E79E707000770E5 /* AppEngineManager.swift */,
 				5AD0608D1CAD96B100BD6930 /* Pin.swift */,
-				24C6D94C1E44D11D00C3365D /* SimpleHTTPRequest.swift */,
-				24C6D9501E44DC5000C3365D /* APIManager.swift */,
 				2447F0881E5E39E700EE1B69 /* MainUser.swift */,
-				C0C1C1771E6CFBF3005DE3B2 /* WebAPIManager.swift */,
+				C001CE221E8CB8A200DAA710 /* PinLayout.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -179,6 +178,18 @@
 				5AD060821CAD8E9800BD6930 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C001CE211E8CB7C100DAA710 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				C0C1C1711E6CC90F005DE3B2 /* RemoteAPIManager.swift */,
+				2484B3CA1E79E707000770E5 /* AppEngineManager.swift */,
+				24C6D94C1E44D11D00C3365D /* SimpleHTTPRequest.swift */,
+				24C6D9501E44DC5000C3365D /* APIManager.swift */,
+				C0C1C1771E6CFBF3005DE3B2 /* WebAPIManager.swift */,
+			);
+			name = API;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -300,6 +311,7 @@
 				5AD0608E1CAD96B100BD6930 /* Pin.swift in Sources */,
 				2484B3CB1E79E708000770E5 /* AppEngineManager.swift in Sources */,
 				24C6D94D1E44D11D00C3365D /* SimpleHTTPRequest.swift in Sources */,
+				C001CE231E8CB8A200DAA710 /* PinLayout.swift in Sources */,
 				C0C1C1721E6CC90F005DE3B2 /* RemoteAPIManager.swift in Sources */,
 				5AD0606E1CAD8E9800BD6930 /* AppDelegate.swift in Sources */,
 				C0C791311E62217200D94A13 /* DeviceTableViewCell.swift in Sources */,
