@@ -28,12 +28,12 @@ class Pin {
         }
     }
 
-    var id: Int
-    var name: String
-    var statusWhenHigh: String
-    var statusWhenLow: String
-    var type: Int
-    var value: Int
+    var id: Int!
+    var name: String!
+    var statusWhenHigh: String!
+    var statusWhenLow: String!
+    var type: Int!
+    var value: Int!
 
     init() {
         setupDefault()

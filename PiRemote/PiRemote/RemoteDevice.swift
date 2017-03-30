@@ -1,59 +1,49 @@
 //
-//  RemoteITDevice.swift
+//  RemoteDevice.swift
 //  PiRemote
 //
-//  Authors: Hunter Heard, Josh Binkley, Muhammad Martinez
+//  Authors: Muhammad Martinez
 //  Copyright (c) 2016 JLL Consulting. All rights reserved.
 //
 
 import Foundation
 
-import UIKit
-
-
-class RemoteDevice{
+class RemoteDevice: NSObject, NSCoding {
 
     // Descriptions can be found at http://docs.weaved.com/docs/devicelistall
-    var deviceAddress: String
-    var deviceAlias: String
-    var deviceLastip: String
-    var deviceState: String
-    var deviceType: String
-    var lastInternalip: String
-    var localUrl: String
-    var ownerUsername: String
-    var serviceTitle: String
-    var webEnabled: String
+    var apiData: [String: String]!
 
     // Local Variables
-    var layout: PinLayout
-    var shouldPersistState: Bool // Attempt to restore previous pin values on restart
+    var layout: PinLayout!
+    var shouldPersistState: Bool! // Attempt to restore previous pin values on restart
 
-    init() {
-        deviceAddress = ""
-        deviceAlias = ""
-        deviceLastip = ""
-        deviceState = ""
-        deviceType = ""
-        lastInternalip = ""
-        localUrl = ""
-        ownerUsername = ""
-        serviceTitle = ""
-        webEnabled = "0" // = false
-        layout = PinLayout()
+    override init() {
+        super.init()
+    }
+
+    required init(coder decoder: NSCoder) {
+        self.apiData = decoder.decodeObject(forKey: "apiData") as! [String:String]
+        self.layout = decoder.decodeObject(forKey: "layout") as! PinLayout
+        self.shouldPersistState = decoder.decodeObject(forKey: "shouldPersistState") as! Bool
     }
 
     init(deviceData: NSDictionary) {
-        deviceAddress = deviceData["deviceaddress"] as! String
-        deviceAlias = deviceData["devicealias"] as! String
-        deviceLastip = deviceData["devicelastip"] as! String
-        deviceState = deviceData["devicestate"] as! String
-        deviceType = deviceData["devicetype"] as! String
-        lastInternalip = deviceData["lastinternalip"] as! String
-        localUrl = deviceData["localurl"] as! String
-        ownerUsername = deviceData["ownerusername"] as! String
-        serviceTitle = deviceData["servicetitle"] as! String
-        webEnabled = deviceData["webenabled"] as! String
+        self.apiData = [String: String]()
+        self.apiData["deviceAddress"] = deviceData["deviceaddress"] as? String
+        self.apiData["deviceAlias"] = deviceData["devicealias"] as? String
+        self.apiData["deviceLastip"] = deviceData["devicelastip"] as? String
+        self.apiData["deviceState"] = deviceData["devicestate"] as? String
+        self.apiData["deviceType"] = deviceData["devicetype"] as? String
+        self.apiData["lastInternalIP"] = deviceData["lastinternalip"] as? String
+        self.apiData["localUrl"] = deviceData["localurl"] as? String
+        self.apiData["ownerUsername"] = deviceData["ownerusername"] as? String
+        self.apiData["serviceTitle"] = deviceData["servicetitle"] as? String
+        self.apiData["webEnabled"] = deviceData["webenabled"] as? String
+    }
+
+    func encode(with coder: NSCoder) {
+        coder.encode(apiData, forKey: "apiData")
+        coder.encode(layout, forKey: "layout")
+        coder.encode(shouldPersistState, forKey: "shouldPersistState")
     }
 }
-
