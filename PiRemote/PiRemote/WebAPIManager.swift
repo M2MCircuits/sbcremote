@@ -23,7 +23,7 @@ class WebAPIManager {
         // public networks possibly due to their added security.
         //
         // Details: http://superuser.com/questions/284051/what-is-port-forwarding-and-what-is-it-used-for
-        let deviceIP = MainUser.sharedInstance.currentDevice?.apiData["deviceLastIP"]
+        let deviceIP = MainUser.sharedInstance.currentDevice?.deviceLastip
 
         // This is the default port number used by webiopi.
         // TODO: Allow user to specifiy custom port number

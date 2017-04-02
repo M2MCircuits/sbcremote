@@ -18,7 +18,7 @@ class RemoteDeviceManager{
         let devices = data["devices"] as! NSArray
         for deviceData in devices{
             let device = RemoteDevice(deviceData: deviceData as! NSDictionary)
-            if device.apiData["serviceTitle"] == "SSH"{
+            if device.serviceTitle == "SSH"{
                 SSHdeviceStorage.append(device)
             }else{
                 deviceStorage.append(device)

@@ -23,7 +23,7 @@ class AppEngineManager {
         let jsonBody = ["email" : user.email!,
                         ]
         // Warning. BaseURL is not valid.
-        let url = AppEngineConstants.BaseURL + "/account/" + device.apiData["deviceAddress"]!
+        let url = AppEngineConstants.BaseURL + "/account/" + device.deviceAddress
         self.api.postRequest(url: url, extraHeaderFields: nil, payload: jsonBody as [String : AnyObject]?) { (data) in
             guard data != nil else{
                 completion(false)

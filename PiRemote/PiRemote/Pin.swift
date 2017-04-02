@@ -2,75 +2,173 @@
 //  Pin.swift
 //  PiRemote
 //
-//  Authors: Muhammad Martinez
-//  Copyright (c) 2017 JLL Consulting. All rights reserved.
+//  Authors: Hunter Heard, Josh Binkley
+//  Copyright (c) 2016 JLL Consulting. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
 
 class Pin {
+    
+    // MARK: Properties
+    
+    //Each pin needs the following
+    // Type: Control, Monitor, or Ignore
+    // Name
+    // Name of High
+    // Name of Low
+    
+    var name: String
+    
+    var Hname: String
+    var Lname: String
+    var stateName: String
+    var type: Int
+    var gpioNumber: Int
 
-    // Types
-    static let IGNORE = 0
-    static let CONTROL = 1
-    static let MONITOR = 2
+    //false = IN, true = OUT
+    var function: String
 
-    var _function: String = "IN"
-    var function: String {
-        get {
-            return _function
+    // TODO: Based on old MyTabBarController code, omit pins 0, 1, 14, 15, 27+ and set type to 0.
+    var isGPIO: Bool
+
+    //type 0: Ignore
+    //type 1: Control
+    //type 2: Monitor
+
+    var on: Bool
+    
+    
+    // MARK: Initialization
+    
+    init(name: String, Hname: String, Lname: String, type: Int) {
+        
+        self.name = name;
+        self.Hname = Hname;
+        self.Lname = Lname;
+        self.type = type;
+        self.stateName = Lname;
+        self.function = "IN";
+        self.isGPIO = false;
+        self.gpioNumber = -1;
+        
+        if(type == 1)
+        {
+            self.function = "OUT";
         }
-        set (newVal) {
-            if type != Pin.IGNORE {
-                type = newVal == "IN" ? Pin.MONITOR : Pin.CONTROL
-                _function = newVal
+        
+        self.on = false;
+    }
+    
+    init() {
+        
+        self.name = "label";
+        self.Hname = "On";
+        self.Lname = "Off";
+        self.type = 0;
+        self.stateName = "Off";
+        self.function = "IN";
+        self.isGPIO = false;
+        self.on = false;
+        self.gpioNumber = -1;
+        
+    }
+    
+    func changeFunction(_ newF: String)
+    {
+        function = newF;
+        
+        if(type != 0)
+        {
+            if(function == "OUT")
+            {
+                type = 1;
+            }
+            else
+            {
+                type = 2;
             }
         }
     }
 
-    var id: Int!
-    var name: String!
-    var statusWhenHigh: String!
-    var statusWhenLow: String!
-    var type: Int!
-    var value: Int!
+    func changeState()
+    {
+        if(on)
+        {
+            on = false;
+            stateName = Lname;
+            return;
+        }
+        
+        on = true;
+        stateName = Hname;
+        return;
+    }
+    
+    func setFromData(_ data: [String: AnyObject]) -> Pin
+    {
+        function = data["function"] as! String;
+        on = data["value"] as! Bool;
+        stateName = on ? Hname : Lname;
 
-    init() {
-        setupDefault()
+        if(function == "IN") { 
+            type = 2
+        } else if(function == "OUT") {
+            type = 1
+        } else {
+            type = 0
+        }
+
+        return self
+    }
+    
+    func changeType()
+    {
+        type = type + 1;
+        
+        if(type > 2)
+        {
+            type = 1;
+        }
+        
+        function = type == 1 ? "OUT" : "IN";
+    }
+    
+    func setName(_ newName: String)
+    {
+        name = newName;
+    }
+    
+    func setHname(_ newName: String)
+    {
+        Hname = newName;
+    }
+    
+    func setLname(_ newName: String)
+    {
+        Lname = newName;
     }
 
-    init(id: Int, apiData: [String: AnyObject]) {
-        setupDefault()
-
-        self.id = id
-
-        function = apiData["function"] as! String
-        value = apiData["value"] as! Int
-
-        // Monitor pins be default
-        type = function == "IN" ? Pin.MONITOR : Pin.CONTROL
+    func setGPIONumber(_ newNumber: Int) -> Pin {
+        gpioNumber = newNumber;
+        return self
     }
-
-    func setupDefault() {
-        id = 0
-        name = "label"
-        statusWhenHigh = "On"
-        statusWhenLow = "Off"
-        type = Pin.IGNORE
-        value = 0
-
-        function = type == Pin.CONTROL ? "OUT" : "IN"
+    
+    
+    class func getEmpty() -> [Pin]
+    {
+        var pins = [Pin]();
+        
+        var p = Pin(name: "label", Hname: "On", Lname: "Off", type: 0);
+        
+        for _ in 1...28
+        {
+            p = Pin(name: "label", Hname: "On", Lname: "Off", type: 0);//without this line, pins will be an array full of references to the same one pin
+            pins += [p];
+        }
+        
+        return pins;
     }
-
-    func isGPIO() -> Bool {
-        // TODO: Add Pi Zero
-
-        // not GPIO on Pi B Rev 1, Pi A/B Rev 2
-        _ = [1, 2, 4, 6, 9, 14, 17, 20, 25] // piOneOrTwo
-        // not GPIO on Pi B+
-        let piThree = [1, 2, 4, 6, 9, 14, 17, 20, 25, 27, 28, 30, 34, 39]
-
-        // TODO: Handle other models
-        return !piThree.contains(id)
-    }
+    
 }
