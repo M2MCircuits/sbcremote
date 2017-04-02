@@ -22,17 +22,16 @@
 		5AD060901CAD9E7700BD6930 /* PinTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD0608F1CAD9E7700BD6930 /* PinTableViewCell.swift */; };
 		C001CE231E8CB8A200DAA710 /* PinLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C001CE221E8CB8A200DAA710 /* PinLayout.swift */; };
 		C02614181E86EC71002B725F /* WebLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02614171E86EC71002B725F /* WebLoginViewController.swift */; };
-		C026141A1E86F016002B725F /* SegueTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02614191E86F016002B725F /* SegueTypes.swift */; };
+		C0287E601E90B367009D4578 /* DeviceSetup.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0287E5F1E90B367009D4578 /* DeviceSetup.storyboard */; };
 		C0626AEF1E63A9BE00B9A84F /* DeviceSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0626AEE1E63A9BE00B9A84F /* DeviceSetupViewController.swift */; };
 		C0626AF11E63C26300B9A84F /* DeviceDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0626AF01E63C26300B9A84F /* DeviceDetailsViewController.swift */; };
+		C08665A51E9137EA002A106D /* PopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08665A41E9137EA002A106D /* PopoverViewController.swift */; };
 		C0C1C1721E6CC90F005DE3B2 /* RemoteAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C1C1711E6CC90F005DE3B2 /* RemoteAPIManager.swift */; };
 		C0C1C1751E6CC923005DE3B2 /* RemoteDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C1C1731E6CC923005DE3B2 /* RemoteDevice.swift */; };
 		C0C1C1761E6CC923005DE3B2 /* RemoteDeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C1C1741E6CC923005DE3B2 /* RemoteDeviceManager.swift */; };
 		C0C1C1781E6CFBF3005DE3B2 /* WebAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C1C1771E6CFBF3005DE3B2 /* WebAPIManager.swift */; };
 		C0C7912F1E6215AC00D94A13 /* DevicesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C7912E1E6215AC00D94A13 /* DevicesTableViewController.swift */; };
 		C0C791311E62217200D94A13 /* DeviceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C791301E62217200D94A13 /* DeviceTableViewCell.swift */; };
-		C0D323471E8B7938005ADAA2 /* PinSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D323461E8B7938005ADAA2 /* PinSettingsView.swift */; };
-		C0D323491E8B795B005ADAA2 /* PinSettingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0D323481E8B795B005ADAA2 /* PinSettingsView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,17 +65,16 @@
 		5AD0608F1CAD9E7700BD6930 /* PinTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinTableViewCell.swift; sourceTree = "<group>"; };
 		C001CE221E8CB8A200DAA710 /* PinLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinLayout.swift; sourceTree = "<group>"; };
 		C02614171E86EC71002B725F /* WebLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebLoginViewController.swift; sourceTree = "<group>"; };
-		C02614191E86F016002B725F /* SegueTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueTypes.swift; sourceTree = "<group>"; };
+		C0287E5F1E90B367009D4578 /* DeviceSetup.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = DeviceSetup.storyboard; path = ../DeviceSetup.storyboard; sourceTree = "<group>"; };
 		C0626AEE1E63A9BE00B9A84F /* DeviceSetupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceSetupViewController.swift; sourceTree = "<group>"; };
 		C0626AF01E63C26300B9A84F /* DeviceDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceDetailsViewController.swift; sourceTree = "<group>"; };
+		C08665A41E9137EA002A106D /* PopoverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverViewController.swift; sourceTree = "<group>"; };
 		C0C1C1711E6CC90F005DE3B2 /* RemoteAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteAPIManager.swift; sourceTree = "<group>"; };
 		C0C1C1731E6CC923005DE3B2 /* RemoteDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteDevice.swift; sourceTree = "<group>"; };
 		C0C1C1741E6CC923005DE3B2 /* RemoteDeviceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteDeviceManager.swift; sourceTree = "<group>"; };
 		C0C1C1771E6CFBF3005DE3B2 /* WebAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebAPIManager.swift; sourceTree = "<group>"; };
 		C0C7912E1E6215AC00D94A13 /* DevicesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevicesTableViewController.swift; sourceTree = "<group>"; };
 		C0C791301E62217200D94A13 /* DeviceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceTableViewCell.swift; sourceTree = "<group>"; };
-		C0D323461E8B7938005ADAA2 /* PinSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinSettingsView.swift; sourceTree = "<group>"; };
-		C0D323481E8B795B005ADAA2 /* PinSettingsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PinSettingsView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,8 +105,6 @@
 				5AD0608D1CAD96B100BD6930 /* Pin.swift */,
 				2447F0881E5E39E700EE1B69 /* MainUser.swift */,
 				C001CE221E8CB8A200DAA710 /* PinLayout.swift */,
-				C0C1C1771E6CFBF3005DE3B2 /* WebAPIManager.swift */,
-				C02614191E86F016002B725F /* SegueTypes.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -118,8 +114,6 @@
 			children = (
 				5AD0608F1CAD9E7700BD6930 /* PinTableViewCell.swift */,
 				C0C791301E62217200D94A13 /* DeviceTableViewCell.swift */,
-				C0D323461E8B7938005ADAA2 /* PinSettingsView.swift */,
-				C0D323481E8B795B005ADAA2 /* PinSettingsView.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -132,6 +126,7 @@
 				C0626AEE1E63A9BE00B9A84F /* DeviceSetupViewController.swift */,
 				C0626AF01E63C26300B9A84F /* DeviceDetailsViewController.swift */,
 				C02614171E86EC71002B725F /* WebLoginViewController.swift */,
+				C08665A41E9137EA002A106D /* PopoverViewController.swift */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -163,6 +158,7 @@
 				24C6D94A1E44D09B00C3365D /* View */,
 				24C6D9491E44D09300C3365D /* Model */,
 				5AD060711CAD8E9800BD6930 /* Main.storyboard */,
+				C0287E5F1E90B367009D4578 /* DeviceSetup.storyboard */,
 				5AD060741CAD8E9800BD6930 /* Images.xcassets */,
 				5AD060761CAD8E9800BD6930 /* LaunchScreen.xib */,
 				5AD0606B1CAD8E9800BD6930 /* Supporting Files */,
@@ -198,11 +194,11 @@
 		C001CE211E8CB7C100DAA710 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				C0C1C1771E6CFBF3005DE3B2 /* WebAPIManager.swift */,
 				C0C1C1711E6CC90F005DE3B2 /* RemoteAPIManager.swift */,
 				2484B3CA1E79E707000770E5 /* AppEngineManager.swift */,
 				24C6D94C1E44D11D00C3365D /* SimpleHTTPRequest.swift */,
 				24C6D9501E44DC5000C3365D /* APIManager.swift */,
-				C0C1C1771E6CFBF3005DE3B2 /* WebAPIManager.swift */,
 			);
 			name = API;
 			sourceTree = "<group>";
@@ -301,10 +297,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C0D323491E8B795B005ADAA2 /* PinSettingsView.xib in Resources */,
 				5AD060731CAD8E9800BD6930 /* Main.storyboard in Resources */,
 				5AD060781CAD8E9800BD6930 /* LaunchScreen.xib in Resources */,
 				5AD060751CAD8E9800BD6930 /* Images.xcassets in Resources */,
+				C0287E601E90B367009D4578 /* DeviceSetup.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,10 +333,9 @@
 				5AD060901CAD9E7700BD6930 /* PinTableViewCell.swift in Sources */,
 				C0626AEF1E63A9BE00B9A84F /* DeviceSetupViewController.swift in Sources */,
 				241C59CE1E81A94100BBF2B2 /* SysConstants.swift in Sources */,
-				C0D323471E8B7938005ADAA2 /* PinSettingsView.swift in Sources */,
 				2447F0891E5E39E800EE1B69 /* MainUser.swift in Sources */,
+				C08665A51E9137EA002A106D /* PopoverViewController.swift in Sources */,
 				5A279FD01CBFE60800272E05 /* LoginViewController.swift in Sources */,
-				C026141A1E86F016002B725F /* SegueTypes.swift in Sources */,
 				C0C1C1761E6CC923005DE3B2 /* RemoteDeviceManager.swift in Sources */,
 				C0C1C1751E6CC923005DE3B2 /* RemoteDevice.swift in Sources */,
 			);

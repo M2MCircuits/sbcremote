@@ -8,41 +8,31 @@
 
 import UIKit
 
+// TODO: Handle different pi models. Currently supports Pi 3
 class DeviceSetupViewController: UIViewController,
-    UIPickerViewDataSource,
-    UIPickerViewDelegate,
-    UIPopoverPresentationControllerDelegate,
-    UIScrollViewDelegate {
+UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDelegate, UIScrollViewDelegate {
 
     @IBOutlet weak var devicePicker: UIPickerView!
     @IBOutlet weak var scrollView: UIScrollView!
 
     // Local Variables
-    var currentPin: Int!
     var currentImageView: UIImageView!
-    var pinSetupView: PinSettingsView!
+    var currentLayout: PinLayout!
+    var currentPin: Int!
+    var popoverView: UIViewController!
 
-    // TODO: Add configurations for different pi models
-//    let pickerData = [
-//        "Raspberry Pi 1 Model A",
-//        "Raspberry Pi 1 Model B",
-//        "Raspberry Pi 1 Model B+",
-//        "Raspberry Pi 2",
-//        "Raspberry Pi 3 Model B",
-//        "Raspberry Pi Zero W",
-//        "Raspberry Pi Zero"
-//    ]
-
-    let pickerData = ["Raspberry Pi 3 Model B"]
+    let pickerOptions = [
+        DeviceTypes.rPi3
+    ].self
 
     override func viewDidLoad() {
-        super.viewDidLoad();
+        super.viewDidLoad()
 
         currentPin = -1
 
         // Additional navigation setup
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(DeviceSetupViewController.onCancel))
-        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(DeviceSetupViewController.onSaveChanges))
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(DeviceSetupViewController.onLeave))
+        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(DeviceSetupViewController.onSetDeviceSettings))
 
         self.navigationItem.leftBarButtonItem = cancelButton
         self.navigationItem.rightBarButtonItem = doneButton
@@ -59,10 +49,6 @@ class DeviceSetupViewController: UIViewController,
         devicePicker.dataSource = self
         devicePicker.delegate = self
 
-        let nib = Bundle.main.loadNibNamed("PinSettingsView", owner: self, options: nil)
-        pinSetupView = nib!.first as! PinSettingsView
-        (pinSetupView as UIView).isHidden = true
-
         let paddedWidth = currentImageView.bounds.width + 256
 
         scrollView.autoresizingMask = UIViewAutoresizing.flexibleHeight
@@ -72,6 +58,14 @@ class DeviceSetupViewController: UIViewController,
         scrollView.delegate = self
 
         scrollView.addSubview(currentImageView)
+
+        // Add listeners for notifications from popovers
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleApplyLayout), name: NotificationNames.apply, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleClearLayout), name: NotificationNames.clear, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleShowPinDiagram), name: NotificationNames.diagram, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleSetWebLogin), name: NotificationNames.login, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleSaveLayout), name: NotificationNames.save, object: nil)
+
         // Build out GPIO UI
         buildScrollView()
     }
@@ -82,18 +76,43 @@ class DeviceSetupViewController: UIViewController,
         scrollView!.setZoomScale(1.0, animated: true)
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destination = segue.destination
+        var contentSize: CGSize!
+        var sourceRect: CGRect!
+
+        switch segue.identifier! {
+        case SegueTypes.idToPopoverApply:
+            contentSize = CGSize(width: 360, height: 400)
+        case SegueTypes.idToPopoverSave:
+            contentSize = CGSize(width: 360, height: 200)
+        case SegueTypes.idToPopoverClear:
+            contentSize = CGSize(width: 360, height: 200)
+        case SegueTypes.idToPopoverDiagram:
+            contentSize = CGSize(width: 360, height: 700)
+        case SegueTypes.idToPopoverLogin:
+            contentSize = CGSize(width: 320, height: 320)
+        case SegueTypes.idToPinSettings:
+            contentSize = CGSize(width: 150, height: 250)
+            sourceRect = CGRect(origin: CGPoint(x: 300, y: 0), size: destination.view.bounds.size)
+        default: break
+        }
+        _ = PopoverViewController.buildPopover(
+                source: self, content: destination, contentSize: contentSize, sourceRect: sourceRect)
+    }
+
     // UIPickerViewDataSource Functions
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return pickerData.count
+        return pickerOptions.count
     }
 
     // UIPickerViewDelegate Functions
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return pickerData[row]
+        return pickerOptions[row]
     }
 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -105,58 +124,28 @@ class DeviceSetupViewController: UIViewController,
         return currentImageView
     }
 
-
     // Local Functions
-    @IBAction func onSetWebLogin(_ sender: Any) {
-        // Get a reference to the view controller for the popover
-        let content = storyboard?.instantiateViewController(withIdentifier: "WEB_DIALOG")
-        (content  as! WebLoginViewController).onLoginSuccess = {() -> () in
-            self.performSegue(withIdentifier: SegueTypes.idToDeviceDetails, sender: nil)
-        }
-        _ = buildPopoverView(for: content!)
-        self.present(content!, animated: true, completion: nil)
+    func handleApplyLayout() {
+        print("APPLY")
     }
 
-    func onSaveChanges(sender: UIButton!) {
-        // TODO: Implement saving the layout
-        self.dismiss(animated: true, completion: nil)
+    func handleClearLayout() {
+        print("CLEAR")
     }
 
-    func onCancel(sender: UIButton!) {
-        self.dismiss(animated: true, completion: nil)
+    func handleSaveLayout() {
+        print("SAVE")
     }
 
-    // Prevents popover from changing style based on the iOS device
-    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
-        return UIModalPresentationStyle.none
+    func handleSetWebLogin() {
+        print("WEBIOPI")
     }
 
-    // TODO: Handle duplicate code in DevicesTableViewController.swift
-    func buildPopoverView(
-        for controller: UIViewController,
-        direction: UIPopoverArrowDirection? = .up,
-        position: CGPoint? = nil) -> UIPopoverPresentationController {
-        controller.modalPresentationStyle = .popover
-
-        // Container for the content
-        let popover = controller.popoverPresentationController
-        popover?.delegate = self
-        popover?.sourceView = self.view
-        popover?.permittedArrowDirections = direction!
-
-        // TODO: Center popover based on device
-
-        // Set size based on controller
-        if (type(of: controller) == WebLoginViewController.self) {
-            popover?.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 360, height: 420)
-        }
-
-        return popover!
+    func handleShowPinDiagram() {
+        print("DIAGRAM")
     }
 
     func buildScrollView() {
-        // Positions do not change based on device...?
-
         let btnWidth = 28
         let btnHeight = 25
         var isEven: Bool
@@ -164,6 +153,7 @@ class DeviceSetupViewController: UIViewController,
         var x, y: Int
 
         for i in 1...40 {
+            // Positions with respect to image
             isEven = i % 2 == 0
             x = isEven ? 710 + btnWidth + 4 : 710
             y = (btnHeight + 8) * ((i - 1) / 2) + 208
@@ -176,34 +166,24 @@ class DeviceSetupViewController: UIViewController,
             pinButton.setTitleColor(UIColor.yellow, for: UIControlState.normal)
 
             let singleTap = UITapGestureRecognizer(target: self, action: #selector(DeviceSetupViewController.onTouchTap))
-//          let pan = UIPanGestureRecognizer(target: self, action: #selector(DeviceSetupViewController.onPanOver))
 
             scrollView.addGestureRecognizer(singleTap)
-//          scrollView.addGestureRecognizer(pan)
 
             currentImageView.addSubview(pinButton)
         }
     }
 
-//    func onPanOver(gesture: UIPanGestureRecognizer) {
-//        let touchPoint = gesture.location(in: scrollView) as CGPoint
-//        print("panning over \(touchPoint)")
-//    }
+    func onLeave(sender: UIButton!) {
+        self.dismiss(animated: true, completion: nil)
+    }
+
+    func onSetDeviceSettings(sender: UIButton!) {
+        // TODO: Implement saving the layout
+        onLeave(sender: sender!)
+    }
 
     func onTouchTap(gesture: UITapGestureRecognizer) {
         let touch = gesture.location(in: scrollView) as CGPoint
-
-
-        /*
-         * X 1. Identify pin being touched
-         * X 2. Build pin settings popover
-         * 3. Show popover dynamically
-         * 4. Save changes on touch outside
-         * 5. Update UI to show new pin type, value, and name
-         */
-
-        // 2
-
         let selection = self.currentImageView.subviews.first(where: {child in
             guard (child is UIButton) else { return false }
             return child.frame.contains(touch)
@@ -213,20 +193,26 @@ class DeviceSetupViewController: UIViewController,
             // Identify pin being touched
             let pinNumber = Int(((selection as! UIButton).titleLabel?.text)!)
             _ = pinNumber! % 2 == 0 // TODO: Use isEven
+            let offset = CGSize(width: -64, height: -112)
 
-            // Update pin settings dialog
-            self.pinSetupView.frame = CGRect(x: touch.x, y: touch.y, width: 128, height: 224)
-            self.pinSetupView.isHidden = false
-            self.pinSetupView.header.text = "Pin #\(pinNumber!)"
+            performSegue(withIdentifier: SegueTypes.idToPinSettings, sender: pinNumber)
 
-
-        } else {
-            // Case where nothings selected
-            self.pinSetupView.isHidden = true
+            // Scroll over to pin
+            goToPoint(point: CGPoint(x: touch.x + offset.width, y: touch.y + offset.height))
         }
-
-        // View gets reused
-        self.currentImageView.addSubview(pinSetupView)
+    }
+    
+    // Prevents popover from changing style based on the iOS device
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
     }
 
+    // TODO: Tweak for a smoother movement
+    func goToPoint(point: CGPoint) {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.25, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                self.scrollView.contentOffset = point
+            }, completion: nil)
+        }
+    }
 }

@@ -78,25 +78,11 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
     // UITableViewDelegate Functions
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         let allDevices = sshDevices + nonSshDevices
+        let vc = PopoverViewController.buildContentLogin(source: self)
+
         MainUser.sharedInstance.currentDevice = allDevices[indexPath.row]
+        self.present(vc, animated: true, completion: nil)
 
-        // Get a reference to the view controller for the popover
-        let content = storyboard?.instantiateViewController(withIdentifier: "WEB_DIALOG") as! WebLoginViewController
-        content.modalPresentationStyle = .popover
-        content.onLoginSuccess = {() -> () in
-            self.performSegue(withIdentifier: SegueTypes.idToDeviceDetails, sender: nil)
-        }
-
-        // Container for the content
-        let popover = content.popoverPresentationController
-        popover?.delegate = self
-        popover?.permittedArrowDirections = .up
-        popover?.sourceView = self.view
-        // TODO: Center popover based on device
-        popover?.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 360, height: 420)
-
-        self.present(content, animated: true, completion: nil)
-        
         return indexPath
     }
 
