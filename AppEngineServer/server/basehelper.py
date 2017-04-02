@@ -49,11 +49,11 @@ class MainHelperClass(webapp2.RequestHandler):
 
 
 
-    def sendAPN(self, alert, token, customdata):
+    def sendAPN(self, alert, phone_token, customdata):
         logging.info("APN getting setup..")
-        apns = APNs(use_sandbox=False, cert_file=cert_path, key_file=key_path)
+        apns = APNs(use_sandbox=True, cert_file="pimote-cert.pem", key_file="pimote-key.pem")
         payload = Payload(alert=alert, custom={'data': customdata}, sound="default", badge=0, content_available = True)
-        apns.gateway_server.send_notification(token, payload)
+        apns.gateway_server.send_notification(phone_token, payload)
         logging.info("APN sucessfully sent.")
 
 
