@@ -51,7 +51,7 @@ class DevicesTableViewController: UITableViewController {
         }
 
         let allDevices = sshDevices + nonSshDevices
-        cell.deviceName.text = allDevices[indexPath.row].deviceAlias
+        cell.deviceName.text = allDevices[indexPath.row].apiData["deviceAlias"]
         return cell
     }
 

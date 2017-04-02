@@ -21,7 +21,7 @@ class DeviceDetailViewController: UIViewController, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        deviceNameLabel.text = MainUser.sharedInstance.currentDevice?.deviceAlias
+        deviceNameLabel.text = MainUser.sharedInstance.currentDevice?.apiData["deviceAlias"]
         pinConfig? = ["SPI0": 0]
         pins = [0: Pin()]
         webiopi = WebAPIManager()
@@ -39,9 +39,9 @@ class DeviceDetailViewController: UIViewController, UITableViewDataSource {
             data in
                 print("[DEBUG] Response received for /*")
                 if (data != nil) {
-                    for (gpioNumber, gpioData) in data!["GPIO"] as! [String: [String:AnyObject]] {
-                        let i = Int(gpioNumber)!
-                        let pin = Pin().setGPIONumber(i).setFromData(gpioData)
+                    for (pinId, pinData) in data!["GPIO"] as! [String: [String:AnyObject]] {
+                        let i = Int(pinId)!
+                        let pin = Pin(id: i, apiData: pinData)
                         self.pins[i] = pin
                     }
                     self.pinTable.reloadData()
@@ -50,7 +50,7 @@ class DeviceDetailViewController: UIViewController, UITableViewDataSource {
     }
 
     @IBAction func onToggleSwitch(_ sender: UISwitch) {
-        let pinNumber = pins[sender.tag]?.gpioNumber
+        let pinNumber = pins[sender.tag]?.id
         let pinValue = sender.isOn ? "IN" : "OUT"
         webiopi.setFunction(gpioNumber: pinNumber!, functionType: pinValue, callback: {
                 newFunction in
@@ -70,7 +70,7 @@ class DeviceDetailViewController: UIViewController, UITableViewDataSource {
 
         cell.nameLabel.text = pins[i]?.name
         cell.numberLabel.text = String(i)
-        cell.statusSwitch.isOn = (pins[i]?.on)!
+        cell.statusSwitch.isOn = (pins[i]?.value == 1)
         cell.statusSwitch.tag = indexPath.row
         cell.typeLabel.text = pins[i]?.function
 

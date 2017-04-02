@@ -8,9 +8,7 @@
 
 import Foundation
 
-
-
-class MainUser{
+class MainUser {
     
     static let sharedInstance = MainUser()
    
@@ -21,8 +19,9 @@ class MainUser{
     var apiKey: String?
     var token: String?
     var currentDevice: RemoteDevice?
+    var layouts: [PinLayout]?
 
-    func getUserInformationFromResponse(dictionary : NSDictionary){
+    func getUserInformationFromResponse(dictionary : NSDictionary) {
         self.email = dictionary["email"] as? String
         self.apiKey = dictionary["apiKey"] as? String
         self.token = dictionary["token"] as? String
