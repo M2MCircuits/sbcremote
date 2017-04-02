@@ -4,6 +4,7 @@
 
 #App Engine Configs
 *.pyc
+*.pem
 
 # Xcode per-user config
 *.mode1

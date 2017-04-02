@@ -47,6 +47,7 @@
 		2484B3CA1E79E707000770E5 /* AppEngineManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppEngineManager.swift; sourceTree = "<group>"; };
 		24C6D94C1E44D11D00C3365D /* SimpleHTTPRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleHTTPRequest.swift; sourceTree = "<group>"; };
 		24C6D9501E44DC5000C3365D /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
+		24CB583C1E90875D001A7F15 /* PiPremote.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PiPremote.entitlements; sourceTree = "<group>"; };
 		5A279FCF1CBFE60800272E05 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LoginViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5AD060681CAD8E9800BD6930 /* PiPremote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PiPremote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AD0606C1CAD8E9800BD6930 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -143,6 +144,7 @@
 		5AD0606A1CAD8E9800BD6930 /* PiRemote */ = {
 			isa = PBXGroup;
 			children = (
+				24CB583C1E90875D001A7F15 /* PiPremote.entitlements */,
 				5AD0606D1CAD8E9800BD6930 /* AppDelegate.swift */,
 				24C6D94B1E44D0A300C3365D /* ViewController */,
 				24C6D94A1E44D09B00C3365D /* View */,
@@ -384,7 +386,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Victor Anyirah (7WRVDVC96P)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Victor Anyirah (7WRVDVC96P)";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -456,13 +459,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Josh Binkley (9WG9SV5LN5)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Josh Binkley (9WG9SV5LN5)";
+				CODE_SIGN_ENTITLEMENTS = PiRemote/PiPremote.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Victor Anyirah (7WRVDVC96P)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Victor Anyirah (7WRVDVC96P)";
+				DEVELOPMENT_TEAM = P3H85LZ522;
 				INFOPLIST_FILE = PiRemote/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.m2mcircuits.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.m2mcircuits.piremote;
 				PRODUCT_NAME = PiPremote;
+				PROVISIONING_PROFILE = "4df6c674-d178-4ae1-b25b-e7521f13535d";
+				PROVISIONING_PROFILE_SPECIFIER = PiRemoteDevelopment;
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -472,12 +479,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Josh Binkley (9WG9SV5LN5)";
+				CODE_SIGN_ENTITLEMENTS = PiRemote/PiPremote.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Victor Anyirah (7WRVDVC96P)";
+				DEVELOPMENT_TEAM = P3H85LZ522;
 				INFOPLIST_FILE = PiRemote/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.m2mcircuits.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.m2mcircuits.piremote;
 				PRODUCT_NAME = PiPremote;
+				PROVISIONING_PROFILE = "4df6c674-d178-4ae1-b25b-e7521f13535d";
+				PROVISIONING_PROFILE_SPECIFIER = PiRemoteDevelopment;
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

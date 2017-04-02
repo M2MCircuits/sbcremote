@@ -25,12 +25,15 @@ class MainHandler(webapp2.RequestHandler):
 class APNSHandler(MainHelperClass):
 	def post(self, serviceID):
 		account = self.validateAccount(serviceID)
-		if account:
+		body = self.jsonifyRequestBody()
+		pin = body["pin"]
+		if account and pin:
 			for phone_token in account.token:
-				self.sendAPN("Testing", token, None)
+				pin_data = {"pin" : pin}
+				self.sendAPN("Something's Up!", phone_token, pin_data)
 			self.writeResponse("You just hit the APNS endpoint. Your serviceID is " + serviceID)
 		else:
-			self.writeResponse("Invalid serviceID")
+			self.writeErrorResponse("Invalid serviceID or no pin provided")
 
 	def get(self, serviceID):
 		account = self.validateAccount(serviceID)
@@ -39,7 +42,7 @@ class APNSHandler(MainHelperClass):
 				self.sendAPN("Testing", token, None)
 			self.writeResponse("You just hit the APNS endpoint. Your serviceID is " + serviceID)
 		else:
-			self.writeResponse("Invalid serviceID")
+			self.writeErrorResponse("Invalid serviceID")
 
 
 class AccountHandler(MainHelperClass):
@@ -64,7 +67,7 @@ class AccountHandler(MainHelperClass):
 		data = json_req["data"]
 		accountExists = self.validateAccount(serviceID)
 		if accountExists:
-			self.writeErrorResponse("data", "Account already exists")
+			self.writeErrorResponse("Account already exists")
 			return
 		acc = Account()
 		try:
@@ -93,7 +96,7 @@ class APNPhoneTokenHandler(MainHelperClass):
 			# Best we can do as the Pi can only hold it's address for security purposes.
             acc.phone_token += parsed_token
             acc.put()
-        self.writeSucessfulResponse("info", "Sucess, user token has been inputed.")
+        self.writeSucessfulResponse("data", "Sucess, user token has been inputed.")
 
     def parseToken(self, token):
     	if not token:
@@ -102,10 +105,16 @@ class APNPhoneTokenHandler(MainHelperClass):
         endString = startString.replace(" ", "")
         return endString
 
+class APNTest(MainHelperClass):
+	def get(self, token):
+		self.sendAPN("Hello World", token, None)
+
+
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
-    ('/apn/(\S*)', APNSHandler),
+    ('/apns/(\S*)', APNSHandler),
     ('/account/(\S*)', AccountHandler),
-    ('/token/(\S*)', APNPhoneTokenHandler)
+    ('/token/(\S*)', APNPhoneTokenHandler),
+    ('/apnstest/(\S*)', APNTest)
 ], debug=True)

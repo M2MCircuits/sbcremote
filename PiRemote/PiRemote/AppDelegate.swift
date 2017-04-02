@@ -82,14 +82,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     //get the device token if the user allowed notifications
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        let tokenChars = (deviceToken as NSData).bytes.bindMemory(to: CChar.self, capacity: deviceToken.count)
-        var tokenString = ""
+        let deviceTokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
 
-        for i in 0..<deviceToken.count {
-            tokenString += String(format: "%02.2hhx", arguments: [tokenChars[i]])
+        print("Device Token: " + deviceTokenString)
+        let appManager = AppEngineManager()
+        appManager.registerPhoneToken(phoneToken: deviceToken) { (sucess) in
+            if sucess{
+                print("Suceeded in registering phone token")
+            }
+            else{
+                print("Failed to register phone token")
+            }
         }
-
-        print("Device Token:", tokenString)
     }
     //otherwise display an error
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
