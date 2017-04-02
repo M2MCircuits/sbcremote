@@ -10,6 +10,8 @@ import Foundation
 
 class RemoteDevice: NSObject, NSCoding {
 
+    
+
     // Descriptions can be found at http://docs.weaved.com/docs/devicelistall
     var apiData: [String: String]!
 
@@ -33,7 +35,7 @@ class RemoteDevice: NSObject, NSCoding {
         self.apiData = [String: String]()
         self.apiData["deviceAddress"] = deviceData["deviceaddress"] as? String
         self.apiData["deviceAlias"] = deviceData["devicealias"] as? String
-        self.apiData["deviceLastip"] = deviceData["devicelastip"] as? String
+        self.apiData["deviceLastIP"] = deviceData["devicelastip"] as? String
         self.apiData["deviceState"] = deviceData["devicestate"] as? String
         self.apiData["deviceType"] = deviceData["devicetype"] as? String
         self.apiData["lastInternalIP"] = deviceData["lastinternalip"] as? String

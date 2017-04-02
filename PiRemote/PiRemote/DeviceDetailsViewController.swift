@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DeviceDetailViewController: UIViewController, UITableViewDataSource {
+class DeviceDetailsViewController: UIViewController, UITableViewDataSource {
 
     @IBOutlet weak var pinTable: UITableView!
 
@@ -23,8 +23,8 @@ class DeviceDetailViewController: UIViewController, UITableViewDataSource {
         let deviceName = MainUser.sharedInstance.currentDevice?.apiData["deviceAlias"]
 
         // Additional navigation setup
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(DeviceDetailViewController.onCancel))
-        let setupButton = UIBarButtonItem(image: UIImage(named: "cog"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(DeviceDetailViewController.onViewSetup))
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(DeviceDetailsViewController.onCancel))
+        let setupButton = UIBarButtonItem(image: UIImage(named: "cog"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(DeviceDetailsViewController.onViewSetup))
 
         self.navigationItem.leftBarButtonItem = cancelButton
         self.navigationItem.rightBarButtonItem = setupButton

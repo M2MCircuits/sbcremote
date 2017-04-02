@@ -57,11 +57,16 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
         guard sshDevices != nil else {
             return cell
         }
+
         guard nonSshDevices != nil else {
             return cell
         }
 
         let allDevices = sshDevices + nonSshDevices
+        guard allDevices[indexPath.row].apiData != nil else {
+            return cell
+        }
+
         cell.deviceName.text = allDevices[indexPath.row].apiData["deviceAlias"]
         return cell
     }

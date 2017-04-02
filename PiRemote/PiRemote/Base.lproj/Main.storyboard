@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="h8r-q7-MFG">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="lvU-ey-xtQ">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -460,7 +460,7 @@
         <!--Device Info-->
         <scene sceneID="cbM-Tn-fD1">
             <objects>
-                <viewController title="Device Info" id="eAF-Vh-bmA" customClass="DeviceDetailViewController" customModule="PiPremote" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Device Info" id="eAF-Vh-bmA" customClass="DeviceDetailsViewController" customModule="PiPremote" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Nu5-Iw-R53"/>
                         <viewControllerLayoutGuide type="bottom" id="XSW-mF-0NZ"/>
@@ -627,7 +627,7 @@
         <image name="warning" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="6OX-KP-xtE"/>
         <segue reference="tTg-IC-9Ek"/>
-        <segue reference="cAD-A2-Uqr"/>
     </inferredMetricsTieBreakers>
 </document>
