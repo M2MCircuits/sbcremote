@@ -44,7 +44,7 @@ class AppEngineManager {
         }
     }
     
-    func registerPhoneToken(phoneToken : NSData, completion: @escaping (_ sucess: Bool)-> Void){
+    func registerPhoneToken(phoneToken : Data, completion: @escaping (_ sucess: Bool)-> Void){
         let param = ["token" : "\(phoneToken)",
                     "email" : MainUser.sharedInstance.email]
         //Warning: Currently does not work.

@@ -21,8 +21,11 @@
 		5AD0608E1CAD96B100BD6930 /* Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD0608D1CAD96B100BD6930 /* Pin.swift */; };
 		5AD060901CAD9E7700BD6930 /* PinTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD0608F1CAD9E7700BD6930 /* PinTableViewCell.swift */; };
 		C001CE231E8CB8A200DAA710 /* PinLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C001CE221E8CB8A200DAA710 /* PinLayout.swift */; };
+		C02614181E86EC71002B725F /* WebLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02614171E86EC71002B725F /* WebLoginViewController.swift */; };
+		C0287E601E90B367009D4578 /* DeviceSetup.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0287E5F1E90B367009D4578 /* DeviceSetup.storyboard */; };
 		C0626AEF1E63A9BE00B9A84F /* DeviceSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0626AEE1E63A9BE00B9A84F /* DeviceSetupViewController.swift */; };
 		C0626AF11E63C26300B9A84F /* DeviceDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0626AF01E63C26300B9A84F /* DeviceDetailsViewController.swift */; };
+		C08665A51E9137EA002A106D /* PopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08665A41E9137EA002A106D /* PopoverViewController.swift */; };
 		C0C1C1721E6CC90F005DE3B2 /* RemoteAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C1C1711E6CC90F005DE3B2 /* RemoteAPIManager.swift */; };
 		C0C1C1751E6CC923005DE3B2 /* RemoteDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C1C1731E6CC923005DE3B2 /* RemoteDevice.swift */; };
 		C0C1C1761E6CC923005DE3B2 /* RemoteDeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C1C1741E6CC923005DE3B2 /* RemoteDeviceManager.swift */; };
@@ -47,6 +50,7 @@
 		2484B3CA1E79E707000770E5 /* AppEngineManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppEngineManager.swift; sourceTree = "<group>"; };
 		24C6D94C1E44D11D00C3365D /* SimpleHTTPRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleHTTPRequest.swift; sourceTree = "<group>"; };
 		24C6D9501E44DC5000C3365D /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
+		24CB583C1E90875D001A7F15 /* PiPremote.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PiPremote.entitlements; sourceTree = "<group>"; };
 		5A279FCF1CBFE60800272E05 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LoginViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5AD060681CAD8E9800BD6930 /* PiPremote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PiPremote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AD0606C1CAD8E9800BD6930 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -60,8 +64,11 @@
 		5AD0608D1CAD96B100BD6930 /* Pin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Pin.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5AD0608F1CAD9E7700BD6930 /* PinTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinTableViewCell.swift; sourceTree = "<group>"; };
 		C001CE221E8CB8A200DAA710 /* PinLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinLayout.swift; sourceTree = "<group>"; };
+		C02614171E86EC71002B725F /* WebLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebLoginViewController.swift; sourceTree = "<group>"; };
+		C0287E5F1E90B367009D4578 /* DeviceSetup.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = DeviceSetup.storyboard; path = ../DeviceSetup.storyboard; sourceTree = "<group>"; };
 		C0626AEE1E63A9BE00B9A84F /* DeviceSetupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceSetupViewController.swift; sourceTree = "<group>"; };
 		C0626AF01E63C26300B9A84F /* DeviceDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceDetailsViewController.swift; sourceTree = "<group>"; };
+		C08665A41E9137EA002A106D /* PopoverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverViewController.swift; sourceTree = "<group>"; };
 		C0C1C1711E6CC90F005DE3B2 /* RemoteAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteAPIManager.swift; sourceTree = "<group>"; };
 		C0C1C1731E6CC923005DE3B2 /* RemoteDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteDevice.swift; sourceTree = "<group>"; };
 		C0C1C1741E6CC923005DE3B2 /* RemoteDeviceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteDeviceManager.swift; sourceTree = "<group>"; };
@@ -118,6 +125,8 @@
 				C0C7912E1E6215AC00D94A13 /* DevicesTableViewController.swift */,
 				C0626AEE1E63A9BE00B9A84F /* DeviceSetupViewController.swift */,
 				C0626AF01E63C26300B9A84F /* DeviceDetailsViewController.swift */,
+				C02614171E86EC71002B725F /* WebLoginViewController.swift */,
+				C08665A41E9137EA002A106D /* PopoverViewController.swift */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -143,11 +152,13 @@
 		5AD0606A1CAD8E9800BD6930 /* PiRemote */ = {
 			isa = PBXGroup;
 			children = (
+				24CB583C1E90875D001A7F15 /* PiPremote.entitlements */,
 				5AD0606D1CAD8E9800BD6930 /* AppDelegate.swift */,
 				24C6D94B1E44D0A300C3365D /* ViewController */,
 				24C6D94A1E44D09B00C3365D /* View */,
 				24C6D9491E44D09300C3365D /* Model */,
 				5AD060711CAD8E9800BD6930 /* Main.storyboard */,
+				C0287E5F1E90B367009D4578 /* DeviceSetup.storyboard */,
 				5AD060741CAD8E9800BD6930 /* Images.xcassets */,
 				5AD060761CAD8E9800BD6930 /* LaunchScreen.xib */,
 				5AD0606B1CAD8E9800BD6930 /* Supporting Files */,
@@ -183,11 +194,11 @@
 		C001CE211E8CB7C100DAA710 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				C0C1C1771E6CFBF3005DE3B2 /* WebAPIManager.swift */,
 				C0C1C1711E6CC90F005DE3B2 /* RemoteAPIManager.swift */,
 				2484B3CA1E79E707000770E5 /* AppEngineManager.swift */,
 				24C6D94C1E44D11D00C3365D /* SimpleHTTPRequest.swift */,
 				24C6D9501E44DC5000C3365D /* APIManager.swift */,
-				C0C1C1771E6CFBF3005DE3B2 /* WebAPIManager.swift */,
 			);
 			name = API;
 			sourceTree = "<group>";
@@ -289,6 +300,7 @@
 				5AD060731CAD8E9800BD6930 /* Main.storyboard in Resources */,
 				5AD060781CAD8E9800BD6930 /* LaunchScreen.xib in Resources */,
 				5AD060751CAD8E9800BD6930 /* Images.xcassets in Resources */,
+				C0287E601E90B367009D4578 /* DeviceSetup.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,6 +322,7 @@
 				C0C7912F1E6215AC00D94A13 /* DevicesTableViewController.swift in Sources */,
 				5AD0608E1CAD96B100BD6930 /* Pin.swift in Sources */,
 				2484B3CB1E79E708000770E5 /* AppEngineManager.swift in Sources */,
+				C02614181E86EC71002B725F /* WebLoginViewController.swift in Sources */,
 				24C6D94D1E44D11D00C3365D /* SimpleHTTPRequest.swift in Sources */,
 				C001CE231E8CB8A200DAA710 /* PinLayout.swift in Sources */,
 				C0C1C1721E6CC90F005DE3B2 /* RemoteAPIManager.swift in Sources */,
@@ -321,6 +334,7 @@
 				C0626AEF1E63A9BE00B9A84F /* DeviceSetupViewController.swift in Sources */,
 				241C59CE1E81A94100BBF2B2 /* SysConstants.swift in Sources */,
 				2447F0891E5E39E800EE1B69 /* MainUser.swift in Sources */,
+				C08665A51E9137EA002A106D /* PopoverViewController.swift in Sources */,
 				5A279FD01CBFE60800272E05 /* LoginViewController.swift in Sources */,
 				C0C1C1761E6CC923005DE3B2 /* RemoteDeviceManager.swift in Sources */,
 				C0C1C1751E6CC923005DE3B2 /* RemoteDevice.swift in Sources */,
@@ -384,7 +398,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Victor Anyirah (7WRVDVC96P)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Victor Anyirah (7WRVDVC96P)";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -456,13 +471,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Josh Binkley (9WG9SV5LN5)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Josh Binkley (9WG9SV5LN5)";
+				CODE_SIGN_ENTITLEMENTS = PiRemote/PiPremote.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Victor Anyirah (7WRVDVC96P)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Victor Anyirah (7WRVDVC96P)";
+				DEVELOPMENT_TEAM = P3H85LZ522;
 				INFOPLIST_FILE = PiRemote/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.m2mcircuits.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.m2mcircuits.piremote;
 				PRODUCT_NAME = PiPremote;
+				PROVISIONING_PROFILE = "4df6c674-d178-4ae1-b25b-e7521f13535d";
+				PROVISIONING_PROFILE_SPECIFIER = PiRemoteDevelopment;
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -472,12 +491,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Josh Binkley (9WG9SV5LN5)";
+				CODE_SIGN_ENTITLEMENTS = PiRemote/PiPremote.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Victor Anyirah (7WRVDVC96P)";
+				DEVELOPMENT_TEAM = P3H85LZ522;
 				INFOPLIST_FILE = PiRemote/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.m2mcircuits.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.m2mcircuits.piremote;
 				PRODUCT_NAME = PiPremote;
+				PROVISIONING_PROFILE = "4df6c674-d178-4ae1-b25b-e7521f13535d";
+				PROVISIONING_PROFILE_SPECIFIER = PiRemoteDevelopment;
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

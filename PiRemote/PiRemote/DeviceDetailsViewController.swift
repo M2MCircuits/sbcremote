@@ -8,9 +8,8 @@
 
 import UIKit
 
-class DeviceDetailViewController: UIViewController, UITableViewDataSource {
+class DeviceDetailsViewController: UIViewController, UITableViewDataSource {
 
-    @IBOutlet weak var deviceNameLabel: UILabel!
     @IBOutlet weak var pinTable: UITableView!
 
     // Local variables
@@ -21,41 +20,33 @@ class DeviceDetailViewController: UIViewController, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        deviceNameLabel.text = MainUser.sharedInstance.currentDevice?.apiData["deviceAlias"]
+        let deviceName = MainUser.sharedInstance.currentDevice?.apiData["deviceAlias"]
+
+        // Additional navigation setup
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(DeviceDetailsViewController.onCancel))
+        let setupButton = UIBarButtonItem(image: UIImage(named: "cog"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(DeviceDetailsViewController.onViewSetup))
+
+        self.navigationItem.leftBarButtonItem = cancelButton
+        self.navigationItem.rightBarButtonItem = setupButton
+        self.navigationItem.title = String(format: "%@ Info", deviceName!)
+        
+        // Initialize pin list
         pinConfig? = ["SPI0": 0]
         pins = [0: Pin()]
         webiopi = WebAPIManager()
 
         fetchDeviceState()
+        self.pinTable.reloadData()
     }
 
-    func fetchDeviceState() {
-        guard MainUser.sharedInstance.currentDevice != nil else {
-            return
-        }
-
-        print("[DEBUG] Sending get request /*")
-        webiopi.getFullGPIOState(callback: {
-            data in
-                print("[DEBUG] Response received for /*")
-                if (data != nil) {
-                    for (pinId, pinData) in data!["GPIO"] as! [String: [String:AnyObject]] {
-                        let i = Int(pinId)!
-                        let pin = Pin(id: i, apiData: pinData)
-                        self.pins[i] = pin
-                    }
-                    self.pinTable.reloadData()
-                }
-        })
-    }
 
     @IBAction func onToggleSwitch(_ sender: UISwitch) {
         let pinNumber = pins[sender.tag]?.id
         let pinValue = sender.isOn ? "IN" : "OUT"
         webiopi.setFunction(gpioNumber: pinNumber!, functionType: pinValue, callback: {
-                newFunction in
-                    print("DONE")
-                    print(newFunction!)
+            newFunction in
+            print("DONE")
+            print(newFunction!)
         })
     }
 
@@ -82,6 +73,44 @@ class DeviceDetailViewController: UIViewController, UITableViewDataSource {
             return 0
         }
         return self.pins.count
+    }
+
+    // Local Functions
+    func buildPins() {
+        let stateJson = MainUser.sharedInstance.currentDevice!.stateJson
+        for (pinId, pinData) in stateJson! {
+            let i = Int(pinId)!
+            let pin = Pin(id: i, apiData: pinData)
+            self.pins[i] = pin
+        }
+    }
+
+    func fetchDeviceState() {
+        guard MainUser.sharedInstance.currentDevice?.stateJson != nil else {
+            print("[DEBUG] Sending get request /*")
+
+            webiopi.getFullGPIOState(callback: { data in
+                print("[DEBUG] Response received for /*")
+
+                if (data != nil) {
+                    MainUser.sharedInstance.currentDevice!.stateJson = data!["GPIO"] as! [String: [String:AnyObject]]
+                    self.buildPins()
+                }
+            })
+
+            return
+        }
+
+        self.buildPins()
+    }
+
+    func onCancel() {
+        self.dismiss(animated: true, completion: nil)
+    }
+
+    func onViewSetup() {
+        // Supported by iOS <6.0
+        self.performSegue(withIdentifier: SegueTypes.idToDeviceSetup, sender: self)
     }
 
 }
