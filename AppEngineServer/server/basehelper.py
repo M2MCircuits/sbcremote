@@ -15,6 +15,9 @@ Main Helper class with helper methods for writing results and JSON.
 class MainHelperClass(webapp2.RequestHandler):
 
 
+    cert_path = "pimote-cert.pem"
+    key_path = "pimote-key.pem"
+
     def writeJson(self, dictionary):
         # self.response.headers.add_header("Access-Control-Allow-Origin", "*")
         self.response.out.write(json.dumps(dictionary))
@@ -48,7 +51,7 @@ class MainHelperClass(webapp2.RequestHandler):
 
     def sendAPN(self, alert, token, customdata):
         logging.info("APN getting setup..")
-        apns = APNs(use_sandbox=False, cert_file='cert.pem', key_file='key.pem')
+        apns = APNs(use_sandbox=False, cert_file=cert_path, key_file=key_path)
         payload = Payload(alert=alert, custom={'data': customdata}, sound="default", badge=0, content_available = True)
         apns.gateway_server.send_notification(token, payload)
         logging.info("APN sucessfully sent.")
