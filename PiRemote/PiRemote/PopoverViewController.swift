@@ -59,12 +59,6 @@ class PopoverViewController: UIViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let content = storyboard.instantiateViewController(withIdentifier: "WEB_DIALOG")
         let contentSize = CGSize(width: 320, height: 320)
-
-        (content as! WebLoginViewController).onLoginSuccess = {() -> () in
-            let vc = storyboard.instantiateViewController(withIdentifier: "DEVICE_DETAILS")
-            content.present(vc, animated: true, completion: nil )
-        }
-
         return buildPopover(source: source, content: content, contentSize: contentSize, sourceRect: nil)
     }
 

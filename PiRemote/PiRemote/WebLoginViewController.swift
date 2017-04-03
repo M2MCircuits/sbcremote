@@ -46,6 +46,7 @@ class WebLoginViewController: UIViewController,
 
     @IBAction func onAction(_ sender: Any) {
         handleLogin()
+        self.dismiss(animated: true, completion: nil)
         // TODO: Implement case for DeviceSetup
     }
 
@@ -68,7 +69,8 @@ class WebLoginViewController: UIViewController,
 
             // Login Succeeded
             MainUser.sharedInstance.currentDevice!.stateJson = data!["GPIO"] as! [String: [String:AnyObject]]
-            self.onLoginSuccess()
+
+            NotificationCenter.default.post(name: NotificationNames.loginSuccess, object: nil)
         });
     }
 

@@ -31,8 +31,8 @@ UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDel
         currentPin = -1
 
         // Additional navigation setup
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(DeviceSetupViewController.onLeave))
-        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(DeviceSetupViewController.onSetDeviceSettings))
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(DeviceSetupViewController.onLeave))
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(DeviceSetupViewController.onSetDeviceSettings))
 
         self.navigationItem.leftBarButtonItem = cancelButton
         self.navigationItem.rightBarButtonItem = doneButton
@@ -65,6 +65,8 @@ UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDel
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleShowPinDiagram), name: NotificationNames.diagram, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleSetWebLogin), name: NotificationNames.login, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleSaveLayout), name: NotificationNames.save, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleValidLogin), name: NotificationNames.loginSuccess, object: nil)
+
 
         // Build out GPIO UI
         buildScrollView()
@@ -145,6 +147,10 @@ UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDel
         print("DIAGRAM")
     }
 
+    func handleValidLogin() {
+        print("LOGIN IS VALID")
+    }
+
     func buildScrollView() {
         let btnWidth = 28
         let btnHeight = 25
@@ -174,7 +180,7 @@ UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDel
     }
 
     func onLeave(sender: UIButton!) {
-        self.dismiss(animated: true, completion: nil)
+        _ = self.navigationController?.popViewController(animated: true)
     }
 
     func onSetDeviceSettings(sender: UIButton!) {

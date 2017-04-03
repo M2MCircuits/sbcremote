@@ -34,6 +34,8 @@ struct NotificationNames {
     static let clear = Notification.Name.init(rawValue: "USER_TOUCHED_CLEAR")
     static let diagram = Notification.Name.init(rawValue: "USER_TOUCHED_DIAGRAM")
     static let login = Notification.Name.init(rawValue: "USER_TOUCHED_LOGIN")
+    static let loginFail = Notification.Name.init(rawValue: "LOGIN_FAIL")
+    static let loginSuccess = Notification.Name.init(rawValue: "LOGIN_SUCCESS")
     static let save = Notification.Name.init(rawValue: "USER_TOUCHED_SAVE")
 }
 
