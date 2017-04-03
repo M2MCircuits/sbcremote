@@ -21,7 +21,7 @@ for item in contents.split("\n"):
 		UID = item.split(" ")[1]
 		
 # import webiopi's GPIO library
-GPIO = webiopi.GPIO
+webiopiGPIO = webiopi.GPIO
 
 def postToAppEngine(pin):
 	URL = "http://www.piremote-160105.appspot.com/apns/"
@@ -33,23 +33,17 @@ def postToAppEngine(pin):
 
 	response = httpServ.getresponse()
 	if response.status == httplib.OK:
-		print "Notification sent to App Engine"
+		webiopi.debug("Notification sent to App Engine")
 	else:
-		print "Notification failed"
+		webiopi.debug("Notification failed to send")
 
 	httpServ.close()
 	
 ###################### Define the callback functions ##################
 
-
-"""
-Is there a reason we can't just have a general callback function?
-Like this?
-"""
-
-def callback(pin):
-	if GPIO.getFunction(pin) == GPIO.IN:
-		postToAppEngine(pin)
+def callback(gpio):
+	if webiopiGPIO.getFunction(gpio) == webiopiGPIO.IN:
+		postToAppEngine(gpio)
 
 # setup() is called by WebIOPi when it starts up
 def setup():
@@ -59,7 +53,7 @@ def setup():
 	# Set all GPIO pins as inputs with the RPi.GPIO library.
 	# This is hacky because webiopi already controls what the pin types are,
 	# but it's necessary in order to set the RPi.GPIO event listeners
-	RPIGPIO.setup(chan_list, GPIO.IN)
+	RPIGPIO.setup(chan_list, RPIGPIO.IN)
 	
 	### TODO: Set pins to previous configuration  ##
 	# If we're able to store the prev config in the iOS app,
@@ -77,10 +71,8 @@ def setup():
 	# Add event listener for each pin
 	for gpio in chan_list:
 		RPIGPIO.add_event_detect(gpio, RPIGPIO.BOTH)
-	
 	# Set event callback for each pin
-	for gpio in chan_list:
-		RPIGPIO.add_event_callback(gpio, callback(gpio))
+		RPIGPIO.add_event_callback(gpio, callback)
 	
 # destroy() is called by WebIOPi when it shuts down
 def destroy():
