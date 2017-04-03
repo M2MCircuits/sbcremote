@@ -17,6 +17,7 @@ class MainUser {
     // Remot3.it
     var email : String?
     var apiKey: String?
+    // Phone token
     var token: String?
     var currentDevice: RemoteDevice?
     var layouts: [PinLayout]?
@@ -26,4 +27,7 @@ class MainUser {
         self.apiKey = dictionary["apiKey"] as? String
         self.token = dictionary["token"] as? String
     }
+    
+    //TODO : Save in NSUserDefaults.
+    
 }

@@ -86,7 +86,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         print("Device Token: " + deviceTokenString)
         let appManager = AppEngineManager()
-        appManager.registerPhoneToken(phoneToken: deviceToken) { (sucess) in
+        
+        //TODO: Check NSUserDefaults if user already has account. If so, push, else do not. Data is not available and it will crash. 
+        appManager.registerPhoneToken(phoneToken: deviceTokenString) { (sucess) in
             if sucess{
                 print("Suceeded in registering phone token")
             }

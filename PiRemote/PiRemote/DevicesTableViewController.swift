@@ -19,6 +19,7 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
     var sshDevices: [RemoteDevice]!
     var nonSshDevices: [RemoteDevice]!
 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -26,6 +27,8 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
         let logoutButton = UIBarButtonItem(title: "Logout", style: UIBarButtonItemStyle.plain, target: self, action: #selector(DevicesTableViewController.logout))
 
         self.navigationItem.leftBarButtonItem = logoutButton
+        
+        let appEngineAPI = AppEngineManager()
 
         // Pull latest devices from Remote.it account
         let remoteToken = MainUser.sharedInstance.token
@@ -39,6 +42,15 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
                     return
                 }
                 (self.sshDevices!, self.nonSshDevices!) = deviceManager.createDevicesFromAPIResponse(data: data!)
+                // We push non-sshdevices to app engine to create accounts
+                DispatchQueue.main.async {
+                       appEngineAPI.createAccountsForDevices(devices: self.nonSshDevices, email: MainUser.sharedInstance.email!, completion: { (sucess) in
+                        if sucess{
+                            print("Suceeded in creating accounts for user")
+                        }
+                    })
+                }
+            
                 OperationQueue.main.addOperation {
                     self.devicesTableView.reloadData()
                 }

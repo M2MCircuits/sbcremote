@@ -9,7 +9,8 @@
 import UIKit
 
 struct AppEngineConstants {
-    static let BaseURL = "Security Risk. Will fill in later."
+    static let BaseURL = "http://www.piremote-160105.appspot.com"
+    static let secureBaseURL = "https://www.piremote-160105.appspot.com"
 }
 
 struct DeviceTypes {
@@ -52,5 +53,10 @@ struct SegueTypes {
     static let idToPopoverLogin = "POPOVER_LOGIN"
     static let idToPopoverSave = "POPOVER_SAVE"
     static let idToWebLogin = "SHOW_WEBIOPI_LOGIN"
+}
+
+struct DeviceAPIType{
+    static let deviceAddress = "deviceAddress"
+    
 }
 
