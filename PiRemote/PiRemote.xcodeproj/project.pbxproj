@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 47;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -26,12 +26,14 @@
 		C0626AEF1E63A9BE00B9A84F /* DeviceSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0626AEE1E63A9BE00B9A84F /* DeviceSetupViewController.swift */; };
 		C0626AF11E63C26300B9A84F /* DeviceDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0626AF01E63C26300B9A84F /* DeviceDetailsViewController.swift */; };
 		C08665A51E9137EA002A106D /* PopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08665A41E9137EA002A106D /* PopoverViewController.swift */; };
+		C0A4D0451E91F76D00DE6515 /* PinSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A4D0441E91F76D00DE6515 /* PinSettingsViewController.swift */; };
 		C0C1C1721E6CC90F005DE3B2 /* RemoteAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C1C1711E6CC90F005DE3B2 /* RemoteAPIManager.swift */; };
 		C0C1C1751E6CC923005DE3B2 /* RemoteDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C1C1731E6CC923005DE3B2 /* RemoteDevice.swift */; };
 		C0C1C1761E6CC923005DE3B2 /* RemoteDeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C1C1741E6CC923005DE3B2 /* RemoteDeviceManager.swift */; };
 		C0C1C1781E6CFBF3005DE3B2 /* WebAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C1C1771E6CFBF3005DE3B2 /* WebAPIManager.swift */; };
 		C0C7912F1E6215AC00D94A13 /* DevicesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C7912E1E6215AC00D94A13 /* DevicesTableViewController.swift */; };
 		C0C791311E62217200D94A13 /* DeviceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C791301E62217200D94A13 /* DeviceTableViewCell.swift */; };
+		C0E77BF11E96D27D009A36CA /* ApplyLayoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E77BF01E96D27D009A36CA /* ApplyLayoutViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,12 +71,14 @@
 		C0626AEE1E63A9BE00B9A84F /* DeviceSetupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceSetupViewController.swift; sourceTree = "<group>"; };
 		C0626AF01E63C26300B9A84F /* DeviceDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceDetailsViewController.swift; sourceTree = "<group>"; };
 		C08665A41E9137EA002A106D /* PopoverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverViewController.swift; sourceTree = "<group>"; };
+		C0A4D0441E91F76D00DE6515 /* PinSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinSettingsViewController.swift; sourceTree = "<group>"; };
 		C0C1C1711E6CC90F005DE3B2 /* RemoteAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteAPIManager.swift; sourceTree = "<group>"; };
 		C0C1C1731E6CC923005DE3B2 /* RemoteDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteDevice.swift; sourceTree = "<group>"; };
 		C0C1C1741E6CC923005DE3B2 /* RemoteDeviceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteDeviceManager.swift; sourceTree = "<group>"; };
 		C0C1C1771E6CFBF3005DE3B2 /* WebAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebAPIManager.swift; sourceTree = "<group>"; };
 		C0C7912E1E6215AC00D94A13 /* DevicesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevicesTableViewController.swift; sourceTree = "<group>"; };
 		C0C791301E62217200D94A13 /* DeviceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceTableViewCell.swift; sourceTree = "<group>"; };
+		C0E77BF01E96D27D009A36CA /* ApplyLayoutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplyLayoutViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +131,8 @@
 				C0626AF01E63C26300B9A84F /* DeviceDetailsViewController.swift */,
 				C02614171E86EC71002B725F /* WebLoginViewController.swift */,
 				C08665A41E9137EA002A106D /* PopoverViewController.swift */,
+				C0A4D0441E91F76D00DE6515 /* PinSettingsViewController.swift */,
+				C0E77BF01E96D27D009A36CA /* ApplyLayoutViewController.swift */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -274,7 +280,7 @@
 				};
 			};
 			buildConfigurationList = 5AD060631CAD8E9700BD6930 /* Build configuration list for PBXProject "PiRemote" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 6.3";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -333,8 +339,10 @@
 				5AD060901CAD9E7700BD6930 /* PinTableViewCell.swift in Sources */,
 				C0626AEF1E63A9BE00B9A84F /* DeviceSetupViewController.swift in Sources */,
 				241C59CE1E81A94100BBF2B2 /* SysConstants.swift in Sources */,
+				C0E77BF11E96D27D009A36CA /* ApplyLayoutViewController.swift in Sources */,
 				2447F0891E5E39E800EE1B69 /* MainUser.swift in Sources */,
 				C08665A51E9137EA002A106D /* PopoverViewController.swift in Sources */,
+				C0A4D0451E91F76D00DE6515 /* PinSettingsViewController.swift in Sources */,
 				5A279FD01CBFE60800272E05 /* LoginViewController.swift in Sources */,
 				C0C1C1761E6CC923005DE3B2 /* RemoteDeviceManager.swift in Sources */,
 				C0C1C1751E6CC923005DE3B2 /* RemoteDevice.swift in Sources */,
@@ -418,7 +426,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -458,7 +466,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";

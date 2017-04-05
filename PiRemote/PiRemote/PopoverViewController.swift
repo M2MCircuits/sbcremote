@@ -13,6 +13,12 @@ class PopoverViewController: UIViewController {
 
     static let storyboardName = "DeviceSetup"
 
+    var savedLayoutNames: [String]!
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -22,11 +28,7 @@ class PopoverViewController: UIViewController {
         }
     }
 
-    // Local Functions
-    @IBAction func onApply(_ sender: UIBarButtonItem) {
-        // TODO: Pass selected layout
-        NotificationCenter.default.post(name: NotificationNames.apply, object: nil)
-    }
+    // MARK: Local Functions
 
     @IBAction func onClear(_ sender: UIBarButtonItem) {
         NotificationCenter.default.post(name: NotificationNames.clear, object: nil)
@@ -37,7 +39,19 @@ class PopoverViewController: UIViewController {
     }
 
     @IBAction func onSave(_ sender: UIBarButtonItem) {
-        NotificationCenter.default.post(name: NotificationNames.save, object: nil)
+        let textfield = self.view.subviews.filter({vw in vw is UITextField}).first as! UITextField
+
+        guard !(textfield.text?.isEmpty)! else {
+            // Showing error message
+            let snackbar = self.view.subviews.filter({vw in vw.restorationIdentifier == "SaveSnackbar" }).first
+            let errorLabel = snackbar?.subviews.filter({vw in vw is UILabel}).first as! UILabel
+            errorLabel.text = "Please enter a name"
+            snackbar?.isHidden = false
+            return
+        }
+
+        let userInfo = ["text": textfield.text!]
+        NotificationCenter.default.post(name: NotificationNames.save, object: self, userInfo: userInfo)
     }
 
     func _buildContentDiagram() {

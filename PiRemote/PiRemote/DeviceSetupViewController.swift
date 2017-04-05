@@ -9,28 +9,31 @@
 import UIKit
 
 // TODO: Handle different pi models. Currently supports Pi 3
-class DeviceSetupViewController: UIViewController,
-UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDelegate, UIScrollViewDelegate {
+class DeviceSetupViewController: UIViewController, UIPopoverPresentationControllerDelegate, UIScrollViewDelegate {
 
-    @IBOutlet weak var devicePicker: UIPickerView!
     @IBOutlet weak var scrollView: UIScrollView!
 
-    // Local Variables
+    // MARK: Local Variables
     var currentImageView: UIImageView!
-    var currentLayout: PinLayout!
-    var currentPin: Int!
+    var currentPinSetup: [Pin]!
     var popoverView: UIViewController!
 
     let pickerOptions = [
         DeviceTypes.rPi3
     ].self
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.isNavigationBarHidden = false
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        currentPin = -1
+        // TODO: Check if we should load from layout
+        currentPinSetup = initPinSetup()
 
-        // Additional navigation setup
+        // Setting up navigation bar
         let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(DeviceSetupViewController.onLeave))
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(DeviceSetupViewController.onSetDeviceSettings))
 
@@ -38,38 +41,20 @@ UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDel
         self.navigationItem.rightBarButtonItem = doneButton
         self.navigationItem.title = "Device Setup"
 
-        // Additional subviews
-        let imgWidth = 1335.0
-        let imgHeight = 2000.0
-        let scale = 0.67
-
-        currentImageView = UIImageView(image: UIImage(named: "RaspberryPi_3B.png"))
-        currentImageView.frame = CGRect(x: 0, y: 0, width: scale * imgWidth, height: scale * imgHeight)
-
-        devicePicker.dataSource = self
-        devicePicker.delegate = self
-
-        let paddedWidth = currentImageView.bounds.width + 256
-
-        scrollView.autoresizingMask = UIViewAutoresizing.flexibleHeight
-        scrollView.backgroundColor = UIColor(red: 0xff, green: 0x00, blue: 0x00, alpha: 1.0)
-        scrollView.contentSize = CGSize(width: paddedWidth, height: currentImageView.bounds.height)
-        scrollView.contentOffset = CGPoint(x: 512, y: 68)
-        scrollView.delegate = self
-
-        scrollView.addSubview(currentImageView)
-
-        // Add listeners for notifications from popovers
-        NotificationCenter.default.addObserver(self, selector: #selector(self.handleApplyLayout), name: NotificationNames.apply, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.handleClearLayout), name: NotificationNames.clear, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.handleShowPinDiagram), name: NotificationNames.diagram, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.handleSetWebLogin), name: NotificationNames.login, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.handleSaveLayout), name: NotificationNames.save, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.handleValidLogin), name: NotificationNames.loginSuccess, object: nil)
-
-
-        // Build out GPIO UI
+        // Adding buttons for pins
         buildScrollView()
+
+        // Adding event listeners for notifications from popovers
+        NotificationCenter.default
+            .addObserver(self, selector: #selector(self.handleApplyLayout), name: NotificationNames.apply, object: nil)
+        NotificationCenter.default
+            .addObserver(self, selector: #selector(self.handleClearLayout), name: NotificationNames.clear, object: nil)
+        NotificationCenter.default
+            .addObserver(self, selector: #selector(self.handleSaveLayout), name: NotificationNames.save, object: nil)
+        NotificationCenter.default
+            .addObserver(self, selector: #selector(self.handleValidLogin), name: NotificationNames.loginSuccess, object: nil)
+        NotificationCenter.default
+            .addObserver(self, selector: #selector(self.handleUpdatePin), name: NotificationNames.updatePin, object: nil)
     }
 
     override func viewDidLayoutSubviews() {
@@ -96,86 +81,152 @@ UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDel
             contentSize = CGSize(width: 320, height: 320)
         case SegueTypes.idToPinSettings:
             contentSize = CGSize(width: 150, height: 250)
-            sourceRect = CGRect(origin: CGPoint(x: 300, y: 0), size: destination.view.bounds.size)
+            sourceRect = CGRect(origin: CGPoint(x: 0, y: 0), size: destination.view.bounds.size)
+            (destination as! PinSettingsViewController).pin = sender as! Pin
         default: break
         }
-        _ = PopoverViewController.buildPopover(
+
+        popoverView = PopoverViewController.buildPopover(
                 source: self, content: destination, contentSize: contentSize, sourceRect: sourceRect)
     }
 
-    // UIPickerViewDataSource Functions
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
+    // MARK: UIScrollViewDelegate Functions
 
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return pickerOptions.count
-    }
-
-    // UIPickerViewDelegate Functions
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return pickerOptions[row]
-    }
-
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        // TODO: Implement. Updates pi diagram based on selection
-    }
-    
-    // UIScrollViewDelegate Functions
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return currentImageView
     }
 
-    // Local Functions
-    func handleApplyLayout() {
-        print("APPLY")
+    // MARK: UIPopoverPresentationControllerDelegate Functions
+
+    // Prevents popover from changing style based on the iOS device
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
+    }
+
+    // MARK: Local Functions
+
+    func buildScrollView() {
+        let btnWidth = 40
+        let btnHeight = 40
+        let midX = Int(scrollView.bounds.midX)
+
+        scrollView.autoresizingMask = UIViewAutoresizing.flexibleHeight
+        scrollView.contentSize = CGSize(width: Int(scrollView.frame.width * 1.5), height: btnHeight * 40)
+        scrollView.delegate = self
+
+        // Position buttons with respect to image
+        var isEven: Bool
+        var x, y: Int
+
+        for i in 1...40 {
+            isEven = i % 2 == 0
+            x = isEven ? midX + 2 : midX - btnWidth - 2
+            y = (btnHeight + 8) * ((i - 1) / 2)
+
+            let pinButton = UIButton(type: UIButtonType.roundedRect) as UIButton
+
+            pinButton.addTarget(self, action: #selector(DeviceSetupViewController.onTouchTap(sender:)), for: .touchUpInside)
+            pinButton.backgroundColor = UIColor.purple
+            pinButton.frame = CGRect(x: x, y: y, width: btnWidth, height: btnHeight)
+            pinButton.setTitle("\(i)", for: UIControlState.normal)
+            pinButton.setTitleColor(UIColor.yellow, for: UIControlState.normal)
+            pinButton.tag = i
+
+            scrollView.addSubview(pinButton)
+        }
+    }
+
+    func documentsDirectory() -> String {
+        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        let documentDirectory = paths[0] as String
+        return documentDirectory
+    }
+
+    func handleApplyLayout(notification: Notification) {
+        let fileName = notification.userInfo?["layoutName"] as! String
+        let filePath = documentsDirectory().appending("/\(fileName)")
+        let layout = NSKeyedUnarchiver.unarchiveObject(withFile: filePath) as! PinLayout
+
+        currentPinSetup = layout.defaultSetup
+
+        refreshPinButtons()
+        popoverView.dismiss(animated: true, completion: nil)
     }
 
     func handleClearLayout() {
-        print("CLEAR")
+        currentPinSetup = initPinSetup()
+        refreshPinButtons()
+        popoverView.dismiss(animated: true, completion: nil)
     }
 
-    func handleSaveLayout() {
-        print("SAVE")
+    func handleSaveLayout(notification: Notification) {
+        let fileName = notification.userInfo?["text"] as! String
+        let filePath = documentsDirectory().appending("/\(fileName)")
+        let layout = PinLayout(name: fileName, defaultSetup: currentPinSetup) as PinLayout
+
+        // Saving layout data
+        NSKeyedArchiver.archiveRootObject(layout, toFile: filePath)
+
+        // Recording layout name to user defaults
+        var savedLayoutNames: [String]
+
+        if let data = UserDefaults.standard.object(forKey: "layoutNames") as? Data {
+            savedLayoutNames = NSKeyedUnarchiver.unarchiveObject(with: data) as! [String]!
+        } else {
+            savedLayoutNames = []
+        }
+
+        savedLayoutNames.append(fileName)
+        let data = NSKeyedArchiver.archivedData(withRootObject: savedLayoutNames)
+        UserDefaults.standard.set(data, forKey: "layoutNames")
+
+        // TODO: Show success snackbar
+        print("Saved as \(fileName)")
+        popoverView.dismiss(animated: true, completion: nil)
     }
 
-    func handleSetWebLogin() {
-        print("WEBIOPI")
-    }
+    func handleUpdatePin(notification: Notification) {
+        let userInfo = notification.userInfo as! [String:String]
+        let i = Int(userInfo["id"]!)! - 1
+        let name = userInfo["name"]
+        let type = userInfo["type"]
 
-    func handleShowPinDiagram() {
-        print("DIAGRAM")
+        currentPinSetup[i].name = name!
+
+        switch type! {
+        case "control":
+            currentPinSetup[i].type = .control
+        case "ignore":
+            currentPinSetup[i].type = .ignore
+        case "monitor":
+            currentPinSetup[i].type = .monitor
+        default: break
+        }
+
+        refreshPinButtons()
     }
 
     func handleValidLogin() {
         print("LOGIN IS VALID")
     }
 
-    func buildScrollView() {
-        let btnWidth = 28
-        let btnHeight = 25
-        var isEven: Bool
-        var pinButton: UIButton
-        var x, y: Int
+    func initSavedLayoutNames() -> [String]! {
+        if let data = UserDefaults.standard.object(forKey: "layoutNames") as? Data {
+            return NSKeyedUnarchiver.unarchiveObject(with: data) as! [String]!
+        }
+        return []
+    }
 
-        for i in 1...40 {
-            // Positions with respect to image
-            isEven = i % 2 == 0
-            x = isEven ? 710 + btnWidth + 4 : 710
-            y = (btnHeight + 8) * ((i - 1) / 2) + 208
+    func initPinSetup() -> [Pin] {
+        var pins = [Pin]()
+        for i in 1...40 { pins.append(Pin(id: i)) }
+        return pins
+    }
 
-            pinButton = UIButton(type: UIButtonType.roundedRect) as UIButton
-
-            pinButton.backgroundColor = UIColor.red
-            pinButton.frame = CGRect(x: x, y: y, width: btnWidth, height: btnHeight)
-            pinButton.setTitle("\(i)", for: UIControlState.normal)
-            pinButton.setTitleColor(UIColor.yellow, for: UIControlState.normal)
-
-            let singleTap = UITapGestureRecognizer(target: self, action: #selector(DeviceSetupViewController.onTouchTap))
-
-            scrollView.addGestureRecognizer(singleTap)
-
-            currentImageView.addSubview(pinButton)
+    func loadLayouts() {
+        var layouts = NSKeyedUnarchiver.unarchiveObject(withFile: documentsDirectory())
+        guard layouts != nil else {
+            return
         }
     }
 
@@ -188,33 +239,37 @@ UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerDel
         onLeave(sender: sender!)
     }
 
-    func onTouchTap(gesture: UITapGestureRecognizer) {
-        let touch = gesture.location(in: scrollView) as CGPoint
-        let selection = self.currentImageView.subviews.first(where: {child in
-            guard (child is UIButton) else { return false }
-            return child.frame.contains(touch)
-        });
+    func onTouchTap(sender: UIButton!) {
+        let i = sender.tag
+        let offset = CGPoint(x: i % 2 == 0 ? -80 : 80,
+                             y: ((i - 1) / 2) * 25)
 
-        if selection != nil {
-            // Identify pin being touched
-            let pinNumber = Int(((selection as! UIButton).titleLabel?.text)!)
-            _ = pinNumber! % 2 == 0 // TODO: Use isEven
-            let offset = CGSize(width: -64, height: -112)
+        // Open popover with selected pin data
+        self.performSegue(withIdentifier: SegueTypes.idToPinSettings, sender: currentPinSetup[i-1])
 
-            performSegue(withIdentifier: SegueTypes.idToPinSettings, sender: pinNumber)
+        // Scroll over to pin
+        scrollToPoint(point: offset)
+    }
 
-            // Scroll over to pin
-            goToPoint(point: CGPoint(x: touch.x + offset.width, y: touch.y + offset.height))
+    func refreshPinButtons() {
+        for child in scrollView.subviews {
+            guard child is UIButton else { break }
+
+            let pinButton = child as! UIButton
+            let i = pinButton.tag
+
+            switch currentPinSetup[i - 1].type {
+            case .ignore:
+                pinButton.backgroundColor = UIColor.gray
+            case .monitor:
+                pinButton.backgroundColor = UIColor.blue
+            case .control:
+                pinButton.backgroundColor = UIColor.orange
+            }
         }
     }
-    
-    // Prevents popover from changing style based on the iOS device
-    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
-        return UIModalPresentationStyle.none
-    }
 
-    // TODO: Tweak for a smoother movement
-    func goToPoint(point: CGPoint) {
+    func scrollToPoint(point: CGPoint) {
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.25, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: {
                 self.scrollView.contentOffset = point

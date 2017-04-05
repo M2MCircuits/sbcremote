@@ -37,6 +37,7 @@ struct NotificationNames {
     static let loginFail = Notification.Name.init(rawValue: "LOGIN_FAIL")
     static let loginSuccess = Notification.Name.init(rawValue: "LOGIN_SUCCESS")
     static let save = Notification.Name.init(rawValue: "USER_TOUCHED_SAVE")
+    static let updatePin = Notification.Name.init(rawValue: "UPDATE_PIN")
 }
 
 enum PopoverTypes {

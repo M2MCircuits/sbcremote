@@ -96,6 +96,14 @@
                                     <segue destination="TKw-YT-88J" kind="show" identifier="SHOW_DEVICES_TABLE" id="crl-WW-GCD"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vsU-qt-h8N">
+                                <rect key="frame" x="164" y="570" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <segue destination="Bie-XA-VK0" kind="show" id="otq-FB-Afg"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.52387019600082985" green="0.6388505154697397" blue="0.72488547120418856" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
@@ -430,6 +438,6 @@
         <image name="cross" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="1Lx-Gl-rNf"/>
+        <segue reference="otq-FB-Afg"/>
     </inferredMetricsTieBreakers>
 </document>
