@@ -51,7 +51,7 @@ class ApplyLayoutViewController: UIViewController, UITableViewDelegate, UITableV
     @IBAction func onApply(_ sender: UIBarButtonItem) {
         guard let selection = selection else { return }
         let userInfo = ["layoutName": savedLayoutNames[selection]]
-        NotificationCenter.default.post(name: NotificationNames.apply, object: nil, userInfo: userInfo)
+        NotificationCenter.default.post(name: Notification.Name.apply, object: nil, userInfo: userInfo)
     }
 
     @IBAction func onCancel(_ sender: UIBarButtonItem) {

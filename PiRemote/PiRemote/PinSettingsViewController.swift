@@ -52,7 +52,7 @@ class PinSettingsViewController: UIViewController {
         })
 
         NotificationCenter.default.post(
-            name: NotificationNames.updatePin,
+            name: Notification.Name.updatePin,
             object: self,
             userInfo: ["id": String(pin!.id), "name": nameBox.text!, "type": String(describing: type)])
     }

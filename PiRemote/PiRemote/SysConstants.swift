@@ -29,7 +29,7 @@ struct PinGuideFilePaths {
     static let rPi3 = "Raspberry-Pi-Pinouts-Model-B-Plus"       // @1x: 356 x 732
 }
 
-struct NotificationNames {
+extension Notification.Name {
     static let apply = Notification.Name.init(rawValue: "USER_TOUCHED_APPLY")
     static let clear = Notification.Name.init(rawValue: "USER_TOUCHED_CLEAR")
     static let diagram = Notification.Name.init(rawValue: "USER_TOUCHED_DIAGRAM")

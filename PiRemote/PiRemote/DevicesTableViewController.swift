@@ -33,7 +33,7 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
         self.navigationItem.leftBarButtonItem = logoutButton
 
         // Add listeners for notifications from popovers
-        NotificationCenter.default.addObserver(self, selector: #selector(self.handleLoginSuccess), name: NotificationNames.loginSuccess, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleLoginSuccess), name: Notification.Name.loginSuccess, object: nil)
 
         // Pull latest devices from Remote.it account
         let remoteToken = MainUser.sharedInstance.token

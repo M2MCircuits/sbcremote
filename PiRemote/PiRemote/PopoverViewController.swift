@@ -31,7 +31,7 @@ class PopoverViewController: UIViewController {
     // MARK: Local Functions
 
     @IBAction func onClear(_ sender: UIBarButtonItem) {
-        NotificationCenter.default.post(name: NotificationNames.clear, object: nil)
+        NotificationCenter.default.post(name: Notification.Name.clear, object: nil)
     }
 
     @IBAction func onDismiss(_ sender: UIBarButtonItem) {
@@ -51,7 +51,7 @@ class PopoverViewController: UIViewController {
         }
 
         let userInfo = ["text": textfield.text!]
-        NotificationCenter.default.post(name: NotificationNames.save, object: self, userInfo: userInfo)
+        NotificationCenter.default.post(name: Notification.Name.save, object: self, userInfo: userInfo)
     }
 
     func _buildContentDiagram() {

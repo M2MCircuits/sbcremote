@@ -47,7 +47,7 @@ class WebLoginViewController: UIViewController,
     @IBAction func onAction(_ sender: Any) {
         handleLogin { (sucess) in
             DispatchQueue.main.async {
-                NotificationCenter.default.post(name: NotificationNames.loginSuccess, object: nil)
+                NotificationCenter.default.post(name: Notification.Name.loginSuccess, object: nil)
                 self.dismiss(animated: true, completion: nil)
             }
         }

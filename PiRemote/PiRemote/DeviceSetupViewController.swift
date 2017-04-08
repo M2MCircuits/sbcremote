@@ -46,15 +46,15 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
 
         // Adding event listeners for notifications from popovers
         NotificationCenter.default
-            .addObserver(self, selector: #selector(self.handleApplyLayout), name: NotificationNames.apply, object: nil)
+            .addObserver(self, selector: #selector(self.handleApplyLayout), name: Notification.Name.apply, object: nil)
         NotificationCenter.default
-            .addObserver(self, selector: #selector(self.handleClearLayout), name: NotificationNames.clear, object: nil)
+            .addObserver(self, selector: #selector(self.handleClearLayout), name: Notification.Name.clear, object: nil)
         NotificationCenter.default
-            .addObserver(self, selector: #selector(self.handleSaveLayout), name: NotificationNames.save, object: nil)
+            .addObserver(self, selector: #selector(self.handleSaveLayout), name: Notification.Name.save, object: nil)
         NotificationCenter.default
-            .addObserver(self, selector: #selector(self.handleValidLogin), name: NotificationNames.loginSuccess, object: nil)
+            .addObserver(self, selector: #selector(self.handleValidLogin), name: Notification.Name.loginSuccess, object: nil)
         NotificationCenter.default
-            .addObserver(self, selector: #selector(self.handleUpdatePin), name: NotificationNames.updatePin, object: nil)
+            .addObserver(self, selector: #selector(self.handleUpdatePin), name: Notification.Name.updatePin, object: nil)
     }
 
     override func viewDidLayoutSubviews() {
