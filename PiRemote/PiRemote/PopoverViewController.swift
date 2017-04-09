@@ -15,10 +15,6 @@ class PopoverViewController: UIViewController {
 
     var savedLayoutNames: [String]!
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -68,7 +64,13 @@ class PopoverViewController: UIViewController {
         label.text = "Raspberry Pi 3"
     }
 
-    // Utility Functions
+    func getFilePathToPinDiagram() -> String {
+        // Only supports Raspberry Pi 3
+        return PinGuideFilePaths.rPi3
+    }
+
+    // MARK: Utility Functions
+
     static func buildContentLogin(source: AnyObject) -> UIViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let content = storyboard.instantiateViewController(withIdentifier: "WEB_DIALOG")
@@ -89,13 +91,12 @@ class PopoverViewController: UIViewController {
         popover?.sourceView = (source as! UIViewController).view
 
         // Positions in center of parent
-        popover?.sourceRect = sourceRect != nil ? sourceRect! : content.view.bounds
+        let size = content.view.bounds.size
+        let center = CGPoint(
+            x: (popover?.sourceView?.frame.midX)! - (size.width / 2),
+            y: (popover?.sourceView?.frame.midY)! - (size.height / 2))
+        popover?.sourceRect = sourceRect != nil ? sourceRect! : CGRect(origin: center, size: size)
 
         return content
-    }
-
-    // Only supports Raspberry Pi 3
-    func getFilePathToPinDiagram() -> String {
-        return PinGuideFilePaths.rPi3
     }
 }

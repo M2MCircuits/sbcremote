@@ -30,7 +30,7 @@ class Pin: NSObject, NSCoding {
     }
 
     var id: Int = 0
-    var name: String = "no name"
+    var name: String = ""
     var statusWhenHigh: String = "On"
     var statusWhenLow: String = "Off"
     var type: Types = .ignore
@@ -99,5 +99,9 @@ class Pin: NSObject, NSCoding {
 
         // TODO: Handle other models
         return !piThree.contains(id)
+    }
+
+    func isEven() -> Bool {
+        return id % 2 == 0
     }
 }

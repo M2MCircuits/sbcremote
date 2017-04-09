@@ -9,12 +9,11 @@
 import UIKit
 
 // TODO: Handle different pi models. Currently supports Pi 3
-class DeviceSetupViewController: UIViewController, UIPopoverPresentationControllerDelegate, UIScrollViewDelegate {
+class DeviceSetupViewController: UIViewController, UIPopoverPresentationControllerDelegate {
 
-    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var scrollView: PinSetupScrollView!
 
     // MARK: Local Variables
-    var currentImageView: UIImageView!
     var currentPinSetup: [Pin]!
     var popoverView: UIViewController!
 
@@ -41,8 +40,7 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
         self.navigationItem.rightBarButtonItem = doneButton
         self.navigationItem.title = "Device Setup"
 
-        // Adding buttons for pins
-        buildScrollView()
+        self.scrollView.setPinData(pins: currentPinSetup)
 
         // Adding event listeners for notifications from popovers
         NotificationCenter.default
@@ -55,18 +53,15 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
             .addObserver(self, selector: #selector(self.handleValidLogin), name: Notification.Name.loginSuccess, object: nil)
         NotificationCenter.default
             .addObserver(self, selector: #selector(self.handleUpdatePin), name: Notification.Name.updatePin, object: nil)
-    }
-
-    override func viewDidLayoutSubviews() {
-        scrollView!.maximumZoomScale = 2.0
-        scrollView!.minimumZoomScale = 0.5
-        scrollView!.setZoomScale(1.0, animated: true)
+        NotificationCenter.default
+            .addObserver(self, selector: #selector(self.handleTouchPin), name: Notification.Name.touchPin, object: nil)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destination = segue.destination
         var contentSize: CGSize!
         var sourceRect: CGRect!
+        var popoverArrow: UIPopoverArrowDirection!
 
         switch segue.identifier! {
         case SegueTypes.idToPopoverApply:
@@ -78,61 +73,27 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
         case SegueTypes.idToPopoverDiagram:
             contentSize = CGSize(width: 360, height: 700)
         case SegueTypes.idToPinSettings:
+            let pin = sender as! Pin
             contentSize = CGSize(width: 150, height: 250)
             sourceRect = CGRect(origin: CGPoint(x: 0, y: 0), size: destination.view.bounds.size)
-            (destination as! PinSettingsViewController).pin = sender as! Pin
+            popoverArrow = pin.isEven() ? .left : .right
+            (destination as! EditPinViewController).pin = pin
         default: break
         }
 
+        // Saving popover view to dismiss it later
         popoverView = PopoverViewController.buildPopover(
                 source: self, content: destination, contentSize: contentSize, sourceRect: sourceRect)
     }
 
-    // MARK: UIScrollViewDelegate Functions
-
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return currentImageView
-    }
-
     // MARK: UIPopoverPresentationControllerDelegate Functions
 
-    // Prevents popover from changing style based on the iOS device
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        // Prevents popover from changing style based on the iOS device
         return UIModalPresentationStyle.none
     }
 
     // MARK: Local Functions
-
-    func buildScrollView() {
-        let btnWidth = 40
-        let btnHeight = 40
-        let midX = Int(scrollView.bounds.midX)
-
-        scrollView.autoresizingMask = UIViewAutoresizing.flexibleHeight
-        scrollView.contentSize = CGSize(width: Int(scrollView.frame.width * 1.5), height: btnHeight * 40)
-        scrollView.delegate = self
-
-        // Position buttons with respect to image
-        var isEven: Bool
-        var x, y: Int
-
-        for i in 1...40 {
-            isEven = i % 2 == 0
-            x = isEven ? midX + 2 : midX - btnWidth - 2
-            y = (btnHeight + 8) * ((i - 1) / 2)
-
-            let pinButton = UIButton(type: UIButtonType.roundedRect) as UIButton
-
-            pinButton.addTarget(self, action: #selector(DeviceSetupViewController.onTouchTap(sender:)), for: .touchUpInside)
-            pinButton.backgroundColor = UIColor.purple
-            pinButton.frame = CGRect(x: x, y: y, width: btnWidth, height: btnHeight)
-            pinButton.setTitle("\(i)", for: UIControlState.normal)
-            pinButton.setTitleColor(UIColor.yellow, for: UIControlState.normal)
-            pinButton.tag = i
-
-            scrollView.addSubview(pinButton)
-        }
-    }
 
     func documentsDirectory() -> String {
         let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
@@ -147,13 +108,13 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
 
         currentPinSetup = layout.defaultSetup
 
-        refreshPinButtons()
+        scrollView.setPinData(pins: currentPinSetup)
         popoverView.dismiss(animated: true, completion: nil)
     }
 
     func handleClearLayout() {
         currentPinSetup = initPinSetup()
-        refreshPinButtons()
+        scrollView.setPinData(pins: currentPinSetup)
         popoverView.dismiss(animated: true, completion: nil)
     }
 
@@ -183,6 +144,12 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
         popoverView.dismiss(animated: true, completion: nil)
     }
 
+    func handleTouchPin(notification: Notification) {
+        let i = notification.userInfo?["tag"] as! Int
+        // Open popover with selected pin data
+        self.performSegue(withIdentifier: SegueTypes.idToPinSettings, sender: currentPinSetup[i-1])
+    }
+
     func handleUpdatePin(notification: Notification) {
         let userInfo = notification.userInfo as! [String:String]
         let i = Int(userInfo["id"]!)! - 1
@@ -201,7 +168,7 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
         default: break
         }
 
-        refreshPinButtons()
+        scrollView.setPinData(pins: currentPinSetup)
     }
 
     func handleValidLogin() {
@@ -235,43 +202,5 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
     func onSetDeviceSettings(sender: UIButton!) {
         // TODO: Implement saving the layout
         onLeave(sender: sender!)
-    }
-
-    func onTouchTap(sender: UIButton!) {
-        let i = sender.tag
-        let offset = CGPoint(x: i % 2 == 0 ? -80 : 80,
-                             y: ((i - 1) / 2) * 25)
-
-        // Open popover with selected pin data
-        self.performSegue(withIdentifier: SegueTypes.idToPinSettings, sender: currentPinSetup[i-1])
-
-        // Scroll over to pin
-        scrollToPoint(point: offset)
-    }
-
-    func refreshPinButtons() {
-        for child in scrollView.subviews {
-            guard child is UIButton else { break }
-
-            let pinButton = child as! UIButton
-            let i = pinButton.tag
-
-            switch currentPinSetup[i - 1].type {
-            case .ignore:
-                pinButton.backgroundColor = UIColor.gray
-            case .monitor:
-                pinButton.backgroundColor = UIColor.blue
-            case .control:
-                pinButton.backgroundColor = UIColor.orange
-            }
-        }
-    }
-
-    func scrollToPoint(point: CGPoint) {
-        DispatchQueue.main.async {
-            UIView.animate(withDuration: 0.25, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-                self.scrollView.contentOffset = point
-            }, completion: nil)
-        }
     }
 }
