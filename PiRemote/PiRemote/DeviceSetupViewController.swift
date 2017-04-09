@@ -77,8 +77,6 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
             contentSize = CGSize(width: 360, height: 200)
         case SegueTypes.idToPopoverDiagram:
             contentSize = CGSize(width: 360, height: 700)
-        case SegueTypes.idToPopoverLogin:
-            contentSize = CGSize(width: 320, height: 320)
         case SegueTypes.idToPinSettings:
             contentSize = CGSize(width: 150, height: 250)
             sourceRect = CGRect(origin: CGPoint(x: 0, y: 0), size: destination.view.bounds.size)
