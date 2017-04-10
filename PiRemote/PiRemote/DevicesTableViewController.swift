@@ -19,18 +19,27 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
     var sshDevices: [RemoteDevice]!
     var nonSshDevices: [RemoteDevice]!
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.isNavigationBarHidden = false
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Additional navigation setup
-        let logoutButton = UIBarButtonItem(title: "Logout", style: UIBarButtonItemStyle.plain, target: self, action: #selector(DevicesTableViewController.logout))
+        let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(DevicesTableViewController.logout))
 
         self.navigationItem.leftBarButtonItem = logoutButton
+
+        // Add listeners for notifications from popovers
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleLoginSuccess), name: Notification.Name.loginSuccess, object: nil)
 
         // Pull latest devices from Remote.it account
         let remoteToken = MainUser.sharedInstance.token
         let remoteAPIManager = RemoteAPIManager()
         let deviceManager = RemoteDeviceManager()
+
         self.sshDevices = [RemoteDevice()]
         self.nonSshDevices = [RemoteDevice()]
         remoteAPIManager.listDevices(token: remoteToken!, callback: {
@@ -81,6 +90,7 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
         let vc = PopoverViewController.buildContentLogin(source: self)
 
         MainUser.sharedInstance.currentDevice = allDevices[indexPath.row]
+
         self.present(vc, animated: true, completion: nil)
 
         return indexPath
@@ -88,12 +98,17 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
 
     // Prevents popover from changing style based on the iOS device
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
-        return UIModalPresentationStyle.none
+        return .none
     }
 
     // Local Functions
+    func handleLoginSuccess() {
+        // Supported by iOS <6.0
+        self.performSegue(withIdentifier: SegueTypes.idToDeviceDetails, sender: self)
+    }
+
     func logout(sender: UIButton!) {
-        self.dismiss(animated: true, completion: nil)
+        _ = self.navigationController?.popViewController(animated: true)
         // TODO: Implement login info reset
     }
 }

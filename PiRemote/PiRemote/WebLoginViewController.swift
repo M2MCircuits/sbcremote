@@ -45,11 +45,16 @@ class WebLoginViewController: UIViewController,
     }
 
     @IBAction func onAction(_ sender: Any) {
-        handleLogin()
+        handleLogin { (sucess) in
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: Notification.Name.loginSuccess, object: nil)
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
         // TODO: Implement case for DeviceSetup
     }
 
-    func handleLogin() {
+    func handleLogin(completion :@escaping (_ sucess: Bool)->Void) {
         // Validate login by getting the device's state
         let deviceIP = MainUser.sharedInstance.currentDevice?.apiData["deviceLastIP"]
         let username = (usernameBox.text?.isEmpty)! ? usernameBox.placeholder : usernameBox.text
@@ -60,15 +65,19 @@ class WebLoginViewController: UIViewController,
         webApiManager.getFullGPIOState(callback: { data in
             guard data != nil else {
                 // Login Failed
-                let newMessage = self.errorView.subviews[1] as! UILabel
-                newMessage.text = "Invalid login"
-                self.errorView!.isHidden = false
+                DispatchQueue.main.async {
+                    let newMessage = self.errorView.subviews[1] as! UILabel
+                    newMessage.text = "Invalid login"
+                    self.errorView!.isHidden = false
+                    completion(false)
+                }
                 return
             }
 
             // Login Succeeded
             MainUser.sharedInstance.currentDevice!.stateJson = data!["GPIO"] as! [String: [String:AnyObject]]
-            self.onLoginSuccess()
+
+            completion(true)
         });
     }
 

@@ -17,14 +17,19 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource {
     var pins: [Int: Pin]!
     var webiopi: WebAPIManager!
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.isNavigationBarHidden = false
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         let deviceName = MainUser.sharedInstance.currentDevice?.apiData["deviceAlias"]
 
         // Additional navigation setup
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(DeviceDetailsViewController.onCancel))
-        let setupButton = UIBarButtonItem(image: UIImage(named: "cog"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(DeviceDetailsViewController.onViewSetup))
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(DeviceDetailsViewController.onCancel))
+        let setupButton = UIBarButtonItem(image: UIImage(named: "cog"), style: .plain, target: self, action: #selector(DeviceDetailsViewController.onViewSetup))
 
         self.navigationItem.leftBarButtonItem = cancelButton
         self.navigationItem.rightBarButtonItem = setupButton
@@ -32,7 +37,7 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource {
         
         // Initialize pin list
         pinConfig? = ["SPI0": 0]
-        pins = [0: Pin()]
+//        pins = [0: Pin()]
         webiopi = WebAPIManager()
 
         fetchDeviceState()
@@ -105,7 +110,7 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource {
     }
 
     func onCancel() {
-        self.dismiss(animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
     }
 
     func onViewSetup() {
