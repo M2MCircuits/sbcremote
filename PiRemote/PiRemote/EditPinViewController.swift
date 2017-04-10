@@ -55,18 +55,21 @@ class EditPinViewController: UIViewController {
     }
 
     @IBAction func onSelectControl(_ sender: UIButton) {
+        guard isEditing else { return }
         handleTypeChange(type: "control")
         sender.backgroundColor = Theme.controlDarkColor
         sender.setTitleColor(UIColor.white, for: .normal)
     }
 
     @IBAction func onSelectIgnore(_ sender: UIButton) {
+        guard isEditing else { return }
         handleTypeChange(type: "ignore")
         sender.backgroundColor = Theme.ignoreDarkColor
         sender.setTitleColor(UIColor.white, for: .normal)
     }
 
     @IBAction func onSelectMonitor(_ sender: UIButton) {
+        guard isEditing else { return }
         handleTypeChange(type: "monitor")
         sender.backgroundColor = Theme.monitorDarkColor
         sender.setTitleColor(UIColor.white, for: .normal)

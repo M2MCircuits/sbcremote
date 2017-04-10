@@ -8,7 +8,7 @@
 
 import UIKit
 
-// Handles events that occur in popovers using NSNotificationCenter
+// Handles events that occur in certain popovers using NSNotificationCenter
 class PopoverViewController: UIViewController {
 
     static let storyboardName = "DeviceSetup"
@@ -81,21 +81,19 @@ class PopoverViewController: UIViewController {
     static func buildPopover(source: AnyObject, content: UIViewController, contentSize: CGSize, sourceRect: CGRect?) -> UIViewController {
         // Display like an alert
         content.modalPresentationStyle = .popover
-        content.modalTransitionStyle = .coverVertical
+        content.modalTransitionStyle = .crossDissolve
         content.preferredContentSize = contentSize
 
         // Modifies the controller which will contain content
-        let popover = content.popoverPresentationController
-        popover?.delegate = source as? UIPopoverPresentationControllerDelegate
-        popover?.permittedArrowDirections = UIPopoverArrowDirection(rawValue: 0)  // Hides arrow
-        popover?.sourceView = (source as! UIViewController).view
+        let popover = content.popoverPresentationController!
+        popover.delegate = source as? UIPopoverPresentationControllerDelegate
+        popover.permittedArrowDirections = UIPopoverArrowDirection(rawValue: 0)  // Hides arrow
+        popover.sourceView = (source as! UIViewController).view
 
         // Positions in center of parent
-        let size = content.view.bounds.size
-        let center = CGPoint(
-            x: (popover?.sourceView?.frame.midX)! - (size.width / 2),
-            y: (popover?.sourceView?.frame.midY)! - (size.height / 2))
-        popover?.sourceRect = sourceRect != nil ? sourceRect! : CGRect(origin: center, size: size)
+        let size = (source as! UIViewController).view.bounds.size
+        popover.sourceRect = sourceRect != nil ? sourceRect! : CGRect(origin: CGPoint.zero, size: size)
+
 
         return content
     }
