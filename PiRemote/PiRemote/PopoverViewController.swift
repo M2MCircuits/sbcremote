@@ -8,10 +8,12 @@
 
 import UIKit
 
-// Handles events that occur in popovers using NSNotificationCenter
+// Handles events that occur in certain popovers using NSNotificationCenter
 class PopoverViewController: UIViewController {
 
     static let storyboardName = "DeviceSetup"
+
+    var savedLayoutNames: [String]!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,14 +24,10 @@ class PopoverViewController: UIViewController {
         }
     }
 
-    // Local Functions
-    @IBAction func onApply(_ sender: UIBarButtonItem) {
-        // TODO: Pass selected layout
-        NotificationCenter.default.post(name: NotificationNames.apply, object: nil)
-    }
+    // MARK: Local Functions
 
     @IBAction func onClear(_ sender: UIBarButtonItem) {
-        NotificationCenter.default.post(name: NotificationNames.clear, object: nil)
+        NotificationCenter.default.post(name: Notification.Name.clear, object: nil)
     }
 
     @IBAction func onDismiss(_ sender: UIBarButtonItem) {
@@ -37,7 +35,19 @@ class PopoverViewController: UIViewController {
     }
 
     @IBAction func onSave(_ sender: UIBarButtonItem) {
-        NotificationCenter.default.post(name: NotificationNames.save, object: nil)
+        let textfield = self.view.subviews.filter({vw in vw is UITextField}).first as! UITextField
+
+        guard !(textfield.text?.isEmpty)! else {
+            // Showing error message
+            let snackbar = self.view.subviews.filter({vw in vw.restorationIdentifier == "SaveSnackbar" }).first
+            let errorLabel = snackbar?.subviews.filter({vw in vw is UILabel}).first as! UILabel
+            errorLabel.text = "Please enter a name"
+            snackbar?.isHidden = false
+            return
+        }
+
+        let userInfo = ["text": textfield.text!]
+        NotificationCenter.default.post(name: Notification.Name.save, object: self, userInfo: userInfo)
     }
 
     func _buildContentDiagram() {
@@ -54,40 +64,37 @@ class PopoverViewController: UIViewController {
         label.text = "Raspberry Pi 3"
     }
 
-    // Utility Functions
+    func getFilePathToPinDiagram() -> String {
+        // Only supports Raspberry Pi 3
+        return PinGuideFilePaths.rPi3
+    }
+
+    // MARK: Utility Functions
+
     static func buildContentLogin(source: AnyObject) -> UIViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let content = storyboard.instantiateViewController(withIdentifier: "WEB_DIALOG")
         let contentSize = CGSize(width: 320, height: 320)
-
-        (content as! WebLoginViewController).onLoginSuccess = {() -> () in
-            let vc = storyboard.instantiateViewController(withIdentifier: "DEVICE_DETAILS")
-            content.present(vc, animated: true, completion: nil )
-        }
-
         return buildPopover(source: source, content: content, contentSize: contentSize, sourceRect: nil)
     }
 
     static func buildPopover(source: AnyObject, content: UIViewController, contentSize: CGSize, sourceRect: CGRect?) -> UIViewController {
         // Display like an alert
         content.modalPresentationStyle = .popover
-        content.modalTransitionStyle = .coverVertical
+        content.modalTransitionStyle = .crossDissolve
         content.preferredContentSize = contentSize
 
         // Modifies the controller which will contain content
-        let popover = content.popoverPresentationController
-        popover?.delegate = source as? UIPopoverPresentationControllerDelegate
-        popover?.permittedArrowDirections = UIPopoverArrowDirection(rawValue: 0)  // Hides arrow
-        popover?.sourceView = (source as! UIViewController).view
+        let popover = content.popoverPresentationController!
+        popover.delegate = source as? UIPopoverPresentationControllerDelegate
+        popover.permittedArrowDirections = UIPopoverArrowDirection(rawValue: 0)  // Hides arrow
+        popover.sourceView = (source as! UIViewController).view
 
         // Positions in center of parent
-        popover?.sourceRect = sourceRect != nil ? sourceRect! : content.view.bounds
+        let size = (source as! UIViewController).view.bounds.size
+        popover.sourceRect = sourceRect != nil ? sourceRect! : CGRect(origin: CGPoint.zero, size: size)
+
 
         return content
-    }
-
-    // Only supports Raspberry Pi 3
-    func getFilePathToPinDiagram() -> String {
-        return PinGuideFilePaths.rPi3
     }
 }

@@ -50,6 +50,7 @@ class LoginViewController: UIViewController {
     }
 
     func logIntoWeaved (username: String, password: String) {
+        loginIndicator.startAnimating()
         let weavedAPIManager = RemoteAPIManager();
         weavedAPIManager.logInUser(username: username, userpw: password, callback: {
             sucess, response, data in
@@ -78,5 +79,15 @@ class LoginViewController: UIViewController {
     func delay(_ delay:Double, closure:@escaping ()->()) {
         DispatchQueue.main.asyncAfter(
             deadline: DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: closure)
+    }
+
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        return identifier != SegueTypes.idToDevicesTable
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == SegueTypes.idToDevicesTable {
+//            navigationController?.pushViewController(segue.destination, animated: true)
+        }
     }
 }
