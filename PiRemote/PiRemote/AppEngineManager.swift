@@ -16,38 +16,21 @@ class AppEngineManager {
     init(){
         api = APIManager()
     }
-    
-    
-    func postDeviceInfo(device: RemoteDevice, completion: @escaping (_ sucess : Bool) -> Void){
-        let user = MainUser.sharedInstance
-        let jsonBody = ["email" : user.email!,
-                        ]
-        // Warning. BaseURL is not valid.
-        let url = AppEngineConstants.BaseURL + "/account/" + device.apiData["deviceAddress"]!
-        self.api.postRequest(url: url, extraHeaderFields: nil, payload: jsonBody as [String : AnyObject]?) { (data) in
-            guard data != nil else{
-                completion(false)
-                return
-            }
-            
-            guard let jsonData = data as! NSDictionary? else{
-                completion(false)
-                return
-            }
 
-            if jsonData["response"] as! String == "Sucess"{
-                completion(true)
-            }else{
-                completion(false)
-            }
-            
-        }
-    }
     
-    func registerPhoneToken(phoneToken : Data, completion: @escaping (_ sucess: Bool)-> Void){
+    func registerPhoneToken(phoneToken : String,  completion: @escaping (_ sucess: Bool)-> Void){
+        // We need to update all devices the account has with the phone token. 
+        // Get device_list, push that to account. 
+        // Get service_ids via email. Update the phone token in all of them.
+        guard MainUser.sharedInstance.email != nil else{
+            print("Email is nil. Cannot send data.")
+            completion(false)
+            return
+        }
+        
         let param = ["token" : "\(phoneToken)",
-                    "email" : MainUser.sharedInstance.email]
-        //Warning: Currently does not work.
+                    "email" : MainUser.sharedInstance.email!]
+
         let url = AppEngineConstants.BaseURL + "/token"
         self.api.postRequest(url: url, extraHeaderFields: nil, payload: param as [String : AnyObject]?) { (data) in
             
@@ -56,6 +39,35 @@ class AppEngineManager {
                 return
             }
 
+            guard let jsonData = data as! NSDictionary? else{
+                completion(false)
+                return
+            }
+            
+            if jsonData["response"] as! String == "Sucess"{
+                completion(true)
+            }else{
+                completion(false)
+            }
+        }
+        
+    }
+    
+    func createAccountsForDevices(devices: [RemoteDevice], email: String, completion: @escaping (_ sucess: Bool)-> Void){
+        var serviceArray = [String]()
+        for device in devices{
+            serviceArray.append(device.apiData[DeviceAPIType.deviceAddress]!)
+        }
+
+        let url = AppEngineConstants.BaseURL + "/accounts"
+        let jsonBody = ["email" : email,
+                        "service_ids" : serviceArray] as [String : Any]
+        self.api.postRequest(url: url, extraHeaderFields: nil, payload: jsonBody as [String : AnyObject]?) { (data) in
+            guard data != nil else{
+                completion(false)
+                return
+            }
+            
             guard let jsonData = data as! NSDictionary? else{
                 completion(false)
                 return

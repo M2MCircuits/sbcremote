@@ -54,6 +54,7 @@ class WebLoginViewController: UIViewController,
         // TODO: Implement case for DeviceSetup
     }
 
+
     func handleLogin(completion :@escaping (_ sucess: Bool)->Void) {
         // Validate login by getting the device's state
         let deviceIP = MainUser.sharedInstance.currentDevice?.apiData["deviceLastIP"]
@@ -65,6 +66,7 @@ class WebLoginViewController: UIViewController,
         webApiManager.getFullGPIOState(callback: { data in
             guard data != nil else {
                 // Login Failed
+
                 DispatchQueue.main.async {
                     let newMessage = self.errorView.subviews[1] as! UILabel
                     newMessage.text = "Invalid login"

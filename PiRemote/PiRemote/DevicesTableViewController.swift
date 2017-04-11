@@ -31,12 +31,14 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
         let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(DevicesTableViewController.logout))
 
         self.navigationItem.leftBarButtonItem = logoutButton
+        
+        let appEngineAPI = AppEngineManager()
 
         // Add listeners for notifications from popovers
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleLoginSuccess), name: Notification.Name.loginSuccess, object: nil)
 
         // Pull latest devices from Remote.it account
-        let remoteToken = MainUser.sharedInstance.token
+        let remoteToken = MainUser.sharedInstance.weavedToken
         let remoteAPIManager = RemoteAPIManager()
         let deviceManager = RemoteDeviceManager()
 
@@ -48,6 +50,17 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
                     return
                 }
                 (self.sshDevices!, self.nonSshDevices!) = deviceManager.createDevicesFromAPIResponse(data: data!)
+                // We push non-sshdevices to app engine to create accounts
+                DispatchQueue.main.async {
+                       appEngineAPI.createAccountsForDevices(devices: self.nonSshDevices, email: MainUser.sharedInstance.email!, completion: { (sucess) in
+                        if sucess{
+                            print("Suceeded in creating accounts for user")
+                        }else{
+                            print("Failed to create devices")
+                        }
+                    })
+                }
+            
                 OperationQueue.main.addOperation {
                     self.devicesTableView.reloadData()
                 }

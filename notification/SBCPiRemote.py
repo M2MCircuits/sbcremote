@@ -24,9 +24,7 @@ for item in contents.split("\n"):
 webiopiGPIO = webiopi.GPIO
 
 def postToAppEngine(pin):
-	URL = "piremote-160105.appspot.com/apns/"
-	# is there supposed to be a : at the end?
-	# URL = "piremote-160105.appspot.com/apns/:"
+	URL = "http://www.piremote-160105.appspot.com/apns/"
 	httpServ = httplib.HTTPSConnection(URL, 443)
 	httpServ.connect()
 
@@ -73,6 +71,7 @@ def setup():
 	# Add event listener for each pin
 	for gpio in chan_list:
 		RPIGPIO.add_event_detect(gpio, RPIGPIO.BOTH)
+	# Set event callback for each pin
 		RPIGPIO.add_event_callback(gpio, callback)
 	
 # destroy() is called by WebIOPi when it shuts down
