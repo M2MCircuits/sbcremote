@@ -59,7 +59,7 @@ class AppEngineManager {
             serviceArray.append(device.apiData[DeviceAPIType.deviceAddress]!)
         }
 
-        let url = AppEngineConstants.BaseURL + "/account"
+        let url = AppEngineConstants.BaseURL + "/accounts"
         let jsonBody = ["email" : email,
                         "service_ids" : serviceArray] as [String : Any]
         self.api.postRequest(url: url, extraHeaderFields: nil, payload: jsonBody as [String : AnyObject]?) { (data) in

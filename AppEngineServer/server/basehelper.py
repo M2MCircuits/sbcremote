@@ -4,6 +4,7 @@ import json
 import time
 import logging
 from google.appengine.ext import ndb
+from models import Account
 from google.appengine.ext.webapp import blobstore_handlers
 from google.appengine.api import app_identity
 import time
@@ -36,8 +37,8 @@ class MainHelperClass(webapp2.RequestHandler):
                             "info" : info}
         self.writeJson(response_dict)
    
-    def jsonifyRequestBody(self, requestBody):
-        return json.loads(requestBody)
+    def jsonifyRequestBody(self):
+        return json.loads(self.request.body)
 
     def validateAccount(self, serviceID):
         key = ndb.Key(Account, serviceID)

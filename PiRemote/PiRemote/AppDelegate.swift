@@ -28,6 +28,7 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    var accountOnRecord : Bool = false;
     var window: UIWindow?
 
     func application(_ application: UIApplication,
@@ -35,6 +36,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application
         //enable push notifications at first launch
         registerForPushNotifications(application)
+        self.accountOnRecord = MainUser.sharedInstance.loadSaved()
+        if (self.accountOnRecord == true){
+            print("DEBUG INFO: Not INITIAL VISIT")
+            //TODO: Instanciate devices vc
+        }else{
+            print("DEBUG INFO:. User's Intial Visit")
+        }
+        
         return true
     }
 
@@ -83,11 +92,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     //get the device token if the user allowed notifications
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let deviceTokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-
+        
+        MainUser.sharedInstance.phone_token = deviceTokenString
         print("Device Token: " + deviceTokenString)
         let appManager = AppEngineManager()
         
-        //TODO: Check NSUserDefaults if user already has account. If so, push, else do not. Data is not available and it will crash. 
+        //TOOD: Dumb. Fix this.
+        //Checks if we have an account we can use to register phone token. If not, we do nothing.
+        guard self.accountOnRecord == true else{
+            return
+        }
         appManager.registerPhoneToken(phoneToken: deviceTokenString) { (sucess) in
             if sucess{
                 print("Suceeded in registering phone token")

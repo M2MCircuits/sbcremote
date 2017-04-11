@@ -9,8 +9,9 @@
 import UIKit
 
 struct AppEngineConstants {
-    static let BaseURL = "http://www.piremote-160105.appspot.com"
-    static let secureBaseURL = "https://www.piremote-160105.appspot.com"
+    static let BaseURL = "https://www.piremote-160105.appspot.com"
+//    static let BaseURL = "http://localhost:8080"
+//    static let secureBaseURL = "https://www.piremote-160105.appspot.com"
 }
 
 struct DeviceTypes {
@@ -45,7 +46,7 @@ enum PopoverTypes {
 struct SegueTypes {
     static let idToDeviceDetails = "SHOW_DEVICE_DETAILS"
     static let idToDeviceSetup = "SHOW_DEVICE_SETUP"
-    static let idToDevicesTable = "SHOW_DEVICES_TABLE"
+    static let idToDevicesTable = "SHOW_DEVICES"
     static let idToPinSettings = "SHOW_PIN_SETTINGS"
     static let idToPopoverApply = "POPOVER_APPLY"
     static let idToPopoverClear = "POPOVER_CLEAR"

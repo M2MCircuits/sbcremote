@@ -30,8 +30,9 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
         
         let appEngineAPI = AppEngineManager()
 
+        //TODO: Add method to get new token if this expires (since user objects are now stored.
         // Pull latest devices from Remote.it account
-        let remoteToken = MainUser.sharedInstance.token
+        let remoteToken = MainUser.sharedInstance.weavedToken
         let remoteAPIManager = RemoteAPIManager()
         let deviceManager = RemoteDeviceManager()
         self.sshDevices = [RemoteDevice()]
@@ -47,6 +48,8 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
                        appEngineAPI.createAccountsForDevices(devices: self.nonSshDevices, email: MainUser.sharedInstance.email!, completion: { (sucess) in
                         if sucess{
                             print("Suceeded in creating accounts for user")
+                        }else{
+                            print("Failed to create devices")
                         }
                     })
                 }
