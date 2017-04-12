@@ -35,6 +35,7 @@
 		C0C791311E62217200D94A13 /* DeviceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C791301E62217200D94A13 /* DeviceTableViewCell.swift */; };
 		C0E77BF11E96D27D009A36CA /* ApplyLayoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E77BF01E96D27D009A36CA /* ApplyLayoutViewController.swift */; };
 		C0ED02901E9ABA2B00DEFDC8 /* EditPinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ED028F1E9ABA2B00DEFDC8 /* EditPinViewController.swift */; };
+		C0F34AEE1E9D66420015958F /* PiDiagramViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F34AED1E9D66420015958F /* PiDiagramViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +82,7 @@
 		C0C791301E62217200D94A13 /* DeviceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceTableViewCell.swift; sourceTree = "<group>"; };
 		C0E77BF01E96D27D009A36CA /* ApplyLayoutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplyLayoutViewController.swift; sourceTree = "<group>"; };
 		C0ED028F1E9ABA2B00DEFDC8 /* EditPinViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditPinViewController.swift; sourceTree = "<group>"; };
+		C0F34AED1E9D66420015958F /* PiDiagramViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PiDiagramViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,6 +138,7 @@
 				C08665A41E9137EA002A106D /* PopoverViewController.swift */,
 				C0E77BF01E96D27D009A36CA /* ApplyLayoutViewController.swift */,
 				C0ED028F1E9ABA2B00DEFDC8 /* EditPinViewController.swift */,
+				C0F34AED1E9D66420015958F /* PiDiagramViewController.swift */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -340,6 +343,7 @@
 				5AD0606E1CAD8E9800BD6930 /* AppDelegate.swift in Sources */,
 				C0C791311E62217200D94A13 /* DeviceTableViewCell.swift in Sources */,
 				24C6D9511E44DC5000C3365D /* APIManager.swift in Sources */,
+				C0F34AEE1E9D66420015958F /* PiDiagramViewController.swift in Sources */,
 				5AD060901CAD9E7700BD6930 /* PinTableViewCell.swift in Sources */,
 				241C59CE1E81A94100BBF2B2 /* SysConstants.swift in Sources */,
 				C0E77BF11E96D27D009A36CA /* ApplyLayoutViewController.swift in Sources */,

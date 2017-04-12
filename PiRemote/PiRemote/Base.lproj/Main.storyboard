@@ -93,7 +93,7 @@
                                 </state>
                                 <connections>
                                     <action selector="handleTapLogin" destination="Quz-7m-Y6X" eventType="touchDown" id="V8a-z2-tje"/>
-                                    <segue destination="TKw-YT-88J" kind="show" identifier="SHOW_DEVICES_TABLE" id="crl-WW-GCD"/>
+                                    <segue destination="TKw-YT-88J" kind="show" identifier="SHOW_DEVICES" id="crl-WW-GCD"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vsU-qt-h8N">
@@ -183,6 +183,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="My Devices" id="vnp-jt-51a"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="devicesTableView" destination="5zE-OH-Bjc" id="2wn-MB-Gwg"/>
                         <segue destination="6JH-BG-EKY" kind="popoverPresentation" identifier="SHOW_WEBIOPI_LOGIN" popoverAnchorView="5zE-OH-Bjc" id="6OX-KP-xtE">
@@ -438,6 +439,6 @@
         <image name="cross" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="otq-FB-Afg"/>
+        <segue reference="1Lx-Gl-rNf"/>
     </inferredMetricsTieBreakers>
 </document>
