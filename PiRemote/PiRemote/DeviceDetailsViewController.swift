@@ -37,7 +37,9 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource {
         
         // Initialize pin list
         pinConfig? = ["SPI0": 0]
-//        pins = [0: Pin()]
+        pins = [Int:Pin]()
+        for i in 1...40 { pins[i] = (Pin(id: i)) }
+
         webiopi = WebAPIManager()
 
         fetchDeviceState()

@@ -20,7 +20,7 @@ class SimpleHTTPRequest : NSObject {
     func simpleAPIRequest(
         toUrl: String,
         HTTPMethod: String,
-        jsonBody: [String: AnyObject]?,
+        jsonBody: [String: Any]?,
         extraHeaderFields: [String: String]?,
         completionHandler: @escaping (_ sucess: Bool, _ data: Any?, _ error: Error?) -> Void) {
         
@@ -53,7 +53,7 @@ class SimpleHTTPRequest : NSObject {
         }
 
         //Retrieves data returned.
-        let task = session.dataTask(with: request as URLRequest){
+        let task = session.dataTask(with: request as URLRequest) {
             data, response, downloadError in
 
             //Connectivity issues

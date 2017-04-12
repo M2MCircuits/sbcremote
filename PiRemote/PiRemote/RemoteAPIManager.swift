@@ -33,6 +33,7 @@ class RemoteAPIManager {
     // GET user/login/:username/:password
     func logInUser(username: String, userpw: String, callback: @escaping (_ sucess : Bool, _ response: String, _ data: NSDictionary?) -> Void){
         let endpointURL = "/user/login/" + username + "/" + userpw
+
         self.api.getRequest(url: baseApiUrl + endpointURL, extraHeaderFields: remoteHeaderFields, completion: { data in
         
             guard data != nil else{
@@ -77,8 +78,33 @@ class RemoteAPIManager {
         //TODO : Implement
     }
     
-    func connectDevice(deviceAddress: String, hostip: String, shouldWait: Bool, completion: (_ data: NSDictionary?)->Void){
-        //TODO : Implement
+    func connectDevice(deviceAddress: String, hostip: String, shouldWait: Bool, callback: @escaping (_ data: NSDictionary?) -> Void) {
+        let endpointURL = "/device/connect"
+        let payload = [
+            "deviceaddress": deviceAddress,
+            "hostip": hostip,
+            "wait": String(shouldWait)
+        ] as [String : Any]
+
+        let remoteHeaderFieldsPost = [
+            "apikey": "WeavedDemoKey$2015",
+            "content-type": "application/json",
+            "token": MainUser.sharedInstance.weavedToken!
+        ]
+
+        self.api.postRequest(url: baseApiUrl + endpointURL, extraHeaderFields: remoteHeaderFieldsPost, payload: payload, completion: { data in
+            guard data != nil else {
+                callback(nil)
+                return
+            }
+
+            let jsonData = data as! NSDictionary
+            if self.checkResponse(data: jsonData) == true {
+                callback(jsonData)
+            } else {
+                callback(nil)
+            }
+        })
     }
     
 
@@ -86,23 +112,18 @@ class RemoteAPIManager {
     func listDevices(token: String, callback: @escaping (_ data: NSDictionary?) -> Void) {
         let endpointURL = "/device/list/all"
         remoteHeaderFields["token"] = token
-        self.api.getRequest(url: baseApiUrl + endpointURL, extraHeaderFields: remoteHeaderFields, completion: {data in
-            guard data != nil else{
+        self.api.getRequest(url: baseApiUrl + endpointURL, extraHeaderFields: remoteHeaderFields, completion: { data in
+            guard data != nil else {
                 callback(nil)
                 return
             }
 
             let jsonData = data as! NSDictionary
-            if self.checkResponse(data: jsonData) == true{
+            if self.checkResponse(data: jsonData) == true {
                 callback(jsonData)
-            }else{
+            } else {
                 callback(nil)
             }
-            
-            
         })
     }
-    
-    
-
 }

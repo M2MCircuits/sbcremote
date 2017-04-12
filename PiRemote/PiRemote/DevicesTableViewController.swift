@@ -100,11 +100,33 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
     // UITableViewDelegate Functions
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         let allDevices = sshDevices + nonSshDevices
-        let vc = PopoverViewController.buildContentLogin(source: self)
+        let device = allDevices[indexPath.row]
+        MainUser.sharedInstance.currentDevice = device
 
-        MainUser.sharedInstance.currentDevice = allDevices[indexPath.row]
+        // Equivalent to whatsmyip.com
+        SimpleHTTPRequest().simpleAPIRequest(toUrl: "https://api.ipify.org?format=json", HTTPMethod: "GET", jsonBody: nil, extraHeaderFields: nil, completionHandler: { success, data, error in
+            let deviceAddress = device.apiData["deviceAddress"]!
+            let senderAddress = (data as! NSDictionary)["ip"] as! String
 
-        self.present(vc, animated: true, completion: nil)
+            // Post to get device connection
+            RemoteAPIManager().connectDevice(deviceAddress: deviceAddress, hostip: senderAddress, shouldWait: true, callback: { data in
+
+                let connection = data!["connection"] as! NSDictionary
+                let proxyUrl = connection["proxy"] as! String
+
+                let start = proxyUrl.range(of: "http://")?.upperBound
+                let end = proxyUrl.range(of: "com")?.upperBound
+
+                let domain = proxyUrl.substring(with: start!..<end!)
+                let port = proxyUrl.substring(from: (proxyUrl.range(of: "com:")?.upperBound)!)
+
+                // Attempting to communicate with webiopi
+                let webapi = WebAPIManager(ipAddress: domain, port: port, username: "webiopi", password: "raspberry")
+                webapi.getFullGPIOState(callback: { data in
+                    print(data!)
+                })
+            })
+        })
 
         return indexPath
     }

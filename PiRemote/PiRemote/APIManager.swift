@@ -13,9 +13,9 @@ class APIManager{
     
     let network = SimpleHTTPRequest()
     
-    func getRequest(url: String, extraHeaderFields: [String: String]?, completion: @escaping (_ data: Any?) -> Void) {
+    func getRequest(url: String, extraHeaderFields: [String: String]?, payload: [String: Any]? = nil, completion: @escaping (_ data: Any?) -> Void) {
 
-        self.network.simpleAPIRequest(toUrl: url, HTTPMethod: "GET", jsonBody: nil, extraHeaderFields: extraHeaderFields, completionHandler: {
+        self.network.simpleAPIRequest(toUrl: url, HTTPMethod: "GET", jsonBody: payload, extraHeaderFields: extraHeaderFields, completionHandler: {
             sucess, data, err in
             
             if sucess{
@@ -27,7 +27,7 @@ class APIManager{
         })
     }
 
-    func postRequest(url: String, extraHeaderFields: [String: String]?, payload: [String: AnyObject]?, completion: @escaping (_ data: Any?) -> Void) {
+    func postRequest(url: String, extraHeaderFields: [String: String]?, payload: [String: Any]?, completion: @escaping (_ data: Any?) -> Void) {
 
         self.network.simpleAPIRequest(toUrl: url, HTTPMethod: "POST", jsonBody: payload, extraHeaderFields: extraHeaderFields, completionHandler: {
             sucess, data, err in
