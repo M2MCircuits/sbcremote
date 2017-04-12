@@ -67,9 +67,10 @@ def callback(gpio):
 	# Uncomment the following line if only input pins should send notifications
 	# if webiopiGPIO.getFunction(gpio) == webiopiGPIO.IN:
 	# jsonify the pin
-	jsonPin = json.dumps({'pin': gpio})
+	# message=1 (pin change), funct(Function): 0=input 1=output, val(Value): 0=off(low) 1=on(high)
+	jsonPin = json.dumps({'message' : 1, 'pin': gpio, 'funct' : webiopiGPIO.getFunction(gpio), 'val' : webiopiGPIO.digitalRead(gpio)})
 	# Post the pin to App Engine
-	# postToAppEngine(jsonPin)
+	postToAppEngine(jsonPin)
 	webiopi.debug("Notification sent to App Engine")
 	
 	
@@ -77,8 +78,9 @@ def callback(gpio):
 def setup():
 
 	# Send iOS app a notification that the pi just restarted.
-	restartMessage = json.dumps({'message': 'pi restarted'})
-	# postToAppEngine(restartMessage)
+	# message=0 (pi restarted)
+	restartMessage = json.dumps({'message': 0})
+	postToAppEngine(restartMessage)
 	webiopi.debug("Notification - Webiopi restarted")
 	
 	# Turn off RPi's warnings
