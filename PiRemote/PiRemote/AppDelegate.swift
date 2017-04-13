@@ -29,22 +29,73 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var accountOnRecord : Bool = false;
+    
     var window: UIWindow?
+    
+    #if (arch(i386) || arch(x86_64)) && os(iOS)
+    let DEVICE_IS_SIMULATOR = true
+    var tokenString: String? = "d91a7b5329626d129ce1b9dea4c2846970f80c85"
+    #else
+    let DEVICE_IS_SIMULATOR = false
+    var tokenString : String? = nil
 
+    #endif
+    
+    
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application
-        //enable push notifications at first launch
+        // We get phone token everytime user starts up per Apple's official documentation guideline
         registerForPushNotifications(application)
-        self.accountOnRecord = MainUser.sharedInstance.loadSaved()
-        if (self.accountOnRecord == true){
-            print("DEBUG INFO: Not INITIAL VISIT")
-            //TODO: Instanciate devices vc
-        }else{
-            print("DEBUG INFO:. User's Intial Visit")
-        }
         
-        return true
+        // Loads up saved user profule from NSUserDefaults
+        self.accountOnRecord = MainUser.sharedInstance.loadSaved()
+        
+        //If no account, we continue normal initilization
+        guard self.accountOnRecord == true else{
+            print("User's first time")
+            return true
+        }
+
+        // If token string is nil then continue intialization
+        guard self.tokenString != nil else{
+            // If no token string, just continue on with app initialization
+            return true
+        }
+
+        
+        let previousToken = MainUser.sharedInstance.phone_token
+        
+        //If the new token is different or there previously was no phone token, update user, and send it to app engine/
+        if previousToken == nil || previousToken != tokenString{
+        
+            MainUser.sharedInstance.phone_token = tokenString
+            self.registerTokenWithAppEngine(completion: { (sucess) in
+                guard sucess == true else{
+                    print("Failed to update token with app engine")
+                    return
+                }
+                    
+                print("Token registered with app engine")
+                DispatchQueue.main.async{
+                    self.loadDevicesView()
+                    }
+                })
+            return true
+                
+        }else{
+            // The tokens are the same. Continue on as usual
+            self.loadDevicesView()
+            return true
+            }
+        
+        
+    }
+    
+    
+    func loadDevicesView(){
+        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        let devicesVC = storyboard.instantiateViewController(withIdentifier: "DEVICE_TABLE") as! DevicesTableViewController
+        self.window?.rootViewController = devicesVC
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -55,6 +106,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // use this method to pause the game.
     }
 
+    func registerTokenWithAppEngine(completion: @escaping (_ sucess: Bool)->Void){
+        let appManager = AppEngineManager()
+        appManager.registerPhoneToken(phoneToken: self.tokenString!) { (sucess) in
+            completion(sucess)
+        }
+        
+    }
+    
+    
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application
         // state information to restore your application to its current state in case it is terminated later.
@@ -76,6 +136,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. 
         // See also applicationDidEnterBackground:.
     }
+    
     //register for push notifications when app starts
     func registerForPushNotifications(_ application: UIApplication) {
         let notificationSettings = UIUserNotificationSettings(
@@ -89,28 +150,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             application.registerForRemoteNotifications()
         }
     }
+    
     //get the device token if the user allowed notifications
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let deviceTokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-        
-        MainUser.sharedInstance.phone_token = deviceTokenString
+        self.tokenString = deviceTokenString
         print("Device Token: " + deviceTokenString)
-        let appManager = AppEngineManager()
         
-        //TOOD: Dumb. Fix this.
-        //Checks if we have an account we can use to register phone token. If not, we do nothing.
-        guard self.accountOnRecord == true else{
-            return
-        }
-        appManager.registerPhoneToken(phoneToken: deviceTokenString) { (sucess) in
-            if sucess{
-                print("Suceeded in registering phone token")
-            }
-            else{
-                print("Failed to register phone token")
-            }
-        }
     }
+    
     //otherwise display an error
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("Failed to register:", error)

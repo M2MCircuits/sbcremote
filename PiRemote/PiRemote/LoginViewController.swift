@@ -68,6 +68,9 @@ class LoginViewController: UIViewController {
                 
                 //Saves user information into NSUserDefaults since we know the informaiton is valid.
                 MainUser.sharedInstance.saveUser()
+                
+                //Registers for notification now that the user information is there.
+                    
 
                 // Supported by iOS <6.0
                 self.performSegue(withIdentifier: SegueTypes.idToDevicesTable, sender: self)
