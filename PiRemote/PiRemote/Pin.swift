@@ -16,6 +16,7 @@ class Pin: NSObject, NSCoding {
         case monitor = 2
     }
 
+    // TODO: Values like "ALT0", "ALT3", etc. are being saved as "IN". Should we be doing this?
     var _function: String = "IN"
     var function: String {
         get {

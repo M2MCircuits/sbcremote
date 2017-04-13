@@ -10,15 +10,12 @@ import Foundation
 
 class RemoteDevice: NSObject, NSCoding {
 
-    
-
     // Descriptions can be found at http://docs.weaved.com/docs/devicelistall
     var apiData: [String: String]!
 
     // Local Variables
     var layout: PinLayout!
     var shouldPersistState: Bool! // Attempt to restore previous pin values on restart
-    var stateJson: [String: [String:AnyObject]]!
 
     override init() {
         super.init()
@@ -28,7 +25,6 @@ class RemoteDevice: NSObject, NSCoding {
         self.apiData = decoder.decodeObject(forKey: "apiData") as! [String:String]
         self.layout = decoder.decodeObject(forKey: "layout") as! PinLayout
         self.shouldPersistState = decoder.decodeObject(forKey: "shouldPersistState") as! Bool
-        self.stateJson = decoder.decodeObject(forKey: "stateJson") as! [String: [String:AnyObject]]
     }
 
     init(deviceData: NSDictionary) {
@@ -49,6 +45,5 @@ class RemoteDevice: NSObject, NSCoding {
         coder.encode(apiData, forKey: "apiData")
         coder.encode(layout, forKey: "layout")
         coder.encode(shouldPersistState, forKey: "shouldPersistState")
-        coder.encode(stateJson, forKey: "stateJson")
     }
 }
