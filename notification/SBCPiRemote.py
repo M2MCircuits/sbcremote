@@ -71,7 +71,6 @@ def callback(gpio):
 	jsonPin = json.dumps({'message' : 1, 'pin': gpio, 'funct' : webiopiGPIO.getFunction(gpio), 'val' : webiopiGPIO.digitalRead(gpio)})
 	# Post the pin to App Engine
 	postToAppEngine(jsonPin)
-	webiopi.debug("Notification sent to App Engine")
 	
 	
 # setup() is called by WebIOPi when it starts up
@@ -81,7 +80,6 @@ def setup():
 	# message=0 (pi restarted)
 	restartMessage = json.dumps({'message': 0})
 	postToAppEngine(restartMessage)
-	webiopi.debug("Notification - Webiopi restarted")
 	
 	# Turn off RPi's warnings
 	RPIGPIO.setwarnings(False)
