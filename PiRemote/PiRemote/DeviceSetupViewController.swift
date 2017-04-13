@@ -23,6 +23,10 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
         DeviceTypes.rPi3
         ].self
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.isNavigationBarHidden = false
@@ -31,8 +35,7 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // TODO: Check if we should load from layout
-        pinLayout = PinLayout(name: "custom", defaultSetup: initPinSetup())
+        guard pinLayout != nil else { fatalError("[ERROR] No pin layout provided") }
 
         // Setting up navigation bar
         let backButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(DeviceSetupViewController.onLeave))

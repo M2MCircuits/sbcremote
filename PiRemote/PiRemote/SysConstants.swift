@@ -25,6 +25,8 @@ struct Theme {
     static let grey900 = UIColor(red: 0x21 / 255, green: 0x21 / 255, blue: 0x21 / 255, alpha: 1.0)
     static let lightGreen300 = UIColor(red: 0xae / 255, green: 0xd5 / 255, blue: 0x81 / 255, alpha: 1.0)
     static let lightGreen500 = UIColor(red: 0x8b / 255, green: 0xc3 / 255, blue: 0x4a / 255, alpha: 1.0)
+    static let red300 = UIColor(red: 0xe5 / 255, green: 0x73 / 255, blue: 0x73 / 255, alpha: 1.0)
+    static let red500 = UIColor(red: 0xf4 / 255, green: 0x43 / 255, blue: 0x36 / 255, alpha: 1.0)
 }
 
 struct DeviceTypes {
