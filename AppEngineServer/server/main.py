@@ -20,8 +20,9 @@ from basehelper import MainHelperClass
 from models import Account
 from google.appengine.ext import ndb
 
-
-default_config = [-1,-1,None,None,None,-1,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None]
+#Configs mapped to the largest possible pin value (28)
+default_config = [None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None]
+valid pins = [2,3,4,17,27,22,10,9,11,5,6,13,19,26,18,23,24,25,8,7,12,16,20,21]
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
@@ -56,6 +57,8 @@ class APNSHandler(MainHelperClass):
 		account = self.validateAccount(serviceID)
 		body = self.jsonifyRequestBody()
 		pin = body["pin"]
+		if pin not in valid_pins:
+			pin = None
 		message = int(body["message"])
 		funct = int(body["funct"])
 		val = int(body["val"])
@@ -112,6 +115,8 @@ class AccountHandler(MainHelperClass):
 				acc.serviceID = id_
 				acc.alias = data["alias"]
 				print "got service id"
+				acc.configs = default_config
+				print "set default configs"
 				acc.key = ndb.Key(Account, id_)
 				print "creating key"
 				acc.put()
