@@ -57,13 +57,16 @@ class APNSHandler(MainHelperClass):
 		account = self.validateAccount(serviceID)
 		body = self.jsonifyRequestBody()
 		pin = body["pin"]
+
+		# Only certain pins are vaid from pi. 
 		if pin not in valid_pins:
 			pin = None
+
 		message = int(body["message"])
 		funct = int(body["funct"])
 		val = int(body["val"])
 		if not account:
-			self.writeErrorResponse("Invalid request. No account oautherization")
+			self.writeErrorResponse("Invalid request. No account oauth")
 		if message == RESTART:
 			for phone_token in account.token:
 				self.sendAPN(account.alias + "has restarted!", phone_token, None)
@@ -72,9 +75,16 @@ class APNSHandler(MainHelperClass):
 				pin_data = {"pin" : pin,
 							"func" : funct,
 							"val" : val}
-				#TODO: Change so pin can point to service on account.
+
+				#Uses string in the config in notification.
+				pin_string = account.config[pin]
+
+				if pin_string == None:
+					#If there is no service on pin, use the pin information in notification
+					pin_string = " pin " + pin
+
 				for phone_token in account.token:
-					self.sendAPN(account.alias + " : " + "pin " + pin + " has turned " + valString[val], phone_token, pin_data)
+					self.sendAPN(account.alias + " : " + pin_string + " has turned " + valString[val], phone_token, pin_data)
 			else:
 				self.writeErrorResponse("Failure. Required pin/func/val not provided.")
 		self.writeSucessfulResponse("Sent notification")
@@ -115,7 +125,7 @@ class AccountHandler(MainHelperClass):
 				acc.serviceID = id_
 				acc.alias = data["alias"]
 				print "got service id"
-				acc.configs = default_config
+				acc.config = default_config
 				print "set default configs"
 				acc.key = ndb.Key(Account, id_)
 				print "creating key"
@@ -124,8 +134,8 @@ class AccountHandler(MainHelperClass):
 				logging.info("Account has been put into the datastore")
 			except:
 				continue
+		#Better flesh out fail state.
 		self.writeSucessfulResponse("Account sucessfully created")
-		# self.writeErrorResponse("Account data not fully provided.")
 
 class APNPhoneTokenHandler(MainHelperClass):
     def post(self):
