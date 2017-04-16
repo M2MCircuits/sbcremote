@@ -58,14 +58,14 @@ Victor Aniyah</string>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Copyright (c) 2017 J.L.L. Consulting. All rights reserved." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="8ie-xW-0ye">
                         <rect key="frame" x="20" y="691" width="374" height="21"/>
                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
-                        <color key="textColor" red="0.050980392156862744" green="0.27843137254901962" blue="0.63137254901960782" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Wni-vi-h3v">
                         <rect key="frame" x="214.33333333333331" y="374" width="165.33333333333331" height="50"/>
                     </imageView>
                 </subviews>
-                <color key="backgroundColor" red="0.39215686274509803" green="0.70980392156862748" blue="0.96470588235294119" alpha="1" colorSpace="calibratedRGB"/>
+                <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                 <constraints>
                     <constraint firstItem="Wni-vi-h3v" firstAttribute="top" secondItem="on4-hf-xLO" secondAttribute="bottom" constant="24" id="0Ic-NM-jnH"/>
                     <constraint firstItem="OgB-4F-Q3f" firstAttribute="centerX" secondItem="5h2-wV-jf6" secondAttribute="centerX" constant="-90" id="28f-ih-l6P"/>
