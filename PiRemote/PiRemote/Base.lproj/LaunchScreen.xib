@@ -39,13 +39,13 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VPA-Hp-Yr6">
-                        <rect key="frame" x="214.33333333333331" y="511.99999999999994" width="165.33333333333331" height="79.666666666666572"/>
+                        <rect key="frame" x="214" y="512" width="165" height="104"/>
                         <string key="text">Bryan Gillespie
 Jeffery Parsa
 Matt Willoughby
 Muhammad Martinez
 Victor Aniyah</string>
-                        <fontDescription key="fontDescription" name="Georgia-Bold" family="Georgia" pointSize="14"/>
+                        <fontDescription key="fontDescription" name="Georgia-Bold" family="Georgia" pointSize="13"/>
                         <color key="textColor" red="0.7803921568627451" green="0.35686274509803922" blue="0.070588235294117646" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -77,6 +77,7 @@ Victor Aniyah</string>
                     <constraint firstItem="VPA-Hp-Yr6" firstAttribute="width" secondItem="bXu-88-Gmh" secondAttribute="width" id="Ety-26-AIY"/>
                     <constraint firstAttribute="trailingMargin" secondItem="8ie-xW-0ye" secondAttribute="trailing" id="GBs-4o-5Z0"/>
                     <constraint firstItem="8ie-xW-0ye" firstAttribute="top" relation="greaterThanOrEqual" secondItem="OgB-4F-Q3f" secondAttribute="bottom" priority="750" constant="24" id="GCi-7g-b88"/>
+                    <constraint firstItem="VPA-Hp-Yr6" firstAttribute="baseline" secondItem="OgB-4F-Q3f" secondAttribute="baseline" id="GEe-Cd-CvH"/>
                     <constraint firstItem="bXu-88-Gmh" firstAttribute="top" secondItem="on4-hf-xLO" secondAttribute="bottom" constant="24" id="IRH-GR-iwc"/>
                     <constraint firstItem="Wni-vi-h3v" firstAttribute="centerX" secondItem="5h2-wV-jf6" secondAttribute="centerX" constant="90" id="OOV-Uk-Rx0"/>
                     <constraint firstItem="Z7j-vY-BRh" firstAttribute="centerX" secondItem="5h2-wV-jf6" secondAttribute="centerX" id="SGe-XJ-nZL"/>
