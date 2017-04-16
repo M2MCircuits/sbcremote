@@ -2,73 +2,78 @@
 //  LoginViewController.swift
 //  PiRemote
 //
-//  Authors: Hunter Heard, Josh Binkley
-//  Copyright (c) 2016 JLL Consulting. All rights reserved.
+//  Authors: Muhammad Martinez, Victor Aniyah
+//  Copyright (c) 2017 JLL Consulting. All rights reserved.
 //
-
 
 import UIKit
 
 class LoginViewController: UIViewController {
 
-    // Link to views shown in storyboard
-    @IBOutlet weak var deviceName: UILabel!
-    @IBOutlet weak var displayMessage: UILabel!
     @IBOutlet weak var logButton: UIButton!
     @IBOutlet weak var loginIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var paperView: UIView!
     @IBOutlet weak var passwordBox: UITextField!
     @IBOutlet weak var usernameBox: UITextField!
 
-    // Local variables
-    var isLoginSuccess: Bool!
+    // MARK: Local variables
+
+    var isLoginSuccess = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        isLoginSuccess = false
-        if (MainUser.sharedInstance.currentDevice != nil) {
-            deviceName.text = MainUser.sharedInstance.currentDevice?.apiData["deviceAlias"]
-        }
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        self.navigationController?.isNavigationBarHidden = true
+
+        // Adding background pattern
+        let patternFill = UIColor(patternImage: UIImage(named: "connect")!)
+        view.backgroundColor = patternFill
+
+        // Adding shadow style
+        paperView!.layer.masksToBounds = false
+        paperView!.layer.shadowOpacity = 0.5
+        paperView!.layer.shadowOffset = CGSize(width: 0, height: 1)
+        paperView!.layer.shadowRadius = 4
+        paperView!.layer.shadowPath = UIBezierPath(rect: paperView!.bounds).cgPath
     }
 
-    // Login Button
-    @IBAction func handleTapLogin() {
-        let passw = passwordBox.text
-        let usern = usernameBox.text
+    // MARK: Local Functions
 
-        if(passw == "") {
-            self.displayMessage.text = "Please enter a password.";
+    @IBAction func onLogin(_ sender: UIButton) {
+        let pass = passwordBox.text!
+        let user = usernameBox.text!
+
+        guard !pass.isEmpty else {
             return
         }
 
-        logIntoWeaved(username: usern!, password: passw!)
-    }
+        guard !user.isEmpty else {
+            return
+        }
 
-    func logIntoWeaved (username: String, password: String) {
-        loginIndicator.startAnimating()
-        let weavedAPIManager = RemoteAPIManager();
-        weavedAPIManager.logInUser(username: username, userpw: password, callback: {
-            sucess, response, data in
+        self.loginIndicator.startAnimating()
+
+        RemoteAPIManager().logInUser(username: user, userpw: pass, completion: { success, response, data in
             DispatchQueue.main.async {
                 self.loginIndicator.stopAnimating();
-                self.displayMessage.text = response
                 guard data != nil else{
+                    self.isLoginSuccess = false
                     return
                 }
 
-                // Fills out the user information with the data returned from response
+                self.isLoginSuccess = true
+
+                // Filling out the user information with the data returned from response
                 MainUser.sharedInstance.getUserInformationFromResponse(dictionary: data!)
-                
-                MainUser.sharedInstance.password = password
+                MainUser.sharedInstance.password = pass
                 
                 self.isLoginSuccess = true
-                
-                //Saves user information into NSUserDefaults since we know the informaiton is valid.
+
+                // Saving user information into NSUserDefaults since we know the informaiton is valid
                 MainUser.sharedInstance.saveUser()
                 
                 //Registers for notification now that the user information is there.
@@ -83,19 +88,18 @@ class LoginViewController: UIViewController {
         })
     }
 
-    //because persistant text is annoying
-    func delay(_ delay:Double, closure:@escaping ()->()) {
-        DispatchQueue.main.asyncAfter(
-            deadline: DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: closure)
-    }
+    @IBAction func onShowRemoteItInfo(_ sender: UIButton) {
+        let info = "Remot3.it is used by PiRemote to find your Raspberry Pi devices."
+        let alert = UIAlertController(title: "Remot3.it", message: info, preferredStyle: UIAlertControllerStyle.alert)
 
-    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
-        return identifier != SegueTypes.idToDevicesTable
-    }
+        alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: {action in
+            alert.dismiss(animated: true, completion: nil)
+        }))
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == SegueTypes.idToDevicesTable {
-//            navigationController?.pushViewController(segue.destination, animated: true)
-        }
+        alert.addAction(UIAlertAction(title: "Visit Site", style: UIAlertActionStyle.default, handler: {action in
+            UIApplication.shared.openURL(URL(string: "https://www.remot3.it/web/")! as URL)
+        }))
+
+        self.present(alert, animated: true, completion: nil)
     }
 }
