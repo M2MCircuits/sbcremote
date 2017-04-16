@@ -17,14 +17,14 @@ f = open('/etc/weaved/services/Weavedhttp8000.conf', 'r')
 contents = f.read()
 f.close()
 
-# Extract UID (Weaved/Remot3.it Device ID)
-UID = "filenotfound"
+# Extract serviceID (Weaved/Remot3.it Device ID)
+serviceID = "filenotfound"
 for item in contents.split("\n"):
 	if "UID" in item:
-		UID = item.split(" ")[1]
+		serviceID = item.split(" ")[1]
 
 # App Engine URL
-url = "https://piremote-160105.appspot.com/apns/" + UID
+URL = "https://piremote-160105.appspot.com/apns"
 
 # Import webiopi's GPIO library
 webiopiGPIO = webiopi.GPIO
@@ -36,23 +36,22 @@ pinConfigDB = "/etc/webiopi/gpio_config.db"
 def postToAppEngine(jsonMessage):
 
 	# Send the http POST to App Engine
-	response = requests.post(url, data=jsonMessage)
+	response = requests.post(URL, data=jsonMessage)
 
 	# Check for errors
 	if response.status_code == 200:
 		webiopi.debug("Notification sent to App Engine")
 	else:
-		# errorMessage = jsonMessage + " -- Notification failed to send: " + str(response.status_code) + " - " + response.text
-		errorMessage = jsonMessage + " -- Notification failed to send: Status Code " + str(response.status_code)
+		errorMessage = jsonMessage + " -- Notification failed to send: " + str(response.status_code) + " - " + response.text
+		# errorMessage = jsonMessage + " -- Notification failed to send: Status Code " + str(response.status_code)
 		webiopi.debug(errorMessage)
 
 ###################### Define the callback function ##################
 def callback(gpio):
 	# Uncomment the following line if only input pins should send notifications
 	# if webiopiGPIO.getFunction(gpio) == webiopiGPIO.IN:
-	# jsonify the pin
-	# message=1 (pin change), funct(Function): 0=input 1=output, val(Value): 0=off(low) 1=on(high)
-	jsonPin = json.dumps({'message' : 1, 'pin': gpio, 'funct' : webiopiGPIO.getFunction(gpio), 'val' : int(webiopiGPIO.digitalRead(gpio))})
+	# jsonify the pin info: message=1 (pin change), funct(Function): 0=input 1=output, val(Value): 0=off(low) 1=on(high)
+	jsonPin = json.dumps({'message' : 1, 'serviceid': serviceID, 'pin': gpio, 'funct' : webiopiGPIO.getFunction(gpio), 'val' : int(webiopiGPIO.digitalRead(gpio))})
 	# Post the pin to App Engine
 	postToAppEngine(jsonPin)
 	
@@ -62,7 +61,7 @@ def setup():
 
 	# Send iOS app a notification that the pi just restarted.
 	# message=0 (pi restarted)
-	restartMessage = json.dumps({'message': 0})
+	restartMessage = json.dumps({'message': 0, 'serviceid': serviceID})
 	postToAppEngine(restartMessage)
 	
 	# Turn off RPi's warnings
