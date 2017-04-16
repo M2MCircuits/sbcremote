@@ -48,10 +48,12 @@ class LoginViewController: UIViewController {
         let user = usernameBox.text!
 
         guard !pass.isEmpty else {
+            SharedSnackbar.show(parent: self.view, type: .warn, message: "Please enter your password")
             return
         }
 
         guard !user.isEmpty else {
+            SharedSnackbar.show(parent: self.view, type: .warn, message: "Please enter your username")
             return
         }
 
@@ -62,6 +64,7 @@ class LoginViewController: UIViewController {
                 self.loginIndicator.stopAnimating();
                 guard data != nil else{
                     self.isLoginSuccess = false
+                    SharedSnackbar.show(parent: self.view, type: .error, message: "Incorrect Login")
                     return
                 }
 
