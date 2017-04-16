@@ -2,17 +2,15 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "checkbox-unchecked.png",
+      "filename" : "borland-farms-logo.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "checkbox-unchecked-1.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "checkbox-unchecked-2.png",
       "scale" : "3x"
     }
   ],
