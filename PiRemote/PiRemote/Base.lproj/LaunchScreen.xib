@@ -1,75 +1,107 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
-            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <subviews>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="  Copyright (c) 2016 JLL Consulting. All rights reserved." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="8ie-xW-0ye">
-                    <rect key="frame" x="20" y="439" width="422" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="PiRemote" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="kId-c2-rCX">
-                    <rect key="frame" x="140" y="140" width="200" height="43"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="44"/>
-                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="borlandarms" translatesAutoresizingMaskIntoConstraints="NO" id="3zA-jj-paE">
-                    <rect key="frame" x="170" y="191" width="140" height="140"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="140" id="6wl-Fa-cye"/>
-                        <constraint firstAttribute="height" constant="140" id="s2c-wb-jMB"/>
-                    </constraints>
-                    <variation key="default">
-                        <mask key="constraints">
-                            <exclude reference="6wl-Fa-cye"/>
-                            <exclude reference="s2c-wb-jMB"/>
-                        </mask>
-                    </variation>
-                </imageView>
-            </subviews>
-            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-            <constraints>
-                <constraint firstItem="kId-c2-rCX" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="7Ft-1k-ZlQ"/>
-                <constraint firstItem="3zA-jj-paE" firstAttribute="height" relation="lessThanOrEqual" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="0.3" constant="1" id="DyR-Yg-NOt"/>
-                <constraint firstAttribute="bottom" secondItem="8ie-xW-0ye" secondAttribute="bottom" constant="20" id="Kzo-t9-V3l"/>
-                <constraint firstItem="8ie-xW-0ye" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" symbolic="YES" id="MfP-vx-nX0"/>
-                <constraint firstItem="3zA-jj-paE" firstAttribute="width" relation="lessThanOrEqual" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.3" constant="1" id="SdA-RZ-iFD"/>
-                <constraint firstItem="3zA-jj-paE" firstAttribute="centerX" secondItem="kId-c2-rCX" secondAttribute="centerX" id="Z1r-mD-CSc"/>
-                <constraint firstAttribute="centerX" secondItem="8ie-xW-0ye" secondAttribute="centerX" id="ZEH-qu-HZ9"/>
-                <constraint firstItem="kId-c2-rCX" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" multiplier="0.6" constant="1" id="Zej-CH-jzs"/>
-                <constraint firstItem="8ie-xW-0ye" firstAttribute="centerX" secondItem="kId-c2-rCX" secondAttribute="centerX" id="bQv-0g-1HP"/>
-                <constraint firstItem="3zA-jj-paE" firstAttribute="leading" secondItem="kId-c2-rCX" secondAttribute="leading" id="cON-Qy-Auz"/>
-                <constraint firstItem="3zA-jj-paE" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="hcP-rC-NPi"/>
-                <constraint firstItem="kId-c2-rCX" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.6" id="hlY-9E-Bb5"/>
-                <constraint firstItem="3zA-jj-paE" firstAttribute="top" secondItem="kId-c2-rCX" secondAttribute="top" id="l0Z-3Z-bYY"/>
-            </constraints>
-            <nil key="simulatedStatusBarMetrics"/>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <variation key="default">
-                <mask key="constraints">
-                    <exclude reference="Z1r-mD-CSc"/>
-                    <exclude reference="cON-Qy-Auz"/>
-                </mask>
-            </variation>
-            <point key="canvasLocation" x="548" y="455"/>
-        </view>
+        <viewController id="9hC-v6-vov">
+            <layoutGuides>
+                <viewControllerLayoutGuide type="top" id="GcY-UM-7dP"/>
+                <viewControllerLayoutGuide type="bottom" id="IHz-fY-oY6"/>
+            </layoutGuides>
+            <view key="view" contentMode="scaleToFill" id="5h2-wV-jf6">
+                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="piremote-logo" translatesAutoresizingMaskIntoConstraints="NO" id="Z7j-vY-BRh">
+                        <rect key="frame" x="79" y="44" width="256" height="256"/>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="piremote-text" translatesAutoresizingMaskIntoConstraints="NO" id="on4-hf-xLO">
+                        <rect key="frame" x="79" y="300" width="256" height="50"/>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="jll-consulting-logo" translatesAutoresizingMaskIntoConstraints="NO" id="bXu-88-Gmh">
+                        <rect key="frame" x="34.333333333333343" y="374" width="165.33333333333331" height="50"/>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="utdallas" translatesAutoresizingMaskIntoConstraints="NO" id="fG6-FG-RKu">
+                        <rect key="frame" x="214" y="432" width="165" height="72"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="fG6-FG-RKu" secondAttribute="height" multiplier="55:24" id="x5U-Pp-Jja"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VPA-Hp-Yr6">
+                        <rect key="frame" x="214.33333333333331" y="511.99999999999994" width="165.33333333333331" height="79.666666666666572"/>
+                        <string key="text">Bryan Gillespie
+Jeffery Parsa
+Matt Willoughby
+Muhammad Martinez
+Victor Aniyah</string>
+                        <fontDescription key="fontDescription" name="Georgia-Bold" family="Georgia" pointSize="14"/>
+                        <color key="textColor" red="0.7803921568627451" green="0.35686274509803922" blue="0.070588235294117646" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="borland-farms-logo" translatesAutoresizingMaskIntoConstraints="NO" id="OgB-4F-Q3f">
+                        <rect key="frame" x="34" y="432" width="165" height="181"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="OgB-4F-Q3f" secondAttribute="height" multiplier="165:181" id="5U9-zL-dZQ"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Copyright (c) 2017 J.L.L. Consulting. All rights reserved." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="8ie-xW-0ye">
+                        <rect key="frame" x="20" y="691" width="374" height="21"/>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                        <color key="textColor" red="0.050980392156862744" green="0.27843137254901962" blue="0.63137254901960782" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Wni-vi-h3v">
+                        <rect key="frame" x="214.33333333333331" y="374" width="165.33333333333331" height="50"/>
+                    </imageView>
+                </subviews>
+                <color key="backgroundColor" red="0.39215686274509803" green="0.70980392156862748" blue="0.96470588235294119" alpha="1" colorSpace="calibratedRGB"/>
+                <constraints>
+                    <constraint firstItem="Wni-vi-h3v" firstAttribute="top" secondItem="on4-hf-xLO" secondAttribute="bottom" constant="24" id="0Ic-NM-jnH"/>
+                    <constraint firstItem="OgB-4F-Q3f" firstAttribute="centerX" secondItem="5h2-wV-jf6" secondAttribute="centerX" constant="-90" id="28f-ih-l6P"/>
+                    <constraint firstItem="fG6-FG-RKu" firstAttribute="centerX" secondItem="5h2-wV-jf6" secondAttribute="centerX" constant="90" id="3GZ-0K-WTE"/>
+                    <constraint firstItem="fG6-FG-RKu" firstAttribute="width" secondItem="bXu-88-Gmh" secondAttribute="width" id="7o6-w9-Ub2"/>
+                    <constraint firstItem="on4-hf-xLO" firstAttribute="centerX" secondItem="5h2-wV-jf6" secondAttribute="centerX" id="9iH-sh-88S"/>
+                    <constraint firstItem="8ie-xW-0ye" firstAttribute="centerX" secondItem="5h2-wV-jf6" secondAttribute="centerX" id="Bvx-dW-E6W"/>
+                    <constraint firstItem="bXu-88-Gmh" firstAttribute="centerX" secondItem="5h2-wV-jf6" secondAttribute="centerX" constant="-90" id="DYr-iW-KOo"/>
+                    <constraint firstItem="VPA-Hp-Yr6" firstAttribute="width" secondItem="bXu-88-Gmh" secondAttribute="width" id="Ety-26-AIY"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="8ie-xW-0ye" secondAttribute="trailing" id="GBs-4o-5Z0"/>
+                    <constraint firstItem="8ie-xW-0ye" firstAttribute="top" relation="greaterThanOrEqual" secondItem="OgB-4F-Q3f" secondAttribute="bottom" priority="750" constant="24" id="GCi-7g-b88"/>
+                    <constraint firstItem="bXu-88-Gmh" firstAttribute="top" secondItem="on4-hf-xLO" secondAttribute="bottom" constant="24" id="IRH-GR-iwc"/>
+                    <constraint firstItem="Wni-vi-h3v" firstAttribute="centerX" secondItem="5h2-wV-jf6" secondAttribute="centerX" constant="90" id="OOV-Uk-Rx0"/>
+                    <constraint firstItem="Z7j-vY-BRh" firstAttribute="centerX" secondItem="5h2-wV-jf6" secondAttribute="centerX" id="SGe-XJ-nZL"/>
+                    <constraint firstItem="IHz-fY-oY6" firstAttribute="top" secondItem="8ie-xW-0ye" secondAttribute="bottom" constant="24" id="Ufk-JU-hkx"/>
+                    <constraint firstItem="on4-hf-xLO" firstAttribute="top" secondItem="Z7j-vY-BRh" secondAttribute="bottom" id="WAA-zB-Qgg"/>
+                    <constraint firstItem="OgB-4F-Q3f" firstAttribute="width" secondItem="bXu-88-Gmh" secondAttribute="width" id="ZMK-1R-a5p"/>
+                    <constraint firstItem="VPA-Hp-Yr6" firstAttribute="top" secondItem="fG6-FG-RKu" secondAttribute="bottom" constant="8" id="dQe-C2-snG"/>
+                    <constraint firstItem="OgB-4F-Q3f" firstAttribute="top" secondItem="bXu-88-Gmh" secondAttribute="bottom" constant="8" id="hc9-2H-YnH"/>
+                    <constraint firstItem="bXu-88-Gmh" firstAttribute="width" secondItem="5h2-wV-jf6" secondAttribute="width" multiplier="0.4" id="jed-kW-zeL"/>
+                    <constraint firstItem="fG6-FG-RKu" firstAttribute="top" secondItem="Wni-vi-h3v" secondAttribute="bottom" constant="8" id="oxf-PE-ObA"/>
+                    <constraint firstItem="Wni-vi-h3v" firstAttribute="height" secondItem="bXu-88-Gmh" secondAttribute="height" id="pJ3-VO-VPn"/>
+                    <constraint firstItem="VPA-Hp-Yr6" firstAttribute="centerX" secondItem="5h2-wV-jf6" secondAttribute="centerX" constant="90" id="po0-M5-x9t"/>
+                    <constraint firstItem="Wni-vi-h3v" firstAttribute="width" secondItem="bXu-88-Gmh" secondAttribute="width" id="veI-kb-5Il"/>
+                    <constraint firstItem="Z7j-vY-BRh" firstAttribute="top" secondItem="GcY-UM-7dP" secondAttribute="bottom" constant="24" id="vik-h8-LpF"/>
+                    <constraint firstItem="8ie-xW-0ye" firstAttribute="leading" secondItem="5h2-wV-jf6" secondAttribute="leadingMargin" id="x2l-Nl-KpO"/>
+                </constraints>
+            </view>
+            <point key="canvasLocation" x="1052" y="376"/>
+        </viewController>
     </objects>
     <resources>
-        <image name="borlandarms" width="569" height="584"/>
+        <image name="borland-farms-logo" width="305" height="338"/>
+        <image name="jll-consulting-logo" width="300" height="50"/>
+        <image name="piremote-logo" width="256" height="256"/>
+        <image name="piremote-text" width="256" height="50"/>
+        <image name="utdallas" width="1280" height="513"/>
     </resources>
 </document>
