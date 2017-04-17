@@ -27,6 +27,8 @@
 		C0587EDE1E9AD401000F6FAC /* DeviceDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0587EDD1E9AD401000F6FAC /* DeviceDetailsViewController.swift */; };
 		C0587EE01E9AD413000F6FAC /* DeviceSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0587EDF1E9AD413000F6FAC /* DeviceSetupViewController.swift */; };
 		C08665A51E9137EA002A106D /* PopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08665A41E9137EA002A106D /* PopoverViewController.swift */; };
+		C095F12D1EA41CA300A6E3AF /* SharedSnackbar.xib in Resources */ = {isa = PBXBuildFile; fileRef = C095F12C1EA41CA300A6E3AF /* SharedSnackbar.xib */; };
+		C095F12F1EA41D4B00A6E3AF /* SharedSnackbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C095F12E1EA41D4B00A6E3AF /* SharedSnackbar.swift */; };
 		C0A3C3851E9A607B007D953B /* PinSetupScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3C3841E9A607B007D953B /* PinSetupScrollView.swift */; };
 		C0B3ECD51E9EF4D60005488A /* PinTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B3ECD41E9EF4D60005488A /* PinTableViewCell.swift */; };
 		C0C1C1721E6CC90F005DE3B2 /* RemoteAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C1C1711E6CC90F005DE3B2 /* RemoteAPIManager.swift */; };
@@ -77,6 +79,8 @@
 		C0587EDD1E9AD401000F6FAC /* DeviceDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceDetailsViewController.swift; sourceTree = "<group>"; };
 		C0587EDF1E9AD413000F6FAC /* DeviceSetupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceSetupViewController.swift; sourceTree = "<group>"; };
 		C08665A41E9137EA002A106D /* PopoverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverViewController.swift; sourceTree = "<group>"; };
+		C095F12C1EA41CA300A6E3AF /* SharedSnackbar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SharedSnackbar.xib; sourceTree = "<group>"; };
+		C095F12E1EA41D4B00A6E3AF /* SharedSnackbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedSnackbar.swift; sourceTree = "<group>"; };
 		C0A3C3841E9A607B007D953B /* PinSetupScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinSetupScrollView.swift; sourceTree = "<group>"; };
 		C0B3ECD41E9EF4D60005488A /* PinTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinTableViewCell.swift; sourceTree = "<group>"; };
 		C0C1C1711E6CC90F005DE3B2 /* RemoteAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteAPIManager.swift; sourceTree = "<group>"; };
@@ -131,6 +135,8 @@
 				C0B3ECD41E9EF4D60005488A /* PinTableViewCell.swift */,
 				C0C791301E62217200D94A13 /* DeviceTableViewCell.swift */,
 				C0A3C3841E9A607B007D953B /* PinSetupScrollView.swift */,
+				C095F12C1EA41CA300A6E3AF /* SharedSnackbar.xib */,
+				C095F12E1EA41D4B00A6E3AF /* SharedSnackbar.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -318,6 +324,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5AD060731CAD8E9800BD6930 /* Main.storyboard in Resources */,
+				C095F12D1EA41CA300A6E3AF /* SharedSnackbar.xib in Resources */,
 				5AD060781CAD8E9800BD6930 /* LaunchScreen.xib in Resources */,
 				5AD060751CAD8E9800BD6930 /* Images.xcassets in Resources */,
 				C0287E601E90B367009D4578 /* DeviceSetup.storyboard in Resources */,
@@ -342,6 +349,7 @@
 				C0C7912F1E6215AC00D94A13 /* DevicesTableViewController.swift in Sources */,
 				C0ED02901E9ABA2B00DEFDC8 /* EditPinViewController.swift in Sources */,
 				C0B3ECD51E9EF4D60005488A /* PinTableViewCell.swift in Sources */,
+				C095F12F1EA41D4B00A6E3AF /* SharedSnackbar.swift in Sources */,
 				5AD0608E1CAD96B100BD6930 /* Pin.swift in Sources */,
 				2484B3CB1E79E708000770E5 /* AppEngineManager.swift in Sources */,
 				C02614181E86EC71002B725F /* WebLoginViewController.swift in Sources */,

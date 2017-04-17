@@ -31,12 +31,12 @@ class RemoteAPIManager {
 
 
     // GET user/login/:username/:password
-    func logInUser(username: String, userpw: String, callback: @escaping (_ sucess : Bool, _ response: String, _ data: NSDictionary?) -> Void){
+    func logInUser(username: String, userpw: String, completion: @escaping (_ sucess : Bool, _ response: String, _ data: NSDictionary?) -> Void){
         let endpointURL = "/user/login/" + username + "/" + userpw
         self.api.getRequest(url: baseApiUrl + endpointURL, extraHeaderFields: remoteHeaderFields, completion: { data in
         
             guard data != nil else{
-                callback(false, self.ErrorResponse, nil)
+                completion(false, self.ErrorResponse, nil)
                 return
             }
             
@@ -44,12 +44,12 @@ class RemoteAPIManager {
             let jsonData = data as! NSDictionary
             if self.checkResponse(data: jsonData) == true{
                 response = self.SucessResponse
-                callback(true, response, jsonData)
+                completion(true, response, jsonData)
             }
             else{
                 response = jsonData["reason"] as! String
                 // If it fails we simply show the string. No need to show the data.
-                callback(false, response, nil)
+                completion(false, response, nil)
             }
         })
     }
