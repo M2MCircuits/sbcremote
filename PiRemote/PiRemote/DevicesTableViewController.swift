@@ -8,6 +8,7 @@
 
 import UIKit
 
+@available(iOS 9.0, *)
 class DevicesTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate  {
 
     @IBOutlet var devicesTableView: UITableView!
@@ -18,9 +19,10 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
     var devices: [RemoteDevice]!
     var initialLogin : Bool = true
 
+    var appEngineManager : AppEngineManager!
     var deviceManager : RemoteDeviceManager!
     var remoteManager : RemoteAPIManager!
-    var appEngineManager : AppEngineManager!
+    var webManager : WebAPIManager!
 
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -45,6 +47,7 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
         self.appEngineManager = AppEngineManager()
         self.remoteManager = RemoteAPIManager()
         self.deviceManager = RemoteDeviceManager()
+        self.webManager = WebAPIManager()
 
         // Pulling latest devices from Remote.it account
 
@@ -66,6 +69,13 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleLoginSuccess), name: Notification.Name.loginSuccess, object: nil)
 
         self.devices = [RemoteDevice()]
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destination = segue.destination
+        if segue.identifier == SegueTypes.idToDeviceDetails {
+            (destination as! DeviceDetailsViewController).webAPI = self.webManager
+        }
     }
 
     // MARK: UITableViewDataSource Functions
@@ -138,8 +148,8 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
 
                 // Attempting to communicate with webiopi
                 cell.deviceNameLabel.text = "Getting data..."
-                let webapi = WebAPIManager(ipAddress: domain, port: "", username: "webiopi", password: "raspberry")
-                webapi.getFullGPIOState(callback: { data in
+                self.webManager = WebAPIManager(ipAddress: domain, port: "", username: "webiopi", password: "raspberry")
+                self.webManager.getFullGPIOState(callback: { data in
                     cell.activityIndicator.stopAnimating()
                     device.rawStateData = data as! [String: Any]
                     self.performSegue(withIdentifier: SegueTypes.idToDeviceDetails, sender: self)

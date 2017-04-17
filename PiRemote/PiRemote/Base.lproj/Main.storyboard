@@ -473,33 +473,34 @@
                                                                 <action selector="onToggleSwitch:" destination="uaq-A8-3E1" eventType="valueChanged" id="2m5-3X-vQY"/>
                                                             </connections>
                                                         </switch>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zyn-wX-gJG">
-                                                            <rect key="frame" x="188" y="29" width="80" height="21"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PI1-BE-zgG">
+                                                            <rect key="frame" x="188" y="25" width="80" height="30"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" constant="80" id="4yE-e6-cvd"/>
+                                                                <constraint firstAttribute="width" constant="80" id="vga-p0-NZA"/>
                                                             </constraints>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
+                                                            <state key="normal" title="Type"/>
+                                                            <connections>
+                                                                <action selector="onToggleType:" destination="uaq-A8-3E1" eventType="touchUpInside" id="Ycx-65-3ZC"/>
+                                                            </connections>
+                                                        </button>
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstItem="kx1-yi-eOo" firstAttribute="centerY" secondItem="DJs-Ox-4qv" secondAttribute="centerY" id="4cg-Vf-Tkd"/>
-                                                        <constraint firstItem="NsS-nV-gfg" firstAttribute="leading" secondItem="zyn-wX-gJG" secondAttribute="trailing" constant="8" id="8nt-eZ-u24"/>
                                                         <constraint firstAttribute="trailingMargin" secondItem="NsS-nV-gfg" secondAttribute="trailing" constant="10" id="BjV-GM-s3T"/>
                                                         <constraint firstItem="nC2-kq-tph" firstAttribute="centerY" secondItem="DJs-Ox-4qv" secondAttribute="centerY" id="FM6-vw-53T"/>
                                                         <constraint firstItem="kx1-yi-eOo" firstAttribute="leading" secondItem="DJs-Ox-4qv" secondAttribute="leadingMargin" id="FZE-Ku-Bv7"/>
-                                                        <constraint firstItem="zyn-wX-gJG" firstAttribute="centerY" secondItem="DJs-Ox-4qv" secondAttribute="centerY" id="Sms-OC-rhH"/>
+                                                        <constraint firstItem="PI1-BE-zgG" firstAttribute="leading" secondItem="nC2-kq-tph" secondAttribute="trailing" constant="8" id="UNP-an-062"/>
                                                         <constraint firstItem="nC2-kq-tph" firstAttribute="leading" secondItem="kx1-yi-eOo" secondAttribute="trailing" constant="8" id="VKP-Bi-wcJ"/>
                                                         <constraint firstItem="NsS-nV-gfg" firstAttribute="centerY" secondItem="DJs-Ox-4qv" secondAttribute="centerY" id="XV6-tL-Ucu"/>
+                                                        <constraint firstItem="PI1-BE-zgG" firstAttribute="centerY" secondItem="DJs-Ox-4qv" secondAttribute="centerY" id="aDt-0v-b9d"/>
                                                         <constraint firstItem="nC2-kq-tph" firstAttribute="centerY" secondItem="DJs-Ox-4qv" secondAttribute="centerY" id="bBu-bu-5Pj"/>
-                                                        <constraint firstItem="zyn-wX-gJG" firstAttribute="leading" secondItem="nC2-kq-tph" secondAttribute="trailing" constant="8" id="t6x-HY-esN"/>
+                                                        <constraint firstItem="NsS-nV-gfg" firstAttribute="leading" secondItem="PI1-BE-zgG" secondAttribute="trailing" constant="8" id="dmO-TQ-8OA"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <connections>
                                                     <outlet property="pinNameLabel" destination="nC2-kq-tph" id="e0W-rY-pPx"/>
                                                     <outlet property="pinView" destination="kx1-yi-eOo" id="RXH-3U-d2d"/>
-                                                    <outlet property="typeLabel" destination="zyn-wX-gJG" id="zHc-C5-74p"/>
+                                                    <outlet property="typeButton" destination="PI1-BE-zgG" id="xbQ-3t-9zo"/>
                                                     <outlet property="valueSwitch" destination="NsS-nV-gfg" id="6cX-Ah-hRj"/>
                                                 </connections>
                                             </tableViewCell>

@@ -10,7 +10,7 @@ import UIKit
 
 // TODO: Add sorting feature by type and status
 @available(iOS 9.0, *)
-class DeviceDetailsViewController: UIViewController, UITableViewDataSource {
+class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var lastUpdatedLabel: UILabel!
     @IBOutlet weak var powerStatusLabel: UILabel!
@@ -18,7 +18,9 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource {
 
     // MARK: Local variables
 
+    var currentSelection: PinTableViewCell!
     var device: RemoteDevice!
+    var webAPI: WebAPIManager!
 
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -27,10 +29,6 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.isNavigationBarHidden = false
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
 
         device = MainUser.sharedInstance.currentDevice!
 
@@ -98,11 +96,40 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource {
         return device.layout.defaultSetup.count
     }
 
+    // MARK: UITableViewDelegate Functions
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        let tableView = stackView.arrangedSubviews[3] as! UITableView
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PIN CELL", for: indexPath) as! PinTableViewCell
+        self.currentSelection = cell
+        return indexPath
+    }
+
     // MARK: Local Functions
 
     func handleUpdatePin(notification: Notification) {
         let userInfo = notification.userInfo as! [String:String]
-        // TODO: Implement updating layout
+        let id = Int(userInfo["id"]!)!
+
+        if userInfo.keys.contains("value") {
+            let value = userInfo["value"]! == "true" ? 1 : 0
+            webAPI.setValue(gpioNumber: id, value: value, callback: { newValue in
+                // TODO: Handle nil = failure
+                //print(newValue!)
+//                self.currentSelection.updateStyle(with: self.device.layout.defaultSetup[id])
+            })
+        } else if userInfo.keys.contains("function") {
+            let function = userInfo["function"]! == "Control" ? "out" : "in"
+            webAPI.setFunction(gpioNumber: id, functionType: function, callback: { newFunction in
+                //print(newValue!)
+                // TODO: Handle nil = failure
+//                self.currentSelection.updateStyle(with: self.device.layout.defaultSetup[id])
+            })
+        }
     }
 
     func initCustomLayout(for device: RemoteDevice) -> PinLayout {

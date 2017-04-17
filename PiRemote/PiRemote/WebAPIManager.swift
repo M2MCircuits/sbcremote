@@ -111,7 +111,6 @@ class WebAPIManager {
         self.api.postRequest(url: baseApiUrl + endpointURL, extraHeaderFields: webHeaderFields, payload: nil, completion: {
             data in
                 guard data != nil else{
-                    print(self.errorResponse)
                     callback(nil)
                     return
                 }
