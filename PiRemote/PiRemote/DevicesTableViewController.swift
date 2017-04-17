@@ -141,6 +141,7 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
                 let webapi = WebAPIManager(ipAddress: domain, port: "", username: "webiopi", password: "raspberry")
                 webapi.getFullGPIOState(callback: { data in
                     cell.activityIndicator.stopAnimating()
+                    device.rawStateData = data as! [String: Any]
                     self.performSegue(withIdentifier: SegueTypes.idToDeviceDetails, sender: self)
                 }) // End WebIOPi call
             }) // End Remot3.it call

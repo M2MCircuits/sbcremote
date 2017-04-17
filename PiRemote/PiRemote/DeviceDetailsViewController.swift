@@ -34,6 +34,11 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource {
 
         device = MainUser.sharedInstance.currentDevice!
 
+        // Creating custom layout if not already defined
+        if device.layout == nil {
+            device.layout = self.initCustomLayout(for: device)
+        }
+
         // Additional navigation setup
         let backButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(DeviceDetailsViewController.onBack))
         let setupButton = UIBarButtonItem(image: UIImage(named: "cog"), style: .plain, target: self, action: #selector(DeviceDetailsViewController.onViewSetup))
@@ -98,6 +103,19 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource {
     func handleUpdatePin(notification: Notification) {
         let userInfo = notification.userInfo as! [String:String]
         // TODO: Implement updating layout
+    }
+
+    func initCustomLayout(for device: RemoteDevice) -> PinLayout {
+        let deviceAlias = device.apiData["deviceAlias"]
+
+        //TODO: Handle non GPIO pins
+
+        let gpio = device.rawStateData["GPIO"] as! [String: AnyObject]
+        let pins = gpio.map({ pinData in
+            return Pin(id: Int(pinData.key)!, apiData: pinData.value as! [String : AnyObject])
+        })
+
+        return PinLayout(name: "Custom-\(deviceAlias!)", defaultSetup: pins)
     }
 
     func onBack() {
