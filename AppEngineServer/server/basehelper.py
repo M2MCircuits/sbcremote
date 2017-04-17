@@ -29,7 +29,7 @@ class MainHelperClass(webapp2.RequestHandler):
 
     def writeSucessfulResponse(self, info):
         responseDictionary = {"response": "Sucess",
-                                "data" : response}
+                                "data" : info}
         self.writeJson(responseDictionary)
 
     def writeErrorResponse(self, info):

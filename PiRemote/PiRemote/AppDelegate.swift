@@ -44,8 +44,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // We get phone token everytime user starts up per Apple's official documentation guideline
-        registerForPushNotifications(application)
         
         // Loads up saved user profule from NSUserDefaults
         self.accountOnRecord = MainUser.sharedInstance.loadSaved()
@@ -56,6 +54,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return true
         }
 
+        // We get phone token everytime user starts up per Apple's official documentation guideline
+        registerForPushNotifications(application)
+
+        
         // If token string is nil then continue intialization
         guard self.tokenString != nil else{
             // If no token string, just continue on with app initialization
@@ -64,11 +66,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         
         let previousToken = MainUser.sharedInstance.phone_token
+        if previousToken == nil{
+            print("Previous token is empty")
+        }
         
         //If the new token is different or there previously was no phone token, update user, and send it to app engine/
         if previousToken == nil || previousToken != tokenString{
         
             MainUser.sharedInstance.phone_token = tokenString
+            MainUser.sharedInstance.saveUser()
             self.registerTokenWithAppEngine(completion: { (sucess) in
                 guard sucess == true else{
                     print("Failed to update token with app engine")
@@ -84,6 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 
         }else{
             // The tokens are the same. Continue on as usual
+            print("Token has not changed. Continuing initialization")
             self.loadDevicesView()
             return true
             }
@@ -95,7 +102,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func loadDevicesView(){
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
         let devicesVC = storyboard.instantiateViewController(withIdentifier: "DEVICE_TABLE") as! DevicesTableViewController
-        self.window?.rootViewController = devicesVC
+        let nav = storyboard.instantiateViewController(withIdentifier: "MAIN_NAV") as! UINavigationController
+        devicesVC.initialLogin = false
+        //Sets devicesVC as rootvc
+        nav.pushViewController(devicesVC, animated: true)
+        //sets new navigation as system rootvc
+        self.window?.rootViewController = nav
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

@@ -22,7 +22,7 @@
         <!--App Nav-->
         <scene sceneID="KFk-LC-bCc">
             <objects>
-                <navigationController title="App Nav" navigationBarHidden="YES" id="lvU-ey-xtQ" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="MAIN_NAV" title="App Nav" navigationBarHidden="YES" id="lvU-ey-xtQ" sceneMemberID="viewController">
                     <nil key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="o2y-jh-EKQ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -438,6 +438,6 @@
         <image name="cross" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="otq-FB-Afg"/>
+        <segue reference="1Lx-Gl-rNf"/>
     </inferredMetricsTieBreakers>
 </document>

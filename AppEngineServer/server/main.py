@@ -41,36 +41,40 @@ Returns:
 
 """
 class APNSHandler(MainHelperClass):
-	INPUT = 0
-	OUTPUT = 1
-
-	HIGH = 1
-	LOW = 0
-
-	RESTART = 0
-	CHANGE = 1
-
-	valString = ["LOW", "HIGH"]
-	funcStr = ["INPUT", "OUTPUT"]
 
 	def post(self, serviceID):
+
+		INPUT = 0
+		OUTPUT = 1
+
+		HIGH = 1
+		LOW = 0
+
+		RESTART = 0
+		CHANGE = 1
+
+		valString = ["LOW", "HIGH"]
+		funcStr = ["INPUT", "OUTPUT"]
+
 		account = self.validateAccount(serviceID)
 		body = self.jsonifyRequestBody()
-		pin = body["pin"]
+		message = int(body["message"])
 
 		# Only certain pins are vaid from pi. 
-		if pin not in valid_pins:
-			pin = None
 
-		message = int(body["message"])
-		funct = int(body["funct"])
-		val = int(body["val"])
 		if not account:
 			self.writeErrorResponse("Invalid request. No account oauth")
 		if message == RESTART:
 			for phone_token in account.token:
 				self.sendAPN(account.alias + "has restarted!", phone_token, None)
 		else:
+			pin = int(body["pin"])
+			if pin not in valid_pins:
+				pin = None
+			
+			funct = int(body["funct"])
+			val = int(body["val"])
+
 			if pin and message and funct: 
 				pin_data = {"pin" : pin,
 							"func" : funct,
@@ -150,7 +154,7 @@ class APNPhoneTokenHandler(MainHelperClass):
         	return
         accounts = Account.query(Account.email == email).fetch()
         for acc in accounts:
-        	if parsed_token not in acc:
+        	if parsed_token not in acc.phone_token:
         		acc.phone_token += parsed_token
             	acc.put()
         		# Hacky...
