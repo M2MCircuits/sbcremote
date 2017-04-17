@@ -170,7 +170,7 @@
                         <outlet property="paperView" destination="NKP-NI-G5D" id="Y5m-qz-ymp"/>
                         <outlet property="passwordBox" destination="wD5-8g-gOl" id="o9b-lk-adB"/>
                         <outlet property="usernameBox" destination="FT1-3W-OS9" id="uVD-EA-uPk"/>
-                        <segue destination="TKw-YT-88J" kind="show" id="pih-Ph-mNF"/>
+                        <segue destination="TKw-YT-88J" kind="show" identifier="SHOW_DEVICES" id="pih-Ph-mNF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ug6-17-QEk" userLabel="First Responder" sceneMemberID="firstResponder"/>

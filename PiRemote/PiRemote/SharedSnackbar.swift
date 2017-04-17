@@ -26,6 +26,25 @@ class SharedSnackbar: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+
+        let waitTimeInSeconds = 4.0
+        _ = Timer.scheduledTimer(timeInterval: waitTimeInSeconds, target: self, selector: #selector(self.animateOut), userInfo: nil, repeats: false);
+    }
+
+    // MARK: Local Functions
+
+    func animateOut() {
+        let parentHeight = self.superview?.bounds.height
+        let parentWidth = self.superview?.bounds.height
+        let initalFrame = CGRect(origin: CGPoint(x: 0, y: parentHeight!),
+                                 size: CGSize(width: parentWidth!, height: self.bounds.height))
+
+        // Animating out of parent view
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
+            self.frame = initalFrame
+        }, completion: {isComplete in if isComplete {
+            self.removeFromSuperview()
+        }})
     }
 
     // MARK: Utility Functions
@@ -34,7 +53,6 @@ class SharedSnackbar: UIView {
         let nib = Bundle.main.loadNibNamed("SharedSnackbar", owner: parent, options: nil)?[0] as! SharedSnackbar
         let nibHeight = nib.bounds.height
         let parentHeight = parent.bounds.height
-        let waitTimeInSeconds = UInt32(4)
 
         let initalFrame = CGRect(origin: CGPoint(x: 0, y: parentHeight),
                                  size: CGSize(width: parent.bounds.width, height: nib.bounds.height))
@@ -54,20 +72,14 @@ class SharedSnackbar: UIView {
         case .warn: nib.backgroundColor = Theme.amber300
         }
 
+        // Adding to parent
         parent.addSubview(nib)
 
-        // Animating into then out of parent view
+        // Animating into the parent view
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
                 nib.frame = targetFrame
-            }, completion: { isComplete in if isComplete {
-                sleep(waitTimeInSeconds)
-                UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
-                    nib.frame = initalFrame
-                }, completion: {isComplete in if isComplete {
-                    nib.removeFromSuperview()
-                }})
-            }})
+            }, completion: nil)
         }
     }
 }
