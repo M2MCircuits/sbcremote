@@ -13,7 +13,9 @@ class RemoteDevice: NSObject, NSCoding {
     // Descriptions can be found at http://docs.weaved.com/docs/devicelistall
     var apiData: [String: String]!
 
-    // Local Variables
+    // Description can be found at http://webiopi.trouch.com/RESTAPI.html#get-full-gpio-state-configuration
+    var rawStateData: [String: Any]!
+
     var layout: PinLayout!
     var shouldPersistState: Bool! // Attempt to restore previous pin values on restart
 

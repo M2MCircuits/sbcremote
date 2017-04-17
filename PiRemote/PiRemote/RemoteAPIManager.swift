@@ -31,12 +31,12 @@ class RemoteAPIManager {
 
 
     // GET user/login/:username/:password
-    func logInUser(username: String, userpw: String, callback: @escaping (_ sucess : Bool, _ response: String, _ data: NSDictionary?) -> Void){
+    func logInUser(username: String, userpw: String, completion: @escaping (_ sucess : Bool, _ response: String, _ data: NSDictionary?) -> Void){
         let endpointURL = "/user/login/" + username + "/" + userpw
         self.api.getRequest(url: baseApiUrl + endpointURL, extraHeaderFields: remoteHeaderFields, completion: { data in
         
             guard data != nil else{
-                callback(false, self.ErrorResponse, nil)
+                completion(false, self.ErrorResponse, nil)
                 return
             }
             
@@ -44,12 +44,12 @@ class RemoteAPIManager {
             let jsonData = data as! NSDictionary
             if self.checkResponse(data: jsonData) == true{
                 response = self.SucessResponse
-                callback(true, response, jsonData)
+                completion(true, response, jsonData)
             }
             else{
                 response = jsonData["reason"] as! String
                 // If it fails we simply show the string. No need to show the data.
-                callback(false, response, nil)
+                completion(false, response, nil)
             }
         })
     }
@@ -62,12 +62,12 @@ class RemoteAPIManager {
      - parameter data,: NSDictionary
      - returns: Bool indicating if the the communication was sucessful or not.
      */
-    func checkResponse(data: NSDictionary)->Bool{
+    func checkResponse(data: NSDictionary) -> Bool{
         let returnedData = data["status"] as! String
         //f represents failure.
-        if returnedData[returnedData.startIndex] != "f"{
+        if returnedData[returnedData.startIndex] != "f" {
             return true
-        }else{
+        } else {
             return false
         }
     }
@@ -76,11 +76,36 @@ class RemoteAPIManager {
     func sendDevice(deviceAddress: String, command: String?, completion: @escaping (_ sucess: Bool) -> Void){
         //TODO : Implement
     }
-    
-    func connectDevice(deviceAddress: String, hostip: String, shouldWait: Bool, completion: (_ data: NSDictionary?)->Void){
-        //TODO : Implement
+
+    func connectDevice(deviceAddress: String, hostip: String, completion: @escaping (_ data: NSDictionary?) -> Void){
+        let endpointURL = "/device/connect"
+
+        let payload = [
+            "deviceaddress": deviceAddress,
+            "hostip": hostip,
+            "wait": "true"
+        ] as [String : Any]
+
+        let remoteHeaderFieldsPost = [
+            "apikey": "WeavedDemoKey$2015",
+            "content-type": "application/json",
+            "token": MainUser.sharedInstance.weavedToken!
+        ]
+
+        self.api.postRequest(url: baseApiUrl + endpointURL, extraHeaderFields: remoteHeaderFieldsPost, payload: payload, completion: { data in
+            guard data != nil else {
+                completion(nil)
+                return
+            }
+
+            let jsonData = data as! NSDictionary
+            if self.checkResponse(data: jsonData) == true {
+                completion(jsonData)
+            } else {
+                completion(nil)
+            }
+        })
     }
-    
 
     // GET device/list/all
     func listDevices(token: String, callback: @escaping (_ data: NSDictionary?) -> Void) {
@@ -95,14 +120,9 @@ class RemoteAPIManager {
             let jsonData = data as! NSDictionary
             if self.checkResponse(data: jsonData) == true{
                 callback(jsonData)
-            }else{
+            } else {
                 callback(nil)
             }
-            
-            
         })
     }
-    
-    
-
 }

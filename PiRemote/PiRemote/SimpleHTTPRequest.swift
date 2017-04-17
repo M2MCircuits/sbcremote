@@ -20,7 +20,7 @@ class SimpleHTTPRequest : NSObject {
     func simpleAPIRequest(
         toUrl: String,
         HTTPMethod: String,
-        jsonBody: [String: AnyObject]?,
+        jsonBody: [String: Any]?,
         extraHeaderFields: [String: String]?,
         completionHandler: @escaping (_ sucess: Bool, _ data: Any?, _ error: Error?) -> Void) {
         

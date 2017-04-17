@@ -12,8 +12,8 @@ class PinTableViewCell: UITableViewCell {
 
     @IBOutlet weak var pinNameLabel: UILabel!
     @IBOutlet weak var pinView: UIButton!
-    @IBOutlet weak var typeLabel: UILabel!
     @IBOutlet weak var valueSwitch: UISwitch!
+    @IBOutlet weak var typeButton: UIButton!
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -27,6 +27,20 @@ class PinTableViewCell: UITableViewCell {
             "id": String(pinView.tag), "value": String(sender.isOn)])
     }
 
+    @IBAction func onToggleType(_ sender: UIButton) {
+        switch sender.titleLabel!.text! {
+        case "Control": typeButton.titleLabel!.text = "Monitor"
+        case "Monitor": typeButton.titleLabel!.text = "Ignore"
+        case "Ignore": typeButton.titleLabel!.text = "Control"
+        default: typeButton.titleLabel!.text = "Ignore"
+        }
+
+        // Notifying parent view controller to update pin data in layout
+        NotificationCenter.default.post(name: Notification.Name.updatePin, object: self, userInfo: [
+            "id": String(pinView.tag), "function": typeButton.titleLabel!.text!])
+    }
+
+
     func updateStyle(with pin: Pin) {
         pinNameLabel.text = pin.name
 
@@ -39,7 +53,7 @@ class PinTableViewCell: UITableViewCell {
         // Capitalzing first letter of type
         var typeFormatted = String(describing: pin.type)
         typeFormatted = String(typeFormatted.characters.prefix(1)).uppercased() + String(typeFormatted.characters.dropFirst())
-        typeLabel.text = typeFormatted
+        typeButton.titleLabel!.text = typeFormatted
 
         valueSwitch.isOn = pin.value == 1
         valueSwitch.isEnabled = pin.type == .control

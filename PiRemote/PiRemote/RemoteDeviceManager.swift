@@ -12,19 +12,15 @@ import Foundation
 class RemoteDeviceManager{
     
     
-    func createDevicesFromAPIResponse(data: NSDictionary) ->(SSH: [RemoteDevice], NOTSSH: [RemoteDevice]){
-        var SSHdeviceStorage = [RemoteDevice]()
-        var deviceStorage = [RemoteDevice]()
-        let devices = data["devices"] as! NSArray
-        for deviceData in devices{
-            let device = RemoteDevice(deviceData: deviceData as! NSDictionary)
-            if device.apiData["serviceTitle"] == "SSH"{
-                SSHdeviceStorage.append(device)
-            }else{
-                deviceStorage.append(device)
-            }
-        }
-        return (SSHdeviceStorage, deviceStorage)
+    func createDevicesFromAPIResponse(data: NSDictionary) -> [RemoteDevice] {
+        let allDevices = data["devices"] as! NSArray
+
+        // We can only control devices with using HTTP
+        return allDevices.filter({ currentDevice in
+            ((currentDevice as! NSDictionary)["servicetitle"] as! String) == "HTTP"
+        }).map({ httpDevice in
+            return RemoteDevice(deviceData: httpDevice as! NSDictionary)
+        })
     }
     
 

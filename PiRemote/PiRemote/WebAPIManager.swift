@@ -41,7 +41,7 @@ class WebAPIManager {
         let base64LoginString = loginData.base64EncodedString()
 
         api = APIManager()
-        baseApiUrl = "http://" + ipAddress! + ":" + port!
+        baseApiUrl = "https://" + ipAddress! + (port!.isEmpty ? "" : ":" + port!)
         webHeaderFields = ["Authorization" : "Basic " + base64LoginString]
     }
 
@@ -111,7 +111,6 @@ class WebAPIManager {
         self.api.postRequest(url: baseApiUrl + endpointURL, extraHeaderFields: webHeaderFields, payload: nil, completion: {
             data in
                 guard data != nil else{
-                    print(self.errorResponse)
                     callback(nil)
                     return
                 }
