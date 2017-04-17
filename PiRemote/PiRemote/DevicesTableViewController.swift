@@ -78,33 +78,6 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
         }
     }
   
-    func fetchDevices(remoteToken : String, completion: @escaping(_ sucess: Bool)->Void){
-        self.remoteManager.listDevices(token: remoteToken, callback: {
-            data in
-            guard data != nil else {
-                completion(false)
-                return
-            }
-            (self.sshDevices!, self.nonSshDevices!) = self.deviceManager.createDevicesFromAPIResponse(data: data!)
-            
-            // We push non-sshdevices to app engine to create accounts
-            // Optimization TODO : Only push new accounts. Save accounts and check if there are new ones.
-            DispatchQueue.main.async {
-                self.appEngineManager.createAccountsForDevices(devices: self.nonSshDevices, email: MainUser.sharedInstance.email!, completion: { (sucess) in
-                    
-                    if (self.initialLogin){
-                    //Registers for notification now that the user information is there.
-                        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                        appDelegate.registerForPushNotifications(UIApplication.shared)
-                    }
-                    completion(sucess)
-                })
-            }
-            
-            OperationQueue.main.addOperation {
-                self.devicesTableView.reloadData()
-            }
-        })
 
     // MARK: UITableViewDataSource Functions
 
