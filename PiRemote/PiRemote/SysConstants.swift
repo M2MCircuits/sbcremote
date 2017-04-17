@@ -9,7 +9,7 @@
 import UIKit
 
 struct AppEngineConstants {
-    static let BaseURL = "https://www.piremote-160105.appspot.com"
+    static let BaseURL = "http://www.piremote-160105.appspot.com"
 //    static let BaseURL = "http://localhost:8080"
 //    static let secureBaseURL = "https://www.piremote-160105.appspot.com"
 }

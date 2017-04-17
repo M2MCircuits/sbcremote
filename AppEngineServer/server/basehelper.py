@@ -27,9 +27,9 @@ class MainHelperClass(webapp2.RequestHandler):
         responseDictionary = {"response" : response}
         self.writeJson(responseDictionary)
 
-    def writeSucessfulResponse(self, parameter, response):
+    def writeSucessfulResponse(self, info):
         responseDictionary = {"response": "Sucess",
-                                parameter : response}
+                                "data" : info}
         self.writeJson(responseDictionary)
 
     def writeErrorResponse(self, info):

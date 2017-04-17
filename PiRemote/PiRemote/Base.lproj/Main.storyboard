@@ -23,7 +23,7 @@
         <!--App Nav-->
         <scene sceneID="KFk-LC-bCc">
             <objects>
-                <navigationController title="App Nav" navigationBarHidden="YES" id="lvU-ey-xtQ" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="MAIN_NAV" title="App Nav" navigationBarHidden="YES" id="lvU-ey-xtQ" sceneMemberID="viewController">
                     <nil key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="o2y-jh-EKQ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -94,7 +94,14 @@
                                 </state>
                                 <connections>
                                     <action selector="handleTapLogin" destination="Quz-7m-Y6X" eventType="touchDown" id="V8a-z2-tje"/>
-                                    <segue destination="TKw-YT-88J" kind="show" identifier="SHOW_DEVICES" id="crl-WW-GCD"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vsU-qt-h8N">
+                                <rect key="frame" x="164" y="570" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <segue destination="Bie-XA-VK0" kind="show" id="otq-FB-Afg"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -108,6 +115,7 @@
                         <outlet property="loginIndicator" destination="U8O-ix-Ht1" id="MCt-I2-CHG"/>
                         <outlet property="passwordBox" destination="wD5-8g-gOl" id="o9b-lk-adB"/>
                         <outlet property="usernameBox" destination="FT1-3W-OS9" id="uVD-EA-uPk"/>
+                        <segue destination="TKw-YT-88J" kind="show" identifier="SHOW_DEVICES" id="7OU-hD-Lmw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ug6-17-QEk" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -632,4 +640,7 @@
         <image name="checkbox-unchecked" width="24" height="24"/>
         <image name="cross" width="24" height="24"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="1Lx-Gl-rNf"/>
+    </inferredMetricsTieBreakers>
 </document>

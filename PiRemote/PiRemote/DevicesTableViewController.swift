@@ -12,9 +12,14 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
 
     @IBOutlet var devicesTableView: UITableView!
 
+    var initialLogin : Bool = true
     // Local Variables
     let cellId = "DEVICE CELL"
 
+    var deviceManager : RemoteDeviceManager!
+    var remoteManager : RemoteAPIManager!
+    var appEngineManager : AppEngineManager!
+    
     var dialogMessage: String!
     var sshDevices: [RemoteDevice]!
     var nonSshDevices: [RemoteDevice]!
@@ -32,43 +37,80 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
 
         self.navigationItem.leftBarButtonItem = logoutButton
         
-        let appEngineAPI = AppEngineManager()
+        self.appEngineManager = AppEngineManager()
 
         // Add listeners for notifications from popovers
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleLoginSuccess), name: Notification.Name.loginSuccess, object: nil)
 
-        // Pull latest devices from Remote.it account
-        let remoteToken = MainUser.sharedInstance.weavedToken
-        let remoteAPIManager = RemoteAPIManager()
-        let deviceManager = RemoteDeviceManager()
+
+        self.remoteManager = RemoteAPIManager()
+        self.deviceManager = RemoteDeviceManager()
 
         self.sshDevices = [RemoteDevice()]
         self.nonSshDevices = [RemoteDevice()]
-        remoteAPIManager.listDevices(token: remoteToken!, callback: {
-            data in
-                guard data != nil else {
-                    return
+        
+        guard initialLogin == true else{
+            self.fetchWeavedToken() { (token) in
+                if token != nil{
+                    self.fetchDevices(remoteToken: token!, completion: { (sucess) in })
                 }
-                (self.sshDevices!, self.nonSshDevices!) = deviceManager.createDevicesFromAPIResponse(data: data!)
-                // We push non-sshdevices to app engine to create accounts
-                DispatchQueue.main.async {
-                       appEngineAPI.createAccountsForDevices(devices: self.nonSshDevices, email: MainUser.sharedInstance.email!, completion: { (sucess) in
-                        if sucess{
-                            print("Suceeded in creating accounts for user")
-                        }else{
-                            print("Failed to create devices")
-                        }
-                    })
-                }
-            
-                OperationQueue.main.addOperation {
-                    self.devicesTableView.reloadData()
-                }
-        })
+            }
+            return
+        }
+        
+        // Pull latest devices from Remote.it account
+        let remoteToken = MainUser.sharedInstance.weavedToken
+        self.fetchDevices(remoteToken: remoteToken!) { (sucess) in //TODO: remove these
+        }
 
+        
         dialogMessage = "Enter login for this devices WebIOPi server."
     }
 
+    func fetchWeavedToken(completion: @escaping (_ token: String?)-> Void){
+        let user = MainUser.sharedInstance
+        guard user.email != nil, user.password != nil else{
+            print("Critical failure. No username or password on file")
+            return
+        }
+        
+        self.remoteManager.logInUser(username: user.email!, userpw: user.password!) { (sucess, response, data) in
+            guard data != nil else{
+                completion(nil)
+                return
+            }
+            let weaved_token = data!["token"] as! String
+            completion(weaved_token)
+            
+        }
+    }
+    
+    func fetchDevices(remoteToken : String, completion: @escaping(_ sucess: Bool)->Void){
+        self.remoteManager.listDevices(token: remoteToken, callback: {
+            data in
+            guard data != nil else {
+                completion(false)
+                return
+            }
+            (self.sshDevices!, self.nonSshDevices!) = self.deviceManager.createDevicesFromAPIResponse(data: data!)
+            
+            // We push non-sshdevices to app engine to create accounts
+            // Optimization TODO : Only push new accounts. Save accounts and check if there are new ones.
+            DispatchQueue.main.async {
+                self.appEngineManager.createAccountsForDevices(devices: self.nonSshDevices, email: MainUser.sharedInstance.email!, completion: { (sucess) in
+                    completion(sucess)
+                })
+            }
+            
+            OperationQueue.main.addOperation {
+                self.devicesTableView.reloadData()
+            }
+        })
+
+    }
+    
+    
+    
     // UITableViewDataSource Functions
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! DeviceTableViewCell
@@ -122,6 +164,13 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
 
     func logout(sender: UIButton!) {
         _ = self.navigationController?.popViewController(animated: true)
+        
+        //Removes all stored keys from keychain.
+        let sucess = KeychainWrapper.standard.removeAllKeys()
+        if !sucess{
+            KeychainWrapper.standard.removeObject(forKey: "user_email")
+            KeychainWrapper.standard.removeObject(forKey: "user_pw")
+        }
         // TODO: Implement login info reset
     }
 }
