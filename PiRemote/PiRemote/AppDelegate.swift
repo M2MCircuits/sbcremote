@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     #if (arch(i386) || arch(x86_64)) && os(iOS)
     let DEVICE_IS_SIMULATOR = true
-    var tokenString: String? = "enter device id"
+    var tokenString: String? = "d91a7b5329626d129ce1b9dea4c2846970f80c85"
     #else
     let DEVICE_IS_SIMULATOR = false
     var tokenString : String? = nil
@@ -56,15 +56,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // We get phone token everytime user starts up per Apple's official documentation guideline
         registerForPushNotifications(application)
-
         
-        // If token string is nil then continue intialization
-        guard self.tokenString != nil else{
-            // If no token string, just continue on with app initialization
-            return true
-        }
-
+        //We only load the devices view if it is not the user's first time.
+        loadDevicesView()
         
+        return true
+    }
+    
+    
+    func handleTokenUpdate(token : String){
+
         let previousToken = MainUser.sharedInstance.phone_token
         if previousToken == nil{
             print("Previous token is empty")
@@ -72,30 +73,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //If the new token is different or there previously was no phone token, update user, and send it to app engine/
         if previousToken == nil || previousToken != tokenString{
-        
+            
             MainUser.sharedInstance.phone_token = tokenString
             MainUser.sharedInstance.saveUser()
-            self.registerTokenWithAppEngine(completion: { (sucess) in
+            self.registerTokenWithAppEngine(token: token, completion: { (sucess) in
                 guard sucess == true else{
                     print("Failed to update token with app engine")
                     return
                 }
-                    
-                print("Token registered with app engine")
-                DispatchQueue.main.async{
-                    self.loadDevicesView()
-                    }
-                })
-            return true
                 
+                print("Token registered with app engine")
+                return
+            })
+            
         }else{
             // The tokens are the same. Continue on as usual
             print("Token has not changed. Continuing initialization")
-            self.loadDevicesView()
-            return true
-            }
+        }
         
         
+
     }
     
     
@@ -118,9 +115,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // use this method to pause the game.
     }
 
-    func registerTokenWithAppEngine(completion: @escaping (_ sucess: Bool)->Void){
+    func registerTokenWithAppEngine(token : String, completion: @escaping (_ sucess: Bool)->Void){
         let appManager = AppEngineManager()
-        appManager.registerPhoneToken(phoneToken: self.tokenString!) { (sucess) in
+        appManager.registerPhoneToken(phoneToken: token) { (sucess) in
             completion(sucess)
         }
         
@@ -168,6 +165,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let deviceTokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
         self.tokenString = deviceTokenString
         print("Device Token: " + deviceTokenString)
+        handleTokenUpdate(token: deviceTokenString)
         
     }
 

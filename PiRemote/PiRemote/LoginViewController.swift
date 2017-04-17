@@ -71,12 +71,6 @@ class LoginViewController: UIViewController {
                 //Saves user information into NSUserDefaults since we know the informaiton is valid.
                 MainUser.sharedInstance.saveUser()
                 
-                //Registers for notification now that the user information is there.
-                let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                appDelegate.registerForPushNotifications(UIApplication.shared)
-
-                
-                
                 // Supported by iOS <6.0
                 self.performSegue(withIdentifier: SegueTypes.idToDevicesTable, sender: self)
             }

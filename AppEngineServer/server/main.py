@@ -21,7 +21,7 @@ from models import Account
 from google.appengine.ext import ndb
 
 #Configs mapped to the largest possible pin value (28)
-default_config = [None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None]
+default_config = ["","","","","","","","","","","","","","","","","","","","","","","","","","","",""]
 valid_pins = [2,3,4,17,27,22,10,9,11,5,6,13,19,26,18,23,24,25,8,7,12,16,20,21]
 
 class MainHandler(webapp2.RequestHandler):
@@ -65,7 +65,7 @@ class APNSHandler(MainHelperClass):
 		if not account:
 			self.writeErrorResponse("Invalid request. No account oauth")
 		if message == RESTART:
-			for phone_token in account.token:
+			for phone_token in account.phone_token:
 				self.sendAPN(account.alias + "has restarted!", phone_token, None)
 		else:
 			pin = int(body["pin"])
@@ -74,8 +74,9 @@ class APNSHandler(MainHelperClass):
 			
 			funct = int(body["funct"])
 			val = int(body["val"])
-
-			if pin and message and funct: 
+			print "funct " + str(funct) + "val" + str(val) + " message " + str(message) + "pin" + str(pin)
+			if pin != None and message != None and funct != None: 
+				print "Pin, message and funct values are here!"
 				pin_data = {"pin" : pin,
 							"func" : funct,
 							"val" : val}
@@ -83,14 +84,15 @@ class APNSHandler(MainHelperClass):
 				#Uses string in the config in notification.
 				pin_string = account.config[pin]
 
-				if pin_string == None:
+				if len(pin_string) == 0:
 					#If there is no service on pin, use the pin information in notification
-					pin_string = " pin " + pin
+					pin_string = " pin " + str(pin)
 
-				for phone_token in account.token:
+				for phone_token in account.phone_token:
 					self.sendAPN(account.alias + " : " + pin_string + " has turned " + valString[val], phone_token, pin_data)
 			else:
 				self.writeErrorResponse("Failure. Required pin/func/val not provided.")
+				return
 		self.writeSucessfulResponse("Sent notification")
 
 
@@ -114,7 +116,8 @@ class AccountHandler(MainHelperClass):
 		print data
 		print "Entering account handler!"
 		service_ids = data["service_ids"]
-		for id_ in service_ids:
+		print service_ids
+		for id_ in service_ids.keys():
 			# Checks if account exists at all..
 			# Means only there cannot be two accounts with the same service_id
 			accountExists = self.validateAccount(id_)
@@ -123,21 +126,19 @@ class AccountHandler(MainHelperClass):
 				continue
 			print "Creating account for id " + id_
 			acc = Account()
-			try:
-				acc.email = data["email"]
-				print "gotten email"
-				acc.serviceID = id_
-				acc.alias = data["alias"]
-				print "got service id"
-				acc.config = default_config
-				print "set default configs"
-				acc.key = ndb.Key(Account, id_)
-				print "creating key"
-				acc.put()
-				print "Account sucessfully created"
-				logging.info("Account has been put into the datastore")
-			except:
-				continue
+			
+			acc.email = data["email"]
+			print "gotten email"
+			acc.serviceID = id_
+			acc.alias = service_ids[id_]
+			print "got service id"
+			acc.config = default_config
+			print "set default configs"
+			acc.key = ndb.Key(Account, id_)
+			print "creating key"
+			acc.put()
+			print "Account sucessfully created"
+			logging.info("Account has been put into the datastore")
 		#Better flesh out fail state.
 		self.writeSucessfulResponse("Account sucessfully created")
 
@@ -155,7 +156,7 @@ class APNPhoneTokenHandler(MainHelperClass):
         accounts = Account.query(Account.email == email).fetch()
         for acc in accounts:
         	if parsed_token not in acc.phone_token:
-        		acc.phone_token += parsed_token
+        		acc.phone_token.append(parsed_token)
             	acc.put()
         		# Hacky...
 				# Why? Because technically the phone token can change for the same device (rare but possible), but

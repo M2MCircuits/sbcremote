@@ -98,6 +98,12 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
             // Optimization TODO : Only push new accounts. Save accounts and check if there are new ones.
             DispatchQueue.main.async {
                 self.appEngineManager.createAccountsForDevices(devices: self.nonSshDevices, email: MainUser.sharedInstance.email!, completion: { (sucess) in
+                    
+                    if (self.initialLogin){
+                    //Registers for notification now that the user information is there.
+                        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                        appDelegate.registerForPushNotifications(UIApplication.shared)
+                    }
                     completion(sucess)
                 })
             }
