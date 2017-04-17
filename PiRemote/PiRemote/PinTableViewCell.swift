@@ -29,10 +29,10 @@ class PinTableViewCell: UITableViewCell {
 
     @IBAction func onToggleType(_ sender: UIButton) {
         switch sender.titleLabel!.text! {
-        case "Control": typeButton.titleLabel!.text = "Monitor"
-        case "Monitor": typeButton.titleLabel!.text = "Ignore"
-        case "Ignore": typeButton.titleLabel!.text = "Control"
-        default: typeButton.titleLabel!.text = "Ignore"
+        case "Control": typeButton.setTitle("Monitor", for: .normal)
+        case "Monitor": typeButton.setTitle("Ignore", for: .normal)
+        case "Ignore": typeButton.setTitle("Control", for: .normal)
+        default: typeButton.setTitle("Ignore", for: .normal)
         }
 
         // Notifying parent view controller to update pin data in layout
@@ -53,7 +53,7 @@ class PinTableViewCell: UITableViewCell {
         // Capitalzing first letter of type
         var typeFormatted = String(describing: pin.type)
         typeFormatted = String(typeFormatted.characters.prefix(1)).uppercased() + String(typeFormatted.characters.dropFirst())
-        typeButton.titleLabel!.text = typeFormatted
+        typeButton.setTitle(typeFormatted, for: .normal)
 
         valueSwitch.isOn = pin.value == 1
         valueSwitch.isEnabled = pin.type == .control

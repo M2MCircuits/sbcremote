@@ -105,6 +105,7 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         let tableView = stackView.arrangedSubviews[3] as! UITableView
         let cell = tableView.dequeueReusableCell(withIdentifier: "PIN CELL", for: indexPath) as! PinTableViewCell
+        cell.tag = indexPath.row
         self.currentSelection = cell
         return indexPath
     }
@@ -115,19 +116,27 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
         let userInfo = notification.userInfo as! [String:String]
         let id = Int(userInfo["id"]!)!
 
+        let tableView = stackView.arrangedSubviews[3] as! UITableView
+        let indexPath = IndexPath(row: id, section: 0)
+        self.currentSelection = tableView.dequeueReusableCell(withIdentifier: "PIN CELL", for: indexPath) as! PinTableViewCell
+
         if userInfo.keys.contains("value") {
             let value = userInfo["value"]! == "true" ? 1 : 0
             webAPI.setValue(gpioNumber: id, value: value, callback: { newValue in
                 // TODO: Handle nil = failure
-                //print(newValue!)
-//                self.currentSelection.updateStyle(with: self.device.layout.defaultSetup[id])
+                print(newValue!)
+                let pin = self.device.layout.defaultSetup[id]
+                pin.value = newValue!
+                self.currentSelection.updateStyle(with: pin)
             })
         } else if userInfo.keys.contains("function") {
             let function = userInfo["function"]! == "Control" ? "out" : "in"
             webAPI.setFunction(gpioNumber: id, functionType: function, callback: { newFunction in
-                //print(newValue!)
+                print(newFunction!)
                 // TODO: Handle nil = failure
-//                self.currentSelection.updateStyle(with: self.device.layout.defaultSetup[id])
+                let pin = self.device.layout.defaultSetup[id]
+                pin.function = newFunction!
+                self.currentSelection.updateStyle(with: pin)
             })
         }
     }
