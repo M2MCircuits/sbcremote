@@ -54,14 +54,14 @@ class AppEngineManager {
     }
     
     func createAccountsForDevices(devices: [RemoteDevice], email: String, completion: @escaping (_ sucess: Bool)-> Void){
-        var serviceArray = [String]()
+        var serviceHash = [String : String]()
         for device in devices{
-            serviceArray.append(device.apiData[DeviceAPIType.deviceAddress]!)
+            serviceHash[device.apiData[DeviceAPIType.deviceAddress]!] = device.apiData[DeviceAPIType.deviceAlias]!
         }
 
         let url = AppEngineConstants.BaseURL + "/accounts"
         let jsonBody = ["email" : email,
-                        "service_ids" : serviceArray] as [String : Any]
+                        "service_ids" : serviceHash] as [String : Any]
         self.api.postRequest(url: url, extraHeaderFields: nil, payload: jsonBody as [String : AnyObject]?) { (data) in
             guard data != nil else{
                 completion(false)

@@ -77,6 +77,7 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
             (destination as! DeviceDetailsViewController).webAPI = self.webManager
         }
     }
+  
 
     // MARK: UITableViewDataSource Functions
 

@@ -75,6 +75,7 @@ struct SegueTypes {
 
 struct DeviceAPIType{
     static let deviceAddress = "deviceAddress"
+    static let deviceAlias = "deviceAlias"
     
 }
 
