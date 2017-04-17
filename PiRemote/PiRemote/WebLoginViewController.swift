@@ -56,7 +56,7 @@ class WebLoginViewController: UIViewController,
 
 
     func handleLogin(completion :@escaping (_ sucess: Bool)->Void) {
-        // Validate login by getting the device's state
+        // Validating login by getting the device's state
         let deviceIP = MainUser.sharedInstance.currentDevice?.apiData["deviceLastIP"]
         let username = (usernameBox.text?.isEmpty)! ? usernameBox.placeholder : usernameBox.text
         let password = (passwordBox.text?.isEmpty)! ? passwordBox.placeholder : passwordBox.text
@@ -66,18 +66,28 @@ class WebLoginViewController: UIViewController,
         webApiManager.getFullGPIOState(callback: { data in
             guard data != nil else {
                 // Login Failed
-
                 DispatchQueue.main.async {
-                    let newMessage = self.errorView.subviews[1] as! UILabel
-                    newMessage.text = "Invalid login"
-                    self.errorView!.isHidden = false
                     completion(false)
                 }
                 return
             }
 
-            // Login Succeeded
-            MainUser.sharedInstance.currentDevice!.stateJson = data!["GPIO"] as! [String: [String:AnyObject]]
+            // Parsing GPIO api data
+            let deviceName = MainUser.sharedInstance.currentDevice!.apiData["deviceAlias"]
+            let gpioData = data!["GPIO"] as! [String: [String:AnyObject]]
+            let layout = PinLayout(name: "custom \(deviceName!)", defaultSetup: [Pin]())
+
+            for i in 1...gpioData.count {
+                layout.defaultSetup.append(Pin(id: i))
+            }
+
+            var k: Int
+            for (key, value) in gpioData {
+                k = Int(key)!
+                layout.defaultSetup[k] = Pin(id: k, apiData: value)
+            }
+
+            MainUser.sharedInstance.currentDevice!.layout = layout
 
             completion(true)
         });
