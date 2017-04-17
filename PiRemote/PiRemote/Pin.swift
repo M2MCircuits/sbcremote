@@ -23,10 +23,12 @@ class Pin: NSObject, NSCoding {
             return _function
         }
         set (newVal) {
-            if type != .ignore {
-                type = newVal == "IN" ? .monitor : .control
-                _function = newVal
+            switch newVal {
+            case "IN": type = .monitor
+            case "OUT": type = .control
+            default: type = .ignore
             }
+            _function = newVal
         }
     }
 

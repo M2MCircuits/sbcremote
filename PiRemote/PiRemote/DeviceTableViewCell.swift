@@ -9,7 +9,11 @@
 import UIKit
 
 class DeviceTableViewCell: UITableViewCell {
-    @IBOutlet weak var deviceName: UILabel!
+
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var deviceNameLabel: UILabel!
+    @IBOutlet weak var statusLabel: UILabel!
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
