@@ -27,7 +27,7 @@ class APIManager{
         })
     }
 
-    func postRequest(url: String, extraHeaderFields: [String: String]?, payload: [String: AnyObject]?, completion: @escaping (_ data: Any?) -> Void) {
+    func postRequest(url: String, extraHeaderFields: [String: String]?, payload: [String: Any]?, completion: @escaping (_ data: Any?) -> Void) {
 
         self.network.simpleAPIRequest(toUrl: url, HTTPMethod: "POST", jsonBody: payload, extraHeaderFields: extraHeaderFields, completionHandler: {
             sucess, data, err in
@@ -49,7 +49,7 @@ class APIManager{
      - parameter jsonBody: (Bool), parameters(Dictionary)
      - returns: String
      */
-    func escapedParameters(jsonBody: Bool, parameters: [String : AnyObject]) -> String {
+    func escapedParameters(jsonBody: Bool, parameters: [String : Any]) -> String {
         var urlVars = [String]()
         
         for (key, value) in parameters {

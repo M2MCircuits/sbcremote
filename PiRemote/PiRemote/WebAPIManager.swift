@@ -41,7 +41,7 @@ class WebAPIManager {
         let base64LoginString = loginData.base64EncodedString()
 
         api = APIManager()
-        baseApiUrl = "http://" + ipAddress! + ":" + port!
+        baseApiUrl = "https://" + ipAddress! + (port!.isEmpty ? "" : ":" + port!)
         webHeaderFields = ["Authorization" : "Basic " + base64LoginString]
     }
 
