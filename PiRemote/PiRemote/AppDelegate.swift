@@ -162,7 +162,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             application.registerForRemoteNotifications()
         }
     }
-    
+
     //get the device token if the user allowed notifications
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let deviceTokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
@@ -170,9 +170,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("Device Token: " + deviceTokenString)
         
     }
-    
+
     //otherwise display an error
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("Failed to register:", error)
+    }
+
+    func applicationDidFinishLaunching(_ application: UIApplication) {
+        sleep(30)
     }
 }

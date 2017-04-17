@@ -8,14 +8,21 @@
 
 import UIKit
 
+// TODO: Add sorting feature by type and status
+@available(iOS 9.0, *)
 class DeviceDetailsViewController: UIViewController, UITableViewDataSource {
 
-    @IBOutlet weak var pinTable: UITableView!
+    @IBOutlet weak var lastUpdatedLabel: UILabel!
+    @IBOutlet weak var powerStatusLabel: UILabel!
+    @IBOutlet weak var stackView: UIStackView!
 
-    // Local variables
-    var pinConfig: [String: Int]!
-    var pins: [Int: Pin]!
-    var webiopi: WebAPIManager!
+    // MARK: Local variables
+
+    var device: RemoteDevice!
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -24,96 +31,92 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        let deviceName = MainUser.sharedInstance.currentDevice?.apiData["deviceAlias"]
+
+        device = MainUser.sharedInstance.currentDevice!
 
         // Additional navigation setup
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(DeviceDetailsViewController.onCancel))
+        let backButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(DeviceDetailsViewController.onBack))
         let setupButton = UIBarButtonItem(image: UIImage(named: "cog"), style: .plain, target: self, action: #selector(DeviceDetailsViewController.onViewSetup))
 
-        self.navigationItem.leftBarButtonItem = cancelButton
+        self.navigationItem.leftBarButtonItem = backButton
         self.navigationItem.rightBarButtonItem = setupButton
-        self.navigationItem.title = String(format: "%@ Info", deviceName!)
-        
-        // Initialize pin list
-        pinConfig? = ["SPI0": 0]
-//        pins = [0: Pin()]
-        webiopi = WebAPIManager()
 
-        fetchDeviceState()
-        self.pinTable.reloadData()
-    }
+        // Configuring title section
+        (stackView.arrangedSubviews[0] as! UILabel).text = device.apiData["deviceAlias"]
 
+        // Configuring immediate info section
+        powerStatusLabel.backgroundColor = Theme.lightGreen300
+        powerStatusLabel.clipsToBounds = true
+        powerStatusLabel.layer.cornerRadius = 16
+        powerStatusLabel.textColor = Theme.grey900
 
-    @IBAction func onToggleSwitch(_ sender: UISwitch) {
-        let pinNumber = pins[sender.tag]?.id
-        let pinValue = sender.isOn ? "IN" : "OUT"
-        webiopi.setFunction(gpioNumber: pinNumber!, functionType: pinValue, callback: {
-            newFunction in
-            print("DONE")
-            print(newFunction!)
+        // TODO: Update last updated time
+
+        // Configuring table view section
+        (stackView.arrangedSubviews[3] as! UITableView).rowHeight = 68
+
+        // Configuring more details section
+        stackView.arrangedSubviews[5].isHidden = true
+
+        let labels = stackView.arrangedSubviews[5].subviews as! [UILabel]
+        labels.filter({vw in vw.restorationIdentifier == "layoutName"}).first?.text = device.layout.name
+        ["deviceAlias", "deviceLastIP", "lastInternalIP", "serviceTitle", "deviceAddress"].forEach({ key in
+            labels.filter({vw in vw.restorationIdentifier == key}).first?.text = device.apiData[key]
         })
+
+        // TODO: Add label for device persistance
+
+        // Registering event listeners
+        NotificationCenter.default
+            .addObserver(self, selector: #selector(self.handleUpdatePin), name: Notification.Name.updatePin, object: nil)
     }
 
-    // UITableViewDataSource Functions
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let i = indexPath.row
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PIN CELL", for: indexPath) as! PinTableViewCell
-
-        guard (pins != nil) else {
-            return cell
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destination = segue.destination
+        if segue.identifier == SegueTypes.idToDeviceSetup {
+            (destination as! DeviceSetupViewController).pinLayout = device.layout
         }
+    }
 
-        cell.nameLabel.text = pins[i]?.name
-        cell.numberLabel.text = String(i)
-        cell.statusSwitch.isOn = (pins[i]?.value == 1)
-        cell.statusSwitch.tag = indexPath.row
-        cell.typeLabel.text = pins[i]?.function
+    // MARK: UITableViewDataSource Functions
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PIN CELL", for: indexPath) as! PinTableViewCell
+        let i = indexPath.row
+
+        cell.updateStyle(with: device.layout.defaultSetup[i])
 
         return cell
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard (pins != nil) else {
-            return 0
-        }
-        return self.pins.count
+        return device.layout.defaultSetup.count
     }
 
-    // Local Functions
-    func buildPins() {
-        let stateJson = MainUser.sharedInstance.currentDevice!.stateJson
-        for (pinId, pinData) in stateJson! {
-            let i = Int(pinId)!
-            let pin = Pin(id: i, apiData: pinData)
-            self.pins[i] = pin
-        }
+    // MARK: Local Functions
+
+    func handleUpdatePin(notification: Notification) {
+        let userInfo = notification.userInfo as! [String:String]
+        // TODO: Implement updating layout
     }
 
-    func fetchDeviceState() {
-        guard MainUser.sharedInstance.currentDevice?.stateJson != nil else {
-            print("[DEBUG] Sending get request /*")
-
-            webiopi.getFullGPIOState(callback: { data in
-                print("[DEBUG] Response received for /*")
-
-                if (data != nil) {
-                    MainUser.sharedInstance.currentDevice!.stateJson = data!["GPIO"] as! [String: [String:AnyObject]]
-                    self.buildPins()
-                }
-            })
-
-            return
-        }
-
-        self.buildPins()
+    func onBack() {
+        _ = self.navigationController?.popViewController(animated: true)
     }
 
-    func onCancel() {
-        self.navigationController?.popViewController(animated: true)
+    @IBAction func onShowMoreDetails(_ sender: UIButton) {
+        let isCurrentlyHidden = sender.titleLabel!.text!.contains("Show") as Bool
+        let newTitle = isCurrentlyHidden ? "Hide More Details" : "Show More Details"
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseOut, animations: {
+                (self.stackView.arrangedSubviews[4] as! UIButton).titleLabel!.text = newTitle
+                self.stackView.arrangedSubviews[5].isHidden = !isCurrentlyHidden
+            }, completion: nil)
+        }
     }
 
     func onViewSetup() {
+        // TODO: Add actionsheet with options: [Show Setup, Filter By, ] 
         // Supported by iOS <6.0
         self.performSegue(withIdentifier: SegueTypes.idToDeviceSetup, sender: self)
     }

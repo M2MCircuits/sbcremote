@@ -23,6 +23,10 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
         DeviceTypes.rPi3
         ].self
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.isNavigationBarHidden = false
@@ -31,8 +35,7 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // TODO: Check if we should load from layout
-        pinLayout = PinLayout(name: "custom", defaultSetup: initPinSetup())
+        guard pinLayout != nil else { fatalError("[ERROR] No pin layout provided") }
 
         // Setting up navigation bar
         let backButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(DeviceSetupViewController.onLeave))
@@ -79,7 +82,7 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
             contentSize = CGSize(width: 360, height: 700)
         case SegueTypes.idToPinSettings:
             let pin = sender as! Pin
-            contentSize = CGSize(width: 150, height: 250)
+            contentSize = CGSize(width: 150, height: 320)
             sourceRect = CGRect(origin: CGPoint(x: 0, y: 0), size: destination.view.bounds.size)
             (destination as! EditPinViewController).pin = pin
             destination.isEditing = self.navigationItem.rightBarButtonItem?.title == "Done"
@@ -163,20 +166,18 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
 
         let userInfo = notification.userInfo as! [String:String]
         let i = Int(userInfo["id"]!)! - 1
-        let name = userInfo["name"]
-        let type = userInfo["type"]
 
-        pinLayout.defaultSetup[i].name = name!
-
-        switch type! {
-        case "control":
-            pinLayout.defaultSetup[i].type = .control
-        case "ignore":
-            pinLayout.defaultSetup[i].type = .ignore
-        case "monitor":
-            pinLayout.defaultSetup[i].type = .monitor
-        default: break
+        var type: Pin.Types
+        switch userInfo["type"]! {
+        case "control": type = .control
+        case "ignore": type = .ignore
+        case "monitor": type = .monitor
+        default: type = .ignore
         }
+
+        pinLayout.defaultSetup[i].name = userInfo["name"]!
+        pinLayout.defaultSetup[i].type = type
+        pinLayout.defaultSetup[i].value = userInfo["value"]! == "true" ? 1 : 0
 
         scrollView.setPinData(pins: pinLayout.defaultSetup)
     }
@@ -218,21 +219,31 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
     }
 
     func onToggleEditDeviceSettings(sender: UIBarButtonItem!) {
+        var leftBtnTitle: String = "Error"
+        var rightBtnTitle: String = "Error"
+        var shouldHideToolbar: Bool = false
+
         switch sender.title! {
         case "Edit":
-            // Updating nav bar
-            self.navigationItem.leftBarButtonItem?.title = "Cancel"
-            self.navigationItem.rightBarButtonItem?.title = "Done"
-
-            DispatchQueue.main.async {
-                UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseOut, animations: {
-                    self.stackView.arrangedSubviews[1].isHidden = false
-                }, completion: nil)
-            }
+            leftBtnTitle = "Cancel"
+            rightBtnTitle = "Done"
+            shouldHideToolbar = false
         case "Done":
+            leftBtnTitle = "Back"
+            rightBtnTitle = "Edit"
+            shouldHideToolbar = true
             // TODO: Implement saving the layout
-            _ = self.navigationController?.popViewController(animated: true)
         default: break
+        }
+
+        // Updating nav bar
+        self.navigationItem.leftBarButtonItem?.title = leftBtnTitle
+        self.navigationItem.rightBarButtonItem?.title = rightBtnTitle
+
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseOut, animations: {
+                self.stackView.arrangedSubviews[1].isHidden = shouldHideToolbar
+            }, completion: nil)
         }
     }
 

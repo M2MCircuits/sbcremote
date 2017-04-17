@@ -55,18 +55,15 @@ class PopoverViewController: UIViewController {
 
         // TODO: Update subviews based on picker value in DeviceSetup
         let imageView = self.view.subviews.filter({vw in vw is UIImageView}).first as! UIImageView
-        let label = self.view.subviews.filter({vw in vw is UILabel}).first as! UILabel
 
         // Order is important: resizes content after the image has been added to it.
         imageView.image = diagram
         imageView.contentMode = .scaleAspectFit
-
-        label.text = "Raspberry Pi 3"
     }
 
     func getFilePathToPinDiagram() -> String {
         // Only supports Raspberry Pi 3
-        return PinGuideFilePaths.rPi3
+        return PiFilePaths.rPi3
     }
 
     // MARK: Utility Functions

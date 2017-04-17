@@ -95,17 +95,17 @@ class PinSetupScrollView: UIScrollView {
 
             switch pins[i - 1].type {
             case .ignore:
-                btn.backgroundColor = Theme.ignoreLightColor
-                btn.layer.borderColor = Theme.ignoreDarkColor.cgColor
+                btn.backgroundColor = Theme.grey300
+                btn.layer.borderColor = Theme.grey500.cgColor
             case .monitor:
-                btn.backgroundColor = Theme.monitorLightColor
-                btn.layer.borderColor = Theme.monitorDarkColor.cgColor
+                btn.backgroundColor = Theme.cyan300
+                btn.layer.borderColor = Theme.cyan500.cgColor
             case .control:
-                btn.backgroundColor = Theme.controlLightColor
-                btn.layer.borderColor = Theme.controlDarkColor.cgColor
+                btn.backgroundColor = pins[i - 1].value == 1 ? Theme.lightGreen300 : Theme.amber300
+                btn.layer.borderColor = pins[i - 1].value == 1 ? Theme.lightGreen500.cgColor : Theme.amber500.cgColor
             }
 
-            btn.setTitleColor(Theme.pinButtonTextColor, for: UIControlState.normal)
+            btn.setTitleColor(Theme.grey900, for: UIControlState.normal)
         }
         setNeedsDisplay()
     }
