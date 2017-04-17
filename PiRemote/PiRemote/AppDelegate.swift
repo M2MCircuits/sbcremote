@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     #if (arch(i386) || arch(x86_64)) && os(iOS)
     let DEVICE_IS_SIMULATOR = true
-    var tokenString: String? = "d91a7b5329626d129ce1b9dea4c2846970f80c85"
+    var tokenString: String? = "enter device id"
     #else
     let DEVICE_IS_SIMULATOR = false
     var tokenString : String? = nil
