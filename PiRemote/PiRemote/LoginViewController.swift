@@ -63,6 +63,7 @@ class LoginViewController: UIViewController {
         RemoteAPIManager().logInUser(username: user, userpw: pass, completion: { success, response, data in
             DispatchQueue.main.async {
                 self.loginIndicator.stopAnimating();
+
                 guard data != nil else{
                     self.isLoginSuccess = false
                     SharedSnackbar.show(parent: self.view, type: .error, message: "Incorrect Login")
@@ -74,8 +75,6 @@ class LoginViewController: UIViewController {
                 // Filling out the user information with the data returned from response
                 MainUser.sharedInstance.getUserInformationFromResponse(dictionary: data!)
                 MainUser.sharedInstance.password = pass
-                
-                self.isLoginSuccess = true
 
                 // Saving user information into NSUserDefaults since we know the informaiton is valid
                 MainUser.sharedInstance.saveUser()

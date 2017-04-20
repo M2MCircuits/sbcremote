@@ -53,7 +53,7 @@ class AppEngineManager {
         
     }
     
-    func createAccountsForDevices(devices: [RemoteDevice], email: String, completion: @escaping (_ sucess: Bool)-> Void){
+    func createAccountsForDevices(devices: [RemoteDevice], email: String, completion: ((_ success: Bool)->Void)?) {
         var serviceHash = [String : String]()
         for device in devices{
             serviceHash[device.apiData[DeviceAPIType.deviceAddress]!] = device.apiData[DeviceAPIType.deviceAlias]!
@@ -63,20 +63,20 @@ class AppEngineManager {
         let jsonBody = ["email" : email,
                         "service_ids" : serviceHash] as [String : Any]
         self.api.postRequest(url: url, extraHeaderFields: nil, payload: jsonBody as [String : AnyObject]?) { (data) in
-            guard data != nil else{
-                completion(false)
+            guard data != nil else {
+                completion?(false)
                 return
             }
             
-            guard let jsonData = data as! NSDictionary? else{
-                completion(false)
+            guard let jsonData = data as! NSDictionary? else {
+                completion?(false)
                 return
             }
-            
-            if jsonData["response"] as! String == "Sucess"{
-                completion(true)
+
+            if jsonData["response"] as! String == "Sucess" {
+                completion?(true)
             }else{
-                completion(false)
+                completion?(false)
             }
         }
         
