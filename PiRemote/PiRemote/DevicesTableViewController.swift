@@ -35,7 +35,6 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Setting up navigation bar
         let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(DevicesTableViewController.onLogout))
         let optionsButton = UIBarButtonItem(image: UIImage(named: "cog"), style: .plain, target: self, action: #selector(DevicesTableViewController.onShowActions))
@@ -50,12 +49,17 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
         self.webManager = WebAPIManager()
 
         // Pulling latest devices from Remote.it account
-
+        self.present(OverlayManager.createLoadingSpinner(), animated: true, completion: nil)
+        
         // Getting weaved token for the first time
         guard initialLogin == true else {
             self.fetchWeavedToken() { (token) in
                 if token != nil{
-                    self.fetchDevices(remoteToken: token!, completion: { (sucess) in })
+                    self.fetchDevices(remoteToken: token!, completion: { (sucess) in
+                        DispatchQueue.main.async {
+                            self.dismiss(animated: true, completion: nil)
+                        }
+                    })
                 }
             }
             return
@@ -63,7 +67,11 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
         
         // Using weaved token from previous logins
         let remoteToken = MainUser.sharedInstance.weavedToken
-        self.fetchDevices(remoteToken: remoteToken!) { (sucess) in } //TODO: remove these
+        self.fetchDevices(remoteToken: remoteToken!) { (sucess) in
+            DispatchQueue.main.async {
+                self.dismiss(animated: true, completion: nil)
+            }
+        } //TODO: remove these
 
         // Adding listeners for notifications from popovers
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleLoginSuccess), name: Notification.Name.loginSuccess, object: nil)
@@ -132,6 +140,8 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
 
         // MARK: /device/connect
 
+        
+        self.present(OverlayManager.createLoadingSpinner(), animated: true, completion: nil)
         // Equivalent to whatsmyip.com
         cell.deviceNameLabel.text = "Locating device..."
         SimpleHTTPRequest().simpleAPIRequest(
@@ -140,22 +150,42 @@ class DevicesTableViewController: UITableViewController, UIPopoverPresentationCo
 
             let deviceAddress = device.apiData!["deviceAddress"]!
             let senderAddress = (data as! NSDictionary)["ip"] as! String
-
+        DispatchQueue.main.async {
             cell.deviceNameLabel.text = "Connecting to device..."
             RemoteAPIManager().connectDevice(deviceAddress: deviceAddress, hostip: senderAddress, completion: { data in
+                guard data != nil else{
+                    print("Connect device returned nil")
+                    self.present(OverlayManager.createErrorOverlay(message: "Something went wrong"), animated: true, completion: nil)
+                    return
+                }
+                
                 // Parsing url data returned from Remot3.it for WebIOPi
                 let connection = data!["connection"] as! NSDictionary
                 let domain = self.parseProxy(url: connection["proxy"] as! String)
 
+                DispatchQueue.main.async {
                 // Attempting to communicate with webiopi
                 cell.deviceNameLabel.text = "Getting data..."
-                self.webManager = WebAPIManager(ipAddress: domain, port: "", username: "webiopi", password: "raspberry")
+                self.webManager = WebAPIManager(ipAddress: domain, port: "", username: "webiopi", password: "webiopi")
                 self.webManager.getFullGPIOState(callback: { data in
+                    //TODO: Error Handling :
+                    guard data != nil else{
+                        print("gpio Data is nil")
+                        self.present(OverlayManager.createErrorOverlay(message: "Something went wrong"), animated: true, completion: nil)
+                        return
+                    }
+                    
+                    
                     cell.activityIndicator.stopAnimating()
                     device.rawStateData = data as! [String: Any]
-                    self.performSegue(withIdentifier: SegueTypes.idToDeviceDetails, sender: self)
-                }) // End WebIOPi call
-            }) // End Remot3.it call
+                    self.dismiss(animated: true, completion: { 
+                        self.performSegue(withIdentifier: SegueTypes.idToDeviceDetails, sender: self)
+                        })
+                    }) // End WebIOPi call
+                }
+            })
+                    // End Remot3.it call
+                    }
         }) // End whatsmyip call
 
         return indexPath
