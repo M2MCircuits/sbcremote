@@ -68,13 +68,6 @@ class PopoverViewController: UIViewController {
 
     // MARK: Utility Functions
 
-    static func buildContentLogin(source: AnyObject) -> UIViewController {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let content = storyboard.instantiateViewController(withIdentifier: "WEB_DIALOG")
-        let contentSize = CGSize(width: 320, height: 320)
-        return buildPopover(source: source, content: content, contentSize: contentSize, sourceRect: nil)
-    }
-
     static func buildPopover(source: AnyObject, content: UIViewController, contentSize: CGSize, sourceRect: CGRect?) -> UIViewController {
         // Display like an alert
         content.modalPresentationStyle = .popover
@@ -90,7 +83,6 @@ class PopoverViewController: UIViewController {
         // Positions in center of parent
         let size = (source as! UIViewController).view.bounds.size
         popover.sourceRect = sourceRect != nil ? sourceRect! : CGRect(origin: CGPoint.zero, size: size)
-
 
         return content
     }

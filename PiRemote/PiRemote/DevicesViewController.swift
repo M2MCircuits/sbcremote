@@ -13,10 +13,11 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     // MARK: Local Variables
 
-    var alertController: UIAlertController!
     let cellId = "DEVICE CELL"
     var devices: [RemoteDevice]!
-    
+    var overlay: UIAlertController!
+    var proxy: String!
+
     var appEngineManager : AppEngineManager!
     var deviceManager : RemoteDeviceManager!
     var remoteManager : RemoteAPIManager!
@@ -41,7 +42,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.navigationItem.rightBarButtonItem = optionsButton
 
         // Adding listeners for notifications from popovers
-        NotificationCenter.default.addObserver(self, selector: #selector(self.handleLoginSuccess), name: Notification.Name.loginSuccess, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.onLoginSuccess), name: .loginSuccess, object: nil)
 
         self.devices = [RemoteDevice()]
 
@@ -50,6 +51,10 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.remoteManager = RemoteAPIManager()
         self.deviceManager = RemoteDeviceManager()
         self.webManager = WebAPIManager()
+
+        // Showing overlay for fetching devices from Remot3.it
+        overlay = OverlayManager.createLoadingSpinner(withMessage: "Gathering devices...")
+        self.present(overlay, animated: true)
 
         // A new token is generated for each session. We always get a new one in case the previous token has expired.
         self.fetchToken() { token in
@@ -60,8 +65,15 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destination = segue.destination
-        if segue.identifier == SegueTypes.idToDeviceDetails {
+        switch segue.identifier! {
+        case SegueTypes.idToDeviceDetails:
             (destination as! DeviceDetailsViewController).webAPI = self.webManager
+        case SegueTypes.idToWebLogin:
+            (destination as! WebLoginViewController).domain = self.proxy
+            let contentSize = CGSize(width: 300, height: 320)
+            _ = PopoverViewController.buildPopover(
+                source: self, content: destination, contentSize: contentSize, sourceRect: nil)
+        default: break
         }
     }
 
@@ -77,7 +89,6 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
 
         // Styling based on API data
-        cell.activityIndicator.isHidden = true
         cell.deviceNameLabel.text = device.apiData["deviceAlias"]
         cell.statusLabel.text = device.apiData["deviceState"] == "active" ? "On" : "Off"
 
@@ -109,7 +120,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
         MainUser.sharedInstance.currentDevice = device
 
-        validateLoginCredentials()
+        connectToDevice(device: device)
         
         return indexPath
     }
@@ -122,6 +133,57 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     // MARK: Local Functions
+
+    func connectToDevice(device: RemoteDevice) {
+        let updateProgress = { message in
+            DispatchQueue.main.async {
+                self.overlay.message = message
+            }
+        }
+
+        // Showing overlay for fetching devices from Remot3.it
+        self.overlay = OverlayManager.createLoadingSpinner()
+        self.present(overlay, animated: true)
+
+        updateProgress("Locating device...")
+
+        // Getting public IP address of user's phone or tablet
+        let ipifyURL = "https://api.ipify.org?format=json"
+        SimpleHTTPRequest().simpleAPIRequest(toUrl: ipifyURL, HTTPMethod: "GET", jsonBody: nil, extraHeaderFields: nil) {
+            (success, data, error) in
+            let deviceAddress = device.apiData!["deviceAddress"]!
+            let senderAddress = (data as! NSDictionary)["ip"] as! String
+
+            updateProgress("Connecting to device...")
+
+            RemoteAPIManager().connectDevice(deviceAddress: deviceAddress, hostip: senderAddress) { data in
+                // Handling API response failure
+                guard data != nil else {
+                    let errorOverlay = OverlayManager.createErrorOverlay(message: "Could not connect to \(device.apiData!["deviceAlias"]!)")
+                    self.dismiss(animated: false)
+                    self.present(errorOverlay, animated: false)
+                    return
+                }
+
+                // Parsing url data returned from Remot3.it for WebIOPi
+                let connection = data!["connection"] as! NSDictionary
+                self.proxy = self.parseProxy(url: connection["proxy"] as! String)
+
+                updateProgress("Getting data...")
+
+                // TODO: Persists login for each device
+
+
+                self.webManager = WebAPIManager(ipAddress: self.proxy, port: "", username: "webiopi", password: "raspberry")
+                self.webManager.getValue(gpioNumber: 2) { value in
+                    let id = value != nil ? SegueTypes.idToDeviceDetails : SegueTypes.idToWebLogin
+                    self.dismiss(animated: true) {
+                        self.performSegue(withIdentifier: id, sender: self)
+                    }
+                } // End WebIOPi call
+            } // End Remot3.it call
+        } // End whatsmyip call
+    }
 
     func fetchToken(completion: @escaping (_ token: String?)-> Void) {
         let user = MainUser.sharedInstance
@@ -140,10 +202,6 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     func fetchDevices(with token : String) {
-        // Showing overlay for fetching devices from Remot3.it
-        alertController = OverlayManager.createLoadingSpinner(withMessage: "Gathering devices...")
-        self.present(alertController, animated: true)
-
         self.remoteManager.listDevices(token: token) { data in
             guard data != nil else {
                 self.dismiss(animated: true)
@@ -166,11 +224,6 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
 
-    func handleLoginSuccess() {
-        // Supported by iOS <6.0
-        self.performSegue(withIdentifier: SegueTypes.idToDeviceDetails, sender: self)
-    }
-
     func onLogout(sender: UIButton!) {
         _ = self.navigationController?.popViewController(animated: true)
 
@@ -180,6 +233,10 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             KeychainWrapper.standard.removeObject(forKey: "user_email")
             KeychainWrapper.standard.removeObject(forKey: "user_pw")
         }
+    }
+
+    func onLoginSuccess(notification: Notification) {
+        self.performSegue(withIdentifier: SegueTypes.idToDeviceDetails, sender: self)
     }
 
     func onShowActions() {
@@ -196,64 +253,5 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         let domain = url.substring(with: start!..<end!)
 
         return domain
-    }
-
-    func validateLoginCredentials() {
-        let updateProgress = { message in
-            DispatchQueue.main.async {
-                self.alertController.message = message
-            }
-        }
-
-        // Showing overlay for fetching devices from Remot3.it
-        self.alertController = OverlayManager.createLoadingSpinner()
-        self.present(alertController, animated: true)
-
-        updateProgress("Locating device...")
-
-        // Getting public IP address of user's phone or tablet
-        let ipifyURL = "https://api.ipify.org?format=json"
-        SimpleHTTPRequest().simpleAPIRequest(toUrl: ipifyURL, HTTPMethod: "GET", jsonBody: nil, extraHeaderFields: nil) {
-            (success, data, error) in
-            let device = MainUser.sharedInstance.currentDevice!
-            let deviceAddress = device.apiData!["deviceAddress"]!
-            let senderAddress = (data as! NSDictionary)["ip"] as! String
-
-            updateProgress("Connecting to device...")
-
-            RemoteAPIManager().connectDevice(deviceAddress: deviceAddress, hostip: senderAddress) { data in
-                // Handling API response failure
-                guard data != nil else {
-                    let errorOverlay = OverlayManager.createErrorOverlay(message: "Could not connect to \(device.apiData!["deviceAlias"]!)")
-                    self.dismiss(animated: false)
-                    self.present(errorOverlay, animated: false)
-                    return
-                }
-
-                // Parsing url data returned from Remot3.it for WebIOPi
-                let connection = data!["connection"] as! NSDictionary
-                let domain = self.parseProxy(url: connection["proxy"] as! String)
-
-                updateProgress("Getting data...")
-
-                // Attempting to communicate with webiopi, first with a default login
-                // TODO: Persists login for each device
-
-                self.webManager = WebAPIManager(ipAddress: domain, port: "", username: "webiopi", password: "webiopi")
-                self.webManager.getValue(gpioNumber: 2) { value in
-                    // Requesting user to sign in manually if default login fails
-                    guard value != nil else {
-                        print("ruh-roh")
-                        return
-                    }
-                    print(value!)
-
-                    // Hiding overlay
-                    self.dismiss(animated: true) {
-                        self.performSegue(withIdentifier: SegueTypes.idToDeviceDetails, sender: self)
-                    }
-                } // End WebIOPi call
-            } // End Remot3.it call
-        } // End whatsmyip call
     }
 }

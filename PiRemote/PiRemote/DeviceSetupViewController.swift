@@ -59,8 +59,6 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
         NotificationCenter.default
             .addObserver(self, selector: #selector(self.handleSaveLayout), name: Notification.Name.save, object: nil)
         NotificationCenter.default
-            .addObserver(self, selector: #selector(self.handleValidLogin), name: Notification.Name.loginSuccess, object: nil)
-        NotificationCenter.default
             .addObserver(self, selector: #selector(self.handleUpdatePin), name: Notification.Name.updatePin, object: nil)
         NotificationCenter.default
             .addObserver(self, selector: #selector(self.handleTouchPin), name: Notification.Name.touchPin, object: nil)

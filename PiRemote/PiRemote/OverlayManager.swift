@@ -43,7 +43,7 @@ class OverlayManager: NSObject {
     }
     
     static func createAndStartAnimatingBasicLoadingSpinner() -> UIActivityIndicatorView{
-        let loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRect(10, 5, 50, 50)) as UIActivityIndicatorView
+        let loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRect(5, 5, 50, 50)) as UIActivityIndicatorView
         loadingIndicator.hidesWhenStopped = true
         loadingIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.white
         loadingIndicator.startAnimating();
