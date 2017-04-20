@@ -33,7 +33,7 @@ class OverlayManager: NSObject {
         let alert = UIAlertController(title: nil, message: actionMessage, preferredStyle: .alert)
         
         alert.view.tintColor = UIColor.black
-        let loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRect(10, 5, 50, 50)) as UIActivityIndicatorView
+        let loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRect(5, 5, 50, 50)) as UIActivityIndicatorView
         loadingIndicator.hidesWhenStopped = true
         loadingIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
         loadingIndicator.startAnimating();

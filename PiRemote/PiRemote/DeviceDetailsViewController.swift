@@ -34,7 +34,7 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
 
         // Creating custom layout if not already defined
         if device.layout == nil {
-            device.layout = self.initCustomLayout(for: device)
+            device.layout = PinLayout(name: "", defaultSetup: [Pin(id: 0)]) //self.initCustomLayout(for: device)
         }
 
         // Additional navigation setup
