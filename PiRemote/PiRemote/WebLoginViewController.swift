@@ -63,7 +63,7 @@ class WebLoginViewController: UIViewController,
         let port = (portBox.text?.isEmpty)! ? portBox.placeholder : portBox.text
 
         let webApiManager = WebAPIManager(ipAddress: deviceIP, port: port, username: username, password: password)
-        webApiManager.getFullGPIOState(callback: { data in
+        webApiManager.getFullGPIOState(completion: { data in
             guard data != nil else {
                 // Login Failed
                 DispatchQueue.main.async {
