@@ -66,6 +66,7 @@ class APNSHandler(MainHelperClass):
 			self.writeErrorResponse("Invalid request. No account oauth")
 		if message == RESTART:
 			for phone_token in account.phone_token:
+				print phone_token
 				self.sendAPN(account.alias + "has restarted!", phone_token, None)
 		else:
 			pin = int(body["pin"])
@@ -89,6 +90,8 @@ class APNSHandler(MainHelperClass):
 					pin_string = " pin " + str(pin)
 
 				for phone_token in account.phone_token:
+					phone_token = phone_token.strip()
+					print phone_token
 					self.sendAPN(account.alias + " : " + pin_string + " has turned " + valString[val], phone_token, pin_data)
 			else:
 				self.writeErrorResponse("Failure. Required pin/func/val not provided.")
@@ -174,6 +177,7 @@ class APNPhoneTokenHandler(MainHelperClass):
 
 class APNTest(MainHelperClass):
 	def get(self, token):
+		token = token.strip(" ")
 		self.sendAPN("Hello World", token, None)
 
 

@@ -11,6 +11,7 @@
 		2447F0891E5E39E800EE1B69 /* MainUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2447F0881E5E39E700EE1B69 /* MainUser.swift */; };
 		246292941E9F4FA40055A051 /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 246292931E9F4FA40055A051 /* KeychainWrapper.swift */; };
 		246292971E9F500E0055A051 /* KeychainItemAccessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 246292961E9F500E0055A051 /* KeychainItemAccessibility.swift */; };
+		2462929A1EA852090055A051 /* OverlayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 246292981EA84EBA0055A051 /* OverlayManager.swift */; };
 		2484B3CB1E79E708000770E5 /* AppEngineManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2484B3CA1E79E707000770E5 /* AppEngineManager.swift */; };
 		24C6D94D1E44D11D00C3365D /* SimpleHTTPRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C6D94C1E44D11D00C3365D /* SimpleHTTPRequest.swift */; };
 		24C6D9511E44DC5000C3365D /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C6D9501E44DC5000C3365D /* APIManager.swift */; };
@@ -58,6 +59,7 @@
 		246292931E9F4FA40055A051 /* KeychainWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainWrapper.swift; sourceTree = "<group>"; };
 		246292951E9F4FB70055A051 /* SwiftKeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftKeychainWrapper.h; sourceTree = "<group>"; };
 		246292961E9F500E0055A051 /* KeychainItemAccessibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KeychainItemAccessibility.swift; path = ../KeychainItemAccessibility.swift; sourceTree = "<group>"; };
+		246292981EA84EBA0055A051 /* OverlayManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverlayManager.swift; sourceTree = "<group>"; };
 		2484B3CA1E79E707000770E5 /* AppEngineManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppEngineManager.swift; sourceTree = "<group>"; };
 		24C6D94C1E44D11D00C3365D /* SimpleHTTPRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleHTTPRequest.swift; sourceTree = "<group>"; };
 		24C6D9501E44DC5000C3365D /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 				C001CE211E8CB7C100DAA710 /* API */,
 				C0C1C1731E6CC923005DE3B2 /* RemoteDevice.swift */,
 				246292961E9F500E0055A051 /* KeychainItemAccessibility.swift */,
+				246292981EA84EBA0055A051 /* OverlayManager.swift */,
 				246292931E9F4FA40055A051 /* KeychainWrapper.swift */,
 				246292951E9F4FB70055A051 /* SwiftKeychainWrapper.h */,
 				C0C1C1741E6CC923005DE3B2 /* RemoteDeviceManager.swift */,
@@ -365,6 +368,7 @@
 				C0E77BF11E96D27D009A36CA /* ApplyLayoutViewController.swift in Sources */,
 				2447F0891E5E39E800EE1B69 /* MainUser.swift in Sources */,
 				C0587EDE1E9AD401000F6FAC /* DeviceDetailsViewController.swift in Sources */,
+				2462929A1EA852090055A051 /* OverlayManager.swift in Sources */,
 				C08665A51E9137EA002A106D /* PopoverViewController.swift in Sources */,
 				5A279FD01CBFE60800272E05 /* LoginViewController.swift in Sources */,
 				C0A3C3851E9A607B007D953B /* PinSetupScrollView.swift in Sources */,
