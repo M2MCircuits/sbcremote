@@ -34,7 +34,7 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
 
         // Creating custom layout if not already defined
         if device.layout == nil {
-            device.layout = self.initCustomLayout(for: device)
+            device.layout = PinLayout(name: "", defaultSetup: [Pin(id: 0)]) //self.initCustomLayout(for: device)
         }
 
         // Additional navigation setup
@@ -122,7 +122,7 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
 
         if userInfo.keys.contains("value") {
             let value = userInfo["value"]! == "true" ? 1 : 0
-            webAPI.setValue(gpioNumber: id, value: value, callback: { newValue in
+            webAPI.setValue(gpioNumber: id, value: value, completion: { newValue in
                 // TODO: Handle nil = failure
                 print(newValue!)
                 let pin = self.device.layout.defaultSetup[id]
@@ -131,7 +131,7 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
             })
         } else if userInfo.keys.contains("function") {
             let function = userInfo["function"]! == "Control" ? "out" : "in"
-            webAPI.setFunction(gpioNumber: id, functionType: function, callback: { newFunction in
+            webAPI.setFunction(gpioNumber: id, functionType: function, completion: { newFunction in
                 print(newFunction!)
                 // TODO: Handle nil = failure
                 let pin = self.device.layout.defaultSetup[id]

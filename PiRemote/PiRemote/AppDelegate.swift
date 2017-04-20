@@ -99,9 +99,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func loadDevicesView(){
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-        let devicesVC = storyboard.instantiateViewController(withIdentifier: "DEVICE_TABLE") as! DevicesTableViewController
+        let devicesVC = storyboard.instantiateViewController(withIdentifier: "DEVICE_TABLE") as! DevicesViewController
         let nav = storyboard.instantiateViewController(withIdentifier: "MAIN_NAV") as! UINavigationController
-        devicesVC.initialLogin = false
         //Sets devicesVC as rootvc
         nav.pushViewController(devicesVC, animated: true)
         //sets new navigation as system rootvc

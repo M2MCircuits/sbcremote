@@ -35,7 +35,6 @@ class APIManager{
             if sucess{
                 completion(data!)
             }else{
-                print(err.debugDescription)
                 completion(nil)
             }
         })

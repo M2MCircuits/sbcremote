@@ -8,116 +8,89 @@
 
 import Foundation
 
+// Credit to Martin R at
+// http://stackoverflow.com/questions/38023838/round-trip-swift-number-types-to-from-data
+extension Data {
+
+    init<T>(from value: T) {
+        var value = value
+        self.init(buffer: UnsafeBufferPointer(start: &value, count: 1))
+    }
+
+    func to<T>(type: T.Type) -> T {
+        return self.withUnsafeBytes { $0.pointee }
+    }
+}
+
 class WebAPIManager {
 
-    // Local Variables
+    // MARK: Local Variables
+
     var api: APIManager!
     var baseApiUrl: String!
-    var webHeaderFields: [String: String]!
-    var webPort: String!
-
-    let errorResponse = "No device selected to use WebAPIManager"
+    var headerFields: [String: String]!
 
     convenience init() {
-        // Connects to pi via its external ip address. If the pi is connected to a router, it must be exposed using Port
-        // Forwarding. When testing in the simulator, be sure to do so on different networks. It may not work on certain
-        // public networks possibly due to their added security.
-        //
-        // Details: http://superuser.com/questions/284051/what-is-port-forwarding-and-what-is-it-used-for
         let deviceIP = MainUser.sharedInstance.currentDevice?.apiData["deviceLastIP"]
-
         // WebIOPi default settings
         self.init(ipAddress: deviceIP, port: "8000", username: "webiopi", password: "raspberry")
     }
 
     init(ipAddress: String?, port: String?, username: String?, password: String?) {
-        guard (ipAddress != nil) else {
-            print("ERROR: Cannot find device because ip address is null")
-            return
-        }
+        guard (ipAddress != nil) else { return }
 
         let loginString = String(format: "%@:%@", username!, password!)
         let loginData = loginString.data(using: String.Encoding.utf8)!
         let base64LoginString = loginData.base64EncodedString()
+        let portNumber = port!.isEmpty ? "" : ":\(port!)"
 
         api = APIManager()
-        baseApiUrl = "https://" + ipAddress! + (port!.isEmpty ? "" : ":" + port!)
-        webHeaderFields = ["Authorization" : "Basic " + base64LoginString]
+        baseApiUrl = "https://" + ipAddress! + portNumber
+        headerFields = ["Authorization" : "Basic " + base64LoginString]
+    }
+
+    // MARK: Local Functions
+
+    func sendGetRequest(endpoint: String, completion: @escaping (_ data: Any?) -> Void) {
+        guard baseApiUrl != nil else { fatalError("[ERROR] No baseApiUrl") }
+        self.api.getRequest(url: baseApiUrl + endpoint, extraHeaderFields: headerFields) { data in
+            completion(data != nil ? data : nil)
+        }
+    }
+
+    func sendPostRequest(endpoint: String, completion: @escaping (_ data: Any?) -> Void) {
+        guard baseApiUrl != nil else { fatalError("[ERROR] No baseApiUrl") }
+        self.api.postRequest(url: baseApiUrl + endpoint, extraHeaderFields: headerFields, payload: nil) { data in
+            completion(data != nil ? data : nil)
+        }
     }
 
     // GET /GPIO/:gpioNumber/function
-    func getFunction(gpioNumber: Int, callback: @escaping (_ function: String?) -> Void) {
-        guard baseApiUrl != nil else {
-            return
+    func getFunction(gpioNumber: Int, completion: @escaping (_ function: String?) -> Void) {
+        self.sendGetRequest(endpoint: "/GPIO/\(gpioNumber)/function") { data in
+            completion(data != nil ? String(data: data as! Data, encoding: String.Encoding.utf8) : nil)
         }
-
-        let endpointURL = "/GPIO/\(gpioNumber)/function"
-        self.api.getRequest(url: baseApiUrl + endpointURL, extraHeaderFields: webHeaderFields, completion: {
-            data in
-                guard data != nil else{
-                    print(self.errorResponse)
-                    callback(nil)
-                    return
-                }
-                callback(String(data: data as! Data, encoding: String.Encoding.utf8))
-        })
     }
 
     // POST /GPIO/:gpioNumber/function/:(in or out or pwm)
-    func setFunction(gpioNumber: Int, functionType: String, callback: @escaping (_ newFunction: String?) -> Void) {
-        guard baseApiUrl != nil else {
-            return
+    func setFunction(gpioNumber: Int, functionType: String, completion: @escaping (_ newFunction: String?) -> Void) {
+        self.sendPostRequest(endpoint: "/GPIO/\(gpioNumber)/function/\(functionType)") { data in
+            completion(data != nil ? String(data: data as! Data, encoding: String.Encoding.utf8) : nil)
         }
-
-        let endpointURL = "/GPIO/\(gpioNumber)/function/\(functionType)"
-        self.api.postRequest(url: baseApiUrl + endpointURL, extraHeaderFields: webHeaderFields, payload: nil, completion: {
-            data in
-                guard data != nil else{
-                    print(self.errorResponse)
-                    callback(nil)
-                    return
-                }
-                callback(String(data: data as! Data, encoding: String.Encoding.utf8))
-        })
     }
 
     // GET /GPIO/:gpioNumber/value
-    func getValue(gpioNumber: Int, callback: @escaping (_ value: Int?) -> Void) {
-        guard baseApiUrl != nil else {
-            return
+    func getValue(gpioNumber: Int, completion: @escaping (_ value: Int?) -> Void) {
+        self.sendGetRequest(endpoint: "/GPIO/\(gpioNumber)/value") { data in
+            completion(data != nil ? (data as! Data).to(type: Int.self) : nil)
         }
-
-        let endpointURL = "/GPIO/\(gpioNumber)/value"
-        self.api.getRequest(url: baseApiUrl + endpointURL, extraHeaderFields: webHeaderFields, completion: {
-            data in
-                guard data != nil else{
-                    print(self.errorResponse)
-                    callback(nil)
-                    return
-                }
-                // TODO: Hasn't been tested yet. If data is being returned as nil you can either decode it directly as 
-                // Int, or as String then cast to Int
-                callback(data as! Int?)
-        })
     }
 
     // POST /GPIO/:gpioNumber/value/:(0 or 1)
-    func setValue(gpioNumber: Int, value: Int, callback: @escaping (_ newValue: Int?) -> Void) {
-        guard baseApiUrl != nil else {
-            return
+    func setValue(gpioNumber: Int, value: Int, completion: @escaping (_ newValue: Int?) -> Void) {
+        self.sendPostRequest(endpoint: "/GPIO/\(gpioNumber)/value/\(value)") { data in
+            completion(data != nil ? (data as! Data).to(type: Int.self) : nil)
         }
-
-        let endpointURL = "/GPIO/\(gpioNumber)/value/\(value)"
-        self.api.postRequest(url: baseApiUrl + endpointURL, extraHeaderFields: webHeaderFields, payload: nil, completion: {
-            data in
-                guard data != nil else{
-                    callback(nil)
-                    return
-                }
-                // TODO: Hasn't been tested yet. If data is being returned as nil you can either decode it directly as
-                // Int, or as String then cast to Int
-                callback(data as! Int?)
-        })
     }
 
     // POST /GPIO/:gpioNumber/pulse/
@@ -131,21 +104,9 @@ class WebAPIManager {
     // POST /macros/:macro/:args
 
     // GET /*
-    func getFullGPIOState(callback: @escaping (_ data: NSDictionary?) -> Void) {
-        guard baseApiUrl != nil else {
-            return
+    func getFullGPIOState(completion: @escaping (_ data: NSDictionary?) -> Void) {
+        self.sendGetRequest(endpoint: "/*") { data in
+            completion(data != nil ? data as? NSDictionary : nil)
         }
-
-        let endpointURL = "/*"
-        self.api.getRequest(url: baseApiUrl + endpointURL, extraHeaderFields: webHeaderFields, completion: {
-            data in
-                guard data != nil else{
-                    print(self.errorResponse)
-                    callback(nil)
-                    return
-                }
-
-                callback(data as? NSDictionary)
-        })
     }
 }

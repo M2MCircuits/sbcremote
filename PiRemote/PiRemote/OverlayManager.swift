@@ -16,10 +16,12 @@ extension CGRect{
 
 
 class OverlayManager: NSObject {
+
+
+
     
-    
-   static func createErrorOverlay(message: String) -> UIAlertController{
-    return self.createActionOverlay(title:"Oh no!", withMessage: message)
+    static func createErrorOverlay(message: String) -> UIAlertController{
+        return self.createActionOverlay(title:"Oh no!", withMessage: message)
     }
     
     static func createSucessOverlay(message: String) -> UIAlertController{
@@ -27,11 +29,11 @@ class OverlayManager: NSObject {
     }
     
     
-    static func createLoadingSpinner() -> UIAlertController{
-        let alert = UIAlertController(title: nil, message: "Please wait...", preferredStyle: .alert)
+    static func createLoadingSpinner(withMessage actionMessage: String = "Please wait...") -> UIAlertController{
+        let alert = UIAlertController(title: nil, message: actionMessage, preferredStyle: .alert)
         
         alert.view.tintColor = UIColor.black
-        let loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRect(10, 5, 50, 50)) as UIActivityIndicatorView
+        let loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRect(5, 5, 50, 50)) as UIActivityIndicatorView
         loadingIndicator.hidesWhenStopped = true
         loadingIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
         loadingIndicator.startAnimating();
@@ -41,7 +43,7 @@ class OverlayManager: NSObject {
     }
     
     static func createAndStartAnimatingBasicLoadingSpinner() -> UIActivityIndicatorView{
-        let loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRect(10, 5, 50, 50)) as UIActivityIndicatorView
+        let loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRect(5, 5, 50, 50)) as UIActivityIndicatorView
         loadingIndicator.hidesWhenStopped = true
         loadingIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.white
         loadingIndicator.startAnimating();
@@ -55,5 +57,4 @@ class OverlayManager: NSObject {
         return alertController
     }
     
-    }
-
+}
