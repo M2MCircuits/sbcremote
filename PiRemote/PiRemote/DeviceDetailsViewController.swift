@@ -48,6 +48,7 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
         (stackView.arrangedSubviews[0] as! UILabel).text = device.apiData["deviceAlias"]
 
         // Configuring immediate info section
+        lastUpdatedLabel.text = formatTime(timestamp: device.lastUpdated)
         powerStatusLabel.backgroundColor = Theme.lightGreen300
         powerStatusLabel.clipsToBounds = true
         powerStatusLabel.layer.cornerRadius = 16
@@ -109,6 +110,21 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
     }
 
     // MARK: Local Functions
+
+    func formatTime(timestamp: String) -> String {
+        // example from weaved: "4/24/2017T10:49 AM"
+        // TODO: Account for timezones, weaved returns EST (-5)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM/dd/yyyy"
+
+        let parts = timestamp.components(separatedBy: "T")
+        let requestDate = dateFormatter.date(from: parts[0].characters.count == 10 ? parts[0] : "0" + parts[0])
+
+        let currentDate = Date()
+        let is24HoursAgo = currentDate.timeIntervalSince(requestDate!) < 1440000
+
+        return is24HoursAgo ? parts[1] + " (EST)" : parts[0]
+    }
 
     func handleUpdatePin(notification: Notification) {
         let userInfo = notification.userInfo as! [String:String]

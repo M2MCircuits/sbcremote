@@ -16,6 +16,7 @@ class RemoteDevice: NSObject, NSCoding {
     // Description can be found at http://webiopi.trouch.com/RESTAPI.html#get-full-gpio-state-configuration
     var rawStateData: NSDictionary!
 
+    var lastUpdated: String!
     var layout: PinLayout!
     var shouldPersistState: Bool! // Attempt to restore previous pin values on restart
 
@@ -25,6 +26,7 @@ class RemoteDevice: NSObject, NSCoding {
 
     required init(coder decoder: NSCoder) {
         self.apiData = decoder.decodeObject(forKey: "apiData") as! [String:String]
+        self.lastUpdated = decoder.decodeObject(forKey: "lastUpdated") as! String
         self.layout = decoder.decodeObject(forKey: "layout") as! PinLayout
         self.shouldPersistState = decoder.decodeObject(forKey: "shouldPersistState") as! Bool
     }
@@ -45,6 +47,7 @@ class RemoteDevice: NSObject, NSCoding {
 
     func encode(with coder: NSCoder) {
         coder.encode(apiData, forKey: "apiData")
+        coder.encode(lastUpdated, forKey: "lastUpdated")
         coder.encode(layout, forKey: "layout")
         coder.encode(shouldPersistState, forKey: "shouldPersistState")
     }
