@@ -34,7 +34,7 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
 
         // Creating custom layout if not already defined
         if device.layout == nil {
-            device.layout = PinLayout(name: "", defaultSetup: [Pin(id: 0)]) //self.initCustomLayout(for: device)
+            self.initCustomLayout(for: device)
         }
 
         // Additional navigation setup
@@ -62,7 +62,6 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
         stackView.arrangedSubviews[5].isHidden = true
 
         let labels = stackView.arrangedSubviews[5].subviews as! [UILabel]
-        labels.filter({vw in vw.restorationIdentifier == "layoutName"}).first?.text = device.layout.name
         ["deviceAlias", "deviceLastIP", "lastInternalIP", "serviceTitle", "deviceAddress"].forEach({ key in
             labels.filter({vw in vw.restorationIdentifier == key}).first?.text = device.apiData[key]
         })
@@ -93,7 +92,7 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return device.layout.defaultSetup.count
+        return device.layout != nil ? device.layout.defaultSetup.count : 0
     }
 
     // MARK: UITableViewDelegate Functions
@@ -103,7 +102,6 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
     }
 
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        let tableView = stackView.arrangedSubviews[3] as! UITableView
         let cell = tableView.dequeueReusableCell(withIdentifier: "PIN CELL", for: indexPath) as! PinTableViewCell
         cell.tag = indexPath.row
         self.currentSelection = cell
@@ -141,17 +139,31 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
         }
     }
 
-    func initCustomLayout(for device: RemoteDevice) -> PinLayout {
+    func initCustomLayout(for device: RemoteDevice) {
         let deviceAlias = device.apiData["deviceAlias"]
 
-        //TODO: Handle non GPIO pins
+        DispatchQueue.main.async {
+            self.webAPI.getFullGPIOState() { data in
+                OperationQueue.main.addOperation {
+                    device.rawStateData = data
 
-        let gpio = device.rawStateData["GPIO"] as! [String: AnyObject]
-        let pins = gpio.map({ pinData in
-            return Pin(id: Int(pinData.key)!, apiData: pinData.value as! [String : AnyObject])
-        })
+                    let gpioState = device.rawStateData["GPIO"] as! [String:NSDictionary]
+                    let pins = gpioState.map({ (pinBoardNumber, pinData) in
+                        return Pin(id: Int(pinBoardNumber)!, apiData: pinData as! [String : AnyObject])
+                    }).sorted(by: {p1,p2 in p1.id < p2.id})
 
-        return PinLayout(name: "Custom-\(deviceAlias!)", defaultSetup: pins)
+                    // TODO: Handle other pi versions
+                    device.layout = PinLayout(name: "Custom-\(deviceAlias!)", defaultSetup: Array(pins[0...25]))
+
+                    // Updating layout label in more details section
+                    let moreDetailsLabels = self.stackView.arrangedSubviews[5].subviews as! [UILabel]
+                    moreDetailsLabels.filter({vw in vw.restorationIdentifier == "layoutName"}).first?.text = device.layout.name
+
+                    // Refreshing table
+                    (self.stackView.arrangedSubviews[3] as! UITableView).reloadData()
+                }
+            }
+        }
     }
 
     func onBack() {

@@ -46,23 +46,22 @@ class Pin: NSObject, NSCoding {
 
     init(id: Int, apiData: [String: AnyObject]) {
         super.init()
-        self.id = id
+        self.id = id + 1
         self.function = apiData["function"] as! String
-        self.type = self.function == "IN" ? .monitor : .control
         self.value = apiData["value"] as! Int
-    }
 
+        // TODO: Handle other pi versions
+        if self.id <= 26 {
+            self.name = PinHeader.modelB[self.id]!
+        } else if self.id <= 40 {
+            self.name = PinHeader.modelBPlus[self.id]!
+        }
 
-    init(id: Int, name: String, function: String, value: Int,
-         type: Types = .ignore, statusWhenHigh: String = "On", statusWhenLow: String = "Off") {
-        super.init()
-        self.function = function
-        self.id = id
-        self.name = name
-        self.statusWhenHigh = statusWhenHigh
-        self.statusWhenLow = statusWhenLow
-        self.type = type
-        self.value = value
+        if !isGPIO() {
+            self.type = .ignore
+        } else {
+            self.type = self.function == "IN" ? .monitor : .control
+        }
     }
 
     // MARK: NSCoding
@@ -91,17 +90,15 @@ class Pin: NSObject, NSCoding {
 
     // MARK: Local Functions
 
-
     func isGPIO() -> Bool {
-        // TODO: Add Pi Zero
-
-        // not GPIO on Pi B Rev 1, Pi A/B Rev 2
-        _ = [1, 2, 4, 6, 9, 14, 17, 20, 25] // piOneOrTwo
-        // not GPIO on Pi B+
-        let piThree = [1, 2, 4, 6, 9, 14, 17, 20, 25, 27, 28, 30, 34, 39]
-
-        // TODO: Handle other models
-        return !piThree.contains(id)
+        // TODO: Handle other versions of pi
+        if id <= 26 {
+            return PinHeader.modelB[id]!.contains("GPIO")
+        } else if id <= 40 {
+            return PinHeader.modelBPlus[id]!.contains("GPIO")
+        } else {
+            return false
+        }
     }
 
     func isEven() -> Bool {

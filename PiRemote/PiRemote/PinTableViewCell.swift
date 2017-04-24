@@ -45,7 +45,7 @@ class PinTableViewCell: UITableViewCell {
         pinNameLabel.text = pin.name
 
         pinView.layer.borderWidth = 4.0
-        pinView.layer.cornerRadius = 8.0
+        pinView.layer.cornerRadius = pinView.bounds.size.width / 2
         pinView.setTitle("\(pin.id)", for: UIControlState.normal)
         pinView.tag = pin.id
         pinView.titleLabel?.font = UIFont.boldSystemFont(ofSize: 32.0)

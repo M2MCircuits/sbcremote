@@ -78,3 +78,18 @@ struct DeviceAPIType{
     
 }
 
+
+struct PinHeader {
+    static let modelB = [
+        1: "3V3", 2: "5V", 4: "5V", 3: "GPIO 2", 5: "GPIO 3", 6: "Ground", 7: "GPIO 4", 8: "GPIO 14",
+        9: "Ground", 10: "GPIO 15", 11: "GPIO 17", 12: "GPIO 18", 13: "GPIO 27", 14: "Ground", 15: "GPIO 22",
+        16: "GPIO 23", 17: "3V3", 18: "GPIO 24", 19: "GPIO 10", 20: "Ground", 21: "GPIO 9", 22: "GPIO 25",
+        23: "GPIO 11", 24: "GPIO 8", 25: "Ground", 26: "GPIO 7"
+    ]
+    static let modelBPlus = [
+        27: "ID_SD", 28: "ID_SC", 29: "GPIO 5", 31: "GPIO 6", 32: "GPIO 12", 33: "GPIO 13", 35: "GPIO 19",
+        36: "GPIO 16", 37: "GPIO 26", 38: "GPIO 20", 40: "GPIO 21", 30: "Ground", 34: "Ground", 39: "Ground"
+    ]
+}
+
+

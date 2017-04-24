@@ -34,20 +34,26 @@ class PinSetupScrollView: UIScrollView {
         contentView = UIView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: contentSize))
         contentView?.backgroundColor = UIColor(patternImage: UIImage(named: "circuit")!)
 
-        // Positioning buttons with respect to scrollview coordinate system
-        let midX = contentView!.frame.midX
-        var isEven: Bool
-        var x, y: CGFloat
 
-        for i in 1...40 {
+        let midX = contentView!.frame.midX
+        let maxPins = PinHeader.modelB.count// TODO: Handle other pi versions
+        var isEven: Bool
+        var x, y, margin: CGFloat
+
+        // Positioning buttons with respect to scrollview coordinate system
+        for i in 1...maxPins {
             isEven = i % 2 == 0
+            margin = (isEven ? btnSize * 1.25 : -btnSize * 2.25)
             x = isEven ? midX + btnMargin : midX - btnSize - btnMargin
             y = ((btnSize + (btnMargin * 2)) * floor(CGFloat(i - 1) / 2)) + btnSize
 
-            let location = CGPoint(x: x, y: y)
-            let pinButton = buildPinButton(for: i, location: location)
+            let btnLocation = CGPoint(x: x, y: y)
+            let pinLocation = CGPoint(x: x + margin, y: y)
+            let pinButton = buildPinButton(for: i, location: btnLocation)
+            let pinLabel = buildPinLabel(for: i, location: pinLocation)
 
             contentView?.addSubview(pinButton)
+            contentView?.addSubview(pinLabel)
         }
 
         addSubview(contentView!)
@@ -60,11 +66,23 @@ class PinSetupScrollView: UIScrollView {
         btn.addTarget(self, action: #selector(PinSetupScrollView.handleTouchTap), for: .touchUpInside)
         btn.backgroundColor = UIColor.red
         btn.layer.borderWidth = 4.0
-        btn.layer.cornerRadius = 8.0
+        btn.layer.cornerRadius = btnSize / 2
         btn.setTitle("\(id)", for: UIControlState.normal)
         btn.tag = id
         btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 32.0)
         return btn
+    }
+
+    func buildPinLabel(for id: Int, location: CGPoint) -> UILabel {
+        let fontSize = 24.0 as CGFloat
+        let label = UILabel(frame:
+            CGRect(origin: location, size: CGSize(width: btnSize * 2, height: btnSize + (btnMargin * 2))))
+        label.font = UIFont.systemFont(ofSize: fontSize)
+        label.tag = id
+        label.text = "func #"
+        label.textAlignment = .center
+        label.textColor = Theme.grey900
+        return label
     }
 
     func handleTouchTap(sender: UIButton) {
@@ -86,26 +104,50 @@ class PinSetupScrollView: UIScrollView {
     }
 
     func setPinData(pins: [Pin]) {
-        // Colorcoding pins
-        for child in contentView!.subviews {
-            guard child is UIButton else { break }
+        let getColors = {(pin: Pin) -> (UIColor, UIColor) in
+            var bgColor, borderColor: UIColor
 
-            let btn = child as! UIButton
-            let i = btn.tag
-
-            switch pins[i - 1].type {
+            switch pin.type {
             case .ignore:
-                btn.backgroundColor = Theme.grey300
-                btn.layer.borderColor = Theme.grey500.cgColor
+                bgColor = Theme.grey300
+                borderColor = Theme.grey500
             case .monitor:
-                btn.backgroundColor = Theme.cyan300
-                btn.layer.borderColor = Theme.cyan500.cgColor
+                bgColor = Theme.cyan300
+                borderColor = Theme.cyan500
             case .control:
-                btn.backgroundColor = pins[i - 1].value == 1 ? Theme.lightGreen300 : Theme.amber300
-                btn.layer.borderColor = pins[i - 1].value == 1 ? Theme.lightGreen500.cgColor : Theme.amber500.cgColor
+                bgColor = pin.value == 1 ? Theme.lightGreen300 : Theme.amber300
+                borderColor = pin.value == 1 ? Theme.lightGreen500 : Theme.amber500
             }
 
-            btn.setTitleColor(Theme.grey900, for: UIControlState.normal)
+            if pin.name.contains("V") {
+                bgColor = Theme.red300
+                borderColor = Theme.red500
+            }
+
+            return (bgColor, borderColor)
+        }
+
+        // Colorcoding pins
+        for child in contentView!.subviews {
+            if child is UIButton {
+                let btn = child as! UIButton
+                let i = btn.tag
+                let (bgClr, borderClr) = getColors(pins[i - 1])
+
+                btn.backgroundColor = bgClr
+                btn.layer.borderColor = borderClr.cgColor
+                btn.setTitleColor(Theme.grey900, for: UIControlState.normal)
+            } else if child is UILabel {
+                let label = child as! UILabel
+                let i = label.tag
+                let pinName = pins[i - 1].name
+                let (bgClr, borderClr) = getColors(pins[i - 1])
+
+                label.backgroundColor = bgClr.withAlphaComponent(0.66)
+                label.layer.borderColor = borderClr.withAlphaComponent(0.66).cgColor
+                label.layer.borderWidth = 2.0
+                label.text = pinName
+            }
         }
         setNeedsDisplay()
     }

@@ -9,7 +9,6 @@
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -597,23 +596,10 @@
                                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Port #" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gPm-hQ-BWx">
-                                                <rect key="frame" x="17" y="228" width="82" height="19.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="8000" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GyG-oP-W4m">
-                                                <rect key="frame" x="116" y="223" width="120" height="30"/>
-                                                <nil key="textColor"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits"/>
-                                            </textField>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <gestureRecognizers/>
                                         <constraints>
-                                            <constraint firstItem="GyG-oP-W4m" firstAttribute="leading" secondItem="WPR-cb-9HB" secondAttribute="leading" id="2FD-5m-uVQ"/>
                                             <constraint firstItem="Njz-5V-hLT" firstAttribute="top" secondItem="BBN-9a-2z8" secondAttribute="top" constant="4" id="3dm-fl-nnm"/>
                                             <constraint firstItem="d6a-YE-Ztx" firstAttribute="centerY" secondItem="WPR-cb-9HB" secondAttribute="centerY" id="4v8-8A-myO"/>
                                             <constraint firstItem="WPR-cb-9HB" firstAttribute="trailing" secondItem="jmr-ZV-soy" secondAttribute="trailing" id="5TQ-Sc-P7u"/>
@@ -626,28 +612,23 @@
                                             <constraint firstItem="d6a-YE-Ztx" firstAttribute="top" secondItem="3aJ-fD-Ths" secondAttribute="bottom" constant="16" id="G14-Kp-SNa"/>
                                             <constraint firstItem="2ZR-gG-vVD" firstAttribute="leading" secondItem="3aJ-fD-Ths" secondAttribute="leading" id="GE8-P8-e7H"/>
                                             <constraint firstItem="2ZR-gG-vVD" firstAttribute="top" secondItem="Njz-5V-hLT" secondAttribute="bottom" constant="16" id="GUh-qM-nw9"/>
-                                            <constraint firstItem="gPm-hQ-BWx" firstAttribute="centerY" secondItem="GyG-oP-W4m" secondAttribute="centerY" id="Itt-iV-Vwv"/>
                                             <constraint firstItem="jmr-ZV-soy" firstAttribute="top" secondItem="WPR-cb-9HB" secondAttribute="bottom" constant="8" symbolic="YES" id="JGR-EG-ORD"/>
                                             <constraint firstItem="jmr-ZV-soy" firstAttribute="height" secondItem="WPR-cb-9HB" secondAttribute="height" id="NIO-FL-lTx"/>
-                                            <constraint firstItem="gPm-hQ-BWx" firstAttribute="top" secondItem="Ytg-Qq-aCI" secondAttribute="bottom" constant="14" id="Py1-PH-Zwi"/>
                                             <constraint firstAttribute="height" constant="300" id="QHU-Rg-dOp"/>
                                             <constraint firstItem="Sea-at-esL" firstAttribute="leading" secondItem="2ZR-gG-vVD" secondAttribute="leading" id="RPL-mR-f9S"/>
                                             <constraint firstItem="jmr-ZV-soy" firstAttribute="width" secondItem="WPR-cb-9HB" secondAttribute="width" id="V5I-cL-8Dg"/>
                                             <constraint firstItem="3aJ-fD-Ths" firstAttribute="top" secondItem="WBH-e4-gfD" secondAttribute="bottom" constant="24" id="V5u-Kk-b6j"/>
                                             <constraint firstItem="d6a-YE-Ztx" firstAttribute="leading" secondItem="BBN-9a-2z8" secondAttribute="leading" constant="17" id="XlA-vR-fec"/>
                                             <constraint firstItem="d6a-YE-Ztx" firstAttribute="leading" secondItem="3aJ-fD-Ths" secondAttribute="leading" id="ZLF-z4-NR7"/>
-                                            <constraint firstItem="gPm-hQ-BWx" firstAttribute="leading" secondItem="3aJ-fD-Ths" secondAttribute="leading" id="bAX-dx-bI9"/>
                                             <constraint firstItem="WPR-cb-9HB" firstAttribute="leading" secondItem="d6a-YE-Ztx" secondAttribute="trailing" constant="17" id="dUV-Xa-IGh"/>
                                             <constraint firstItem="Ytg-Qq-aCI" firstAttribute="height" secondItem="d6a-YE-Ztx" secondAttribute="height" id="hur-DB-nJP"/>
                                             <constraint firstItem="WPR-cb-9HB" firstAttribute="leading" secondItem="jmr-ZV-soy" secondAttribute="leading" id="i7e-bA-jFC"/>
                                             <constraint firstItem="t46-Rn-4Fd" firstAttribute="centerY" secondItem="Njz-5V-hLT" secondAttribute="centerY" id="iTM-tq-o1L"/>
                                             <constraint firstItem="WPR-cb-9HB" firstAttribute="baseline" secondItem="d6a-YE-Ztx" secondAttribute="firstBaseline" id="igq-mg-AG1"/>
-                                            <constraint firstItem="gPm-hQ-BWx" firstAttribute="width" secondItem="Ytg-Qq-aCI" secondAttribute="width" id="jND-yJ-ISx"/>
                                             <constraint firstItem="Ytg-Qq-aCI" firstAttribute="width" secondItem="d6a-YE-Ztx" secondAttribute="width" id="k1m-lf-1gR"/>
                                             <constraint firstItem="t46-Rn-4Fd" firstAttribute="trailing" secondItem="WBH-e4-gfD" secondAttribute="trailing" id="lj3-KR-n4X"/>
                                             <constraint firstItem="t46-Rn-4Fd" firstAttribute="leading" secondItem="Njz-5V-hLT" secondAttribute="trailing" constant="16" id="pin-fp-DDf"/>
                                             <constraint firstItem="Ytg-Qq-aCI" firstAttribute="centerY" secondItem="jmr-ZV-soy" secondAttribute="centerY" id="sXB-C8-ueG"/>
-                                            <constraint firstItem="GyG-oP-W4m" firstAttribute="width" secondItem="jmr-ZV-soy" secondAttribute="width" multiplier="0.5" id="t7m-MD-VNT"/>
                                             <constraint firstItem="d6a-YE-Ztx" firstAttribute="leading" secondItem="Ytg-Qq-aCI" secondAttribute="leading" id="yEl-Hy-yP3"/>
                                             <constraint firstItem="d6a-YE-Ztx" firstAttribute="trailing" secondItem="Ytg-Qq-aCI" secondAttribute="trailing" id="zIL-AG-e1B"/>
                                         </constraints>

@@ -14,7 +14,7 @@ class RemoteDevice: NSObject, NSCoding {
     var apiData: [String: String]!
 
     // Description can be found at http://webiopi.trouch.com/RESTAPI.html#get-full-gpio-state-configuration
-    var rawStateData: [String: Any]!
+    var rawStateData: NSDictionary!
 
     var layout: PinLayout!
     var shouldPersistState: Bool! // Attempt to restore previous pin values on restart
