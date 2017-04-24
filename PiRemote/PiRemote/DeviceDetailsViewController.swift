@@ -12,6 +12,7 @@ import UIKit
 @available(iOS 9.0, *)
 class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
+    @IBOutlet weak var deviceNameLabel: UILabel!
     @IBOutlet weak var lastUpdatedLabel: UILabel!
     @IBOutlet weak var powerStatusLabel: UILabel!
     @IBOutlet weak var stackView: UIStackView!
@@ -45,25 +46,21 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
         self.navigationItem.leftBarButtonItem = backButton
         self.navigationItem.rightBarButtonItem = setupButton
 
-        // Configuring title section
-        (stackView.arrangedSubviews[0] as! UILabel).text = device.apiData["deviceAlias"]
-
         // Configuring immediate info section
+        deviceNameLabel.text = device.apiData["deviceAlias"]
         lastUpdatedLabel.text = formatTime(timestamp: device.lastUpdated)
         powerStatusLabel.backgroundColor = Theme.lightGreen300
         powerStatusLabel.clipsToBounds = true
-        powerStatusLabel.layer.cornerRadius = 16
+        powerStatusLabel.layer.cornerRadius = powerStatusLabel.bounds.height / 2
         powerStatusLabel.textColor = Theme.grey900
 
-        // TODO: Update last updated time
-
         // Configuring table view section
-        (stackView.arrangedSubviews[3] as! UITableView).rowHeight = 60
+        (stackView.arrangedSubviews[2] as! UITableView).rowHeight = 60
 
         // Configuring more details section
-        stackView.arrangedSubviews[5].isHidden = true
+        stackView.arrangedSubviews[4].isHidden = true
 
-        let labels = stackView.arrangedSubviews[5].subviews as! [UILabel]
+        let labels = stackView.arrangedSubviews[4].subviews as! [UILabel]
         ["deviceAlias", "deviceLastIP", "lastInternalIP", "serviceTitle", "deviceAddress"].forEach({ key in
             labels.filter({vw in vw.restorationIdentifier == key}).first?.text = device.apiData[key]
         })
@@ -132,7 +129,7 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
         let id = userInfo["id"] as! Int
         let indexPath = IndexPath(row: id-1, section: 0)
         let currentPin = self.device.layout.defaultSetup[id-1]
-        let tableView = stackView.arrangedSubviews[3] as! UITableView
+        let tableView = stackView.arrangedSubviews[2] as! UITableView
 
         // WebIOPi does not allow users to change non-GPIO pins
         guard currentPin.isGPIO() else {
@@ -195,11 +192,11 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
                     device.layout = PinLayout(name: "Custom-\(deviceAlias!)", defaultSetup: Array(pins[0...25]))
 
                     // Updating layout label in more details section
-                    let moreDetailsLabels = self.stackView.arrangedSubviews[5].subviews as! [UILabel]
+                    let moreDetailsLabels = self.stackView.arrangedSubviews[4].subviews as! [UILabel]
                     moreDetailsLabels.filter({vw in vw.restorationIdentifier == "layoutName"}).first?.text = device.layout.name
 
                     // Refreshing table
-                    (self.stackView.arrangedSubviews[3] as! UITableView).reloadData()
+                    (self.stackView.arrangedSubviews[2] as! UITableView).reloadData()
                 }
             }
         }
@@ -214,8 +211,8 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
         let newTitle = isCurrentlyHidden ? "Hide More Details" : "Show More Details"
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseOut, animations: {
-                (self.stackView.arrangedSubviews[4] as! UIButton).titleLabel!.text = newTitle
-                self.stackView.arrangedSubviews[5].isHidden = !isCurrentlyHidden
+                (self.stackView.arrangedSubviews[3] as! UIButton).titleLabel!.text = newTitle
+                self.stackView.arrangedSubviews[4].isHidden = !isCurrentlyHidden
             }, completion: nil)
         }
     }
