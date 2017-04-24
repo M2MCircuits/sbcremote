@@ -44,6 +44,7 @@ class WebLoginViewController: UIViewController,UIPopoverPresentationControllerDe
     }
 
     @IBAction func onLogin(_ sender: UIBarButtonItem) {
+        let save = saveLoginSwitch.isOn
         let pass = passwordBox.text!
         let user = usernameBox.text!
 
@@ -62,29 +63,8 @@ class WebLoginViewController: UIViewController,UIPopoverPresentationControllerDe
 
         self.activityIndicator.isHidden = false
         self.activityIndicator.startAnimating()
-
-        self.validateLoginCredentials(domain: self.domain!, user: user, pass: pass) { success in
-            if success! {
-                self.dismiss(animated: true) {
-                    // TODO: Save Login
-                    NotificationCenter.default.post(name: Notification.Name.loginSuccess, object: self)
-                }
-            } else {
-                OperationQueue.main.addOperation {
-                    SharedSnackbar.show(parent: self.view, type: .error, message: "Your login info was incorrect")
-                    self.activityIndicator.stopAnimating()
-                    self.activityIndicator.isHidden = true
-                    self.usernameBox.text = ""
-                    self.passwordBox.text = ""
-                }
-            }
-        }
-    }
-
-    func validateLoginCredentials(domain: String, user: String, pass: String, completion: @escaping (_ success: Bool?)-> Void) {
-        let webManager = WebAPIManager(ipAddress: domain, port: "", username: user, password: pass)
-        webManager.getValue(gpioNumber: 2) { value in
-            completion(value != nil)
+        self.dismiss(animated: true) {
+            NotificationCenter.default.post(name: Notification.Name.login, object: nil, userInfo: ["username": user, "password": pass, "save": save])
         }
     }
 }

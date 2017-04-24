@@ -18,6 +18,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     var deviceLastUpdated: String!
     var overlay: UIAlertController!
     var proxy: String!
+    var isConnectionSuccess: Bool!
 
     var appEngineManager : AppEngineManager!
     var deviceManager : RemoteDeviceManager!
@@ -43,6 +44,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.navigationItem.rightBarButtonItem = optionsButton
 
         // Adding listeners for notifications from popovers
+        NotificationCenter.default.addObserver(self, selector: #selector(self.onLogin), name: .login, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.onLoginSuccess), name: .loginSuccess, object: nil)
 
         self.devices = [RemoteDevice()]
@@ -136,55 +138,33 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     // MARK: Local Functions
 
     func connectToDevice(device: RemoteDevice) {
-        let updateProgress = { message in
-            DispatchQueue.main.async {
-                self.overlay.message = message
+        // TODO: Check if login has been saved and use it if so
+
+
+        DispatchQueue.main.async {
+            // Getting public IP address of user's phone or tablet
+            let ipifyURL = "https://api.ipify.org?format=json"
+            SimpleHTTPRequest().simpleAPIRequest(toUrl: ipifyURL, HTTPMethod: "GET", jsonBody: nil, extraHeaderFields: nil) {
+                (success, data, error) in
+                let deviceAddress = device.apiData!["deviceAddress"]!
+                let senderAddress = (data as! NSDictionary)["ip"] as! String
+
+                RemoteAPIManager().connectDevice(deviceAddress: deviceAddress, hostip: senderAddress) { data in
+                    self.isConnectionSuccess = data != nil
+
+                    // Handling API response failure
+                    guard self.isConnectionSuccess! else { return }
+
+                    // Parsing url data returned from Remot3.it for WebIOPi
+                    let connection = data!["connection"] as! NSDictionary
+                    device.lastUpdated = connection["requested"] as! String
+                    self.proxy = self.parseProxy(url: connection["proxy"] as! String)
+                }
             }
         }
 
-        // Showing overlay for fetching devices from Remot3.it
-        self.overlay = OverlayManager.createLoadingSpinner()
-        self.present(overlay, animated: true)
-
-        updateProgress("Locating device...")
-
-        // Getting public IP address of user's phone or tablet
-        let ipifyURL = "https://api.ipify.org?format=json"
-        SimpleHTTPRequest().simpleAPIRequest(toUrl: ipifyURL, HTTPMethod: "GET", jsonBody: nil, extraHeaderFields: nil) {
-            (success, data, error) in
-            let deviceAddress = device.apiData!["deviceAddress"]!
-            let senderAddress = (data as! NSDictionary)["ip"] as! String
-
-            updateProgress("Connecting to device...")
-
-            RemoteAPIManager().connectDevice(deviceAddress: deviceAddress, hostip: senderAddress) { data in
-                // Handling API response failure
-                guard data != nil else {
-                    let errorOverlay = OverlayManager.createErrorOverlay(message: "Could not connect to \(device.apiData!["deviceAlias"]!)")
-                    self.dismiss(animated: false)
-                    self.present(errorOverlay, animated: false)
-                    return
-                }
-
-                // Parsing url data returned from Remot3.it for WebIOPi
-                let connection = data!["connection"] as! NSDictionary
-                self.proxy = self.parseProxy(url: connection["proxy"] as! String)
-                device.lastUpdated = connection["requested"] as! String
-
-                updateProgress("Getting data...")
-
-                // TODO: Persists login for each device
-
-
-                self.webManager = WebAPIManager(ipAddress: self.proxy, port: "", username: "webiopi", password: "raspberry")
-                self.webManager.getValue(gpioNumber: 2) { value in
-                    let id = value != nil ? SegueTypes.idToDeviceDetails : SegueTypes.idToWebLogin
-                    self.dismiss(animated: true) {
-                        self.performSegue(withIdentifier: id, sender: self)
-                    }
-                } // End WebIOPi call
-            } // End Remot3.it call
-        } // End whatsmyip call
+        // Presenting login dialog while we start sending API calls in the background
+        self.performSegue(withIdentifier: SegueTypes.idToWebLogin, sender: self)
     }
 
     func fetchToken(completion: @escaping (_ token: String?)-> Void) {
@@ -222,6 +202,43 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             OperationQueue.main.addOperation {
                 (self.view.subviews[0] as! UITableView).reloadData()
                 self.dismiss(animated: true)
+            }
+        }
+    }
+
+    func onLogin(notification: Notification) {
+        let deviceName = MainUser.sharedInstance.currentDevice?.apiData!["deviceAlias"]!
+        let user = notification.userInfo?["username"] as! String
+        let pass = notification.userInfo?["password"] as! String
+        let shouldSaveLogin = notification.userInfo?["save"] as! Bool
+
+        // Showing overlay for fetching devices from Remot3.it
+        self.overlay = OverlayManager.createLoadingSpinner(withMessage: "Logging in...")
+        self.present(overlay, animated: true)
+
+        while(self.isConnectionSuccess == nil) {
+            sleep(100)
+        }
+
+        guard self.isConnectionSuccess! else {
+            self.overlay = OverlayManager.createErrorOverlay(message: "Could not connect to \(deviceName!)")
+            self.present(self.overlay, animated: true)
+            return
+        }
+
+        self.webManager = WebAPIManager(ipAddress: self.proxy, port: "", username: user, password: pass)
+        self.webManager.getValue(gpioNumber: 2) { value in
+            guard value != nil else {
+                let errorOverlay = OverlayManager.createErrorOverlay(message: "That login is incorrect")
+                self.dismiss(animated: false)
+                self.present(errorOverlay, animated: false)
+                return
+            }
+
+            // TODO: Save login info
+
+            self.dismiss(animated: true) {
+                self.performSegue(withIdentifier: SegueTypes.idToDeviceDetails, sender: self)
             }
         }
     }
