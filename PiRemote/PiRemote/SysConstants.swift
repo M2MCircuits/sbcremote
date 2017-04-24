@@ -53,6 +53,7 @@ extension Notification.Name {
     static let save = Notification.Name.init(rawValue: "USER_TOUCHED_SAVE")
     static let touchPin = Notification.Name.init(rawValue: "USER_TOUCHED_PIN")
     static let updatePin = Notification.Name.init(rawValue: "UPDATE_PIN")
+    static let updatePinInLayout = Notification.Name.init(rawValue: "UPDATE_PIN_LAYOUT")
 }
 
 enum PopoverTypes {

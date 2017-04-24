@@ -15,6 +15,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     let cellId = "DEVICE CELL"
     var devices: [RemoteDevice]!
+    var deviceLastUpdated: String!
     var overlay: UIAlertController!
     var proxy: String!
 
@@ -168,6 +169,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
                 // Parsing url data returned from Remot3.it for WebIOPi
                 let connection = data!["connection"] as! NSDictionary
                 self.proxy = self.parseProxy(url: connection["proxy"] as! String)
+                device.lastUpdated = connection["requested"] as! String
 
                 updateProgress("Getting data...")
 

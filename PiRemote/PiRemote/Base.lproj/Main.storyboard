@@ -411,35 +411,35 @@
                                         <rect key="frame" x="0.0" y="120" width="343" height="286"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PIN CELL" rowHeight="80" id="uaq-A8-3E1" customClass="PinTableViewCell" customModule="PiPremote" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="28" width="343" height="80"/>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PIN CELL" rowHeight="60" id="uaq-A8-3E1" customClass="PinTableViewCell" customModule="PiPremote" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="28" width="343" height="60"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uaq-A8-3E1" id="DJs-Ox-4qv">
-                                                    <rect key="frame" x="0.0" y="0.0" width="343" height="79"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="343" height="59"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kx1-yi-eOo">
-                                                            <rect key="frame" x="8" y="9" width="60" height="60"/>
+                                                            <rect key="frame" x="8" y="10" width="40" height="40"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="height" constant="60" id="MfI-ih-t5r"/>
-                                                                <constraint firstAttribute="width" constant="60" id="oqU-gp-YUj"/>
+                                                                <constraint firstAttribute="height" constant="40" id="MfI-ih-t5r"/>
+                                                                <constraint firstAttribute="width" constant="40" id="oqU-gp-YUj"/>
                                                             </constraints>
                                                             <state key="normal" title="#"/>
                                                         </button>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pin Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nC2-kq-tph">
-                                                            <rect key="frame" x="72" y="29" width="106" height="21"/>
+                                                            <rect key="frame" x="52" y="19.5" width="126" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NsS-nV-gfg">
-                                                            <rect key="frame" x="276" y="24" width="51" height="31"/>
+                                                            <rect key="frame" x="276" y="14.5" width="51" height="31"/>
                                                             <connections>
                                                                 <action selector="onToggleSwitch:" destination="uaq-A8-3E1" eventType="valueChanged" id="2m5-3X-vQY"/>
                                                             </connections>
                                                         </switch>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PI1-BE-zgG">
-                                                            <rect key="frame" x="182" y="25" width="90" height="30"/>
+                                                            <rect key="frame" x="182" y="15" width="90" height="30"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="90" id="vga-p0-NZA"/>
                                                             </constraints>
@@ -448,6 +448,9 @@
                                                                 <action selector="onToggleType:" destination="uaq-A8-3E1" eventType="touchUpInside" id="Ycx-65-3ZC"/>
                                                             </connections>
                                                         </button>
+                                                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="YdD-Yb-Auq">
+                                                            <rect key="frame" x="161" y="20" width="20" height="20"/>
+                                                        </activityIndicatorView>
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstItem="kx1-yi-eOo" firstAttribute="centerY" secondItem="DJs-Ox-4qv" secondAttribute="centerY" id="4cg-Vf-Tkd"/>
@@ -459,9 +462,12 @@
                                                         <constraint firstItem="NsS-nV-gfg" firstAttribute="centerY" secondItem="DJs-Ox-4qv" secondAttribute="centerY" id="XV6-tL-Ucu"/>
                                                         <constraint firstItem="PI1-BE-zgG" firstAttribute="centerY" secondItem="DJs-Ox-4qv" secondAttribute="centerY" id="aDt-0v-b9d"/>
                                                         <constraint firstItem="NsS-nV-gfg" firstAttribute="leading" secondItem="PI1-BE-zgG" secondAttribute="trailing" constant="4" id="dmO-TQ-8OA"/>
+                                                        <constraint firstItem="YdD-Yb-Auq" firstAttribute="centerX" secondItem="DJs-Ox-4qv" secondAttribute="centerX" id="fBu-Oo-AgI"/>
+                                                        <constraint firstItem="YdD-Yb-Auq" firstAttribute="centerY" secondItem="DJs-Ox-4qv" secondAttribute="centerY" id="xeR-UC-jk9"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <connections>
+                                                    <outlet property="activityIndicator" destination="YdD-Yb-Auq" id="Lvj-DA-uOM"/>
                                                     <outlet property="pinNameLabel" destination="nC2-kq-tph" id="e0W-rY-pPx"/>
                                                     <outlet property="pinView" destination="kx1-yi-eOo" id="RXH-3U-d2d"/>
                                                     <outlet property="typeButton" destination="PI1-BE-zgG" id="xbQ-3t-9zo"/>
@@ -471,6 +477,7 @@
                                         </prototypes>
                                         <connections>
                                             <outlet property="dataSource" destination="eAF-Vh-bmA" id="Cqz-ic-bOK"/>
+                                            <outlet property="delegate" destination="eAF-Vh-bmA" id="zmd-xJ-3cu"/>
                                         </connections>
                                     </tableView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wab-7D-0b6">

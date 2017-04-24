@@ -79,7 +79,7 @@ class EditPinViewController: UIViewController {
         sender.setTitleColor(UIColor.white, for: .normal)
 
         // Notifying parent view controller to update pin data in layout
-        NotificationCenter.default.post(name: Notification.Name.updatePin, object: self, userInfo: [
+        NotificationCenter.default.post(name: Notification.Name.updatePinInLayout, object: self, userInfo: [
             "id": String(pin!.id), "name": nameBox.text!, "type": type, "value": String(onOffSwitch.isOn)])
     }
 
@@ -89,12 +89,12 @@ class EditPinViewController: UIViewController {
             onOffSwitch.isOn = !onOffSwitch.isOn
             return
         }
-        
+
         onOffLabel.text = onOffSwitch.isOn ? "On" : "Off"
         controlButton.backgroundColor = onOffSwitch.isOn ? Theme.lightGreen500 : Theme.amber500
 
         // Notifying parent view controller to update pin data in layout
-        NotificationCenter.default.post(name: Notification.Name.updatePin, object: self, userInfo: [
+        NotificationCenter.default.post(name: Notification.Name.updatePinInLayout, object: self, userInfo: [
             "id": String(pin!.id), "name": pin!.name, "type": String(describing: pin!.type), "value": String(onOffSwitch.isOn)])
     }
 }

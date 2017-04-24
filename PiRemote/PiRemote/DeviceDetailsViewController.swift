@@ -18,7 +18,8 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
 
     // MARK: Local variables
 
-    var currentSelection: PinTableViewCell!
+    let cellId = "PIN CELL"
+    var currentCell: PinTableViewCell!
     var device: RemoteDevice!
     var webAPI: WebAPIManager!
 
@@ -57,7 +58,7 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
         // TODO: Update last updated time
 
         // Configuring table view section
-        (stackView.arrangedSubviews[3] as! UITableView).rowHeight = 68
+        (stackView.arrangedSubviews[3] as! UITableView).rowHeight = 60
 
         // Configuring more details section
         stackView.arrangedSubviews[5].isHidden = true
@@ -84,11 +85,11 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
     // MARK: UITableViewDataSource Functions
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PIN CELL", for: indexPath) as! PinTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! PinTableViewCell
         let i = indexPath.row
 
         cell.updateStyle(with: device.layout.defaultSetup[i])
-
+        cell.activityIndicator.isHidden = true
         return cell
     }
 
@@ -103,9 +104,9 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
     }
 
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PIN CELL", for: indexPath) as! PinTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! PinTableViewCell
         cell.tag = indexPath.row
-        self.currentSelection = cell
+        self.currentCell = cell
         return indexPath
     }
 
@@ -127,31 +128,53 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
     }
 
     func handleUpdatePin(notification: Notification) {
-        let userInfo = notification.userInfo as! [String:String]
-        let id = Int(userInfo["id"]!)!
-
+        let userInfo = notification.userInfo as! [String:Any]
+        let id = userInfo["id"] as! Int
+        let indexPath = IndexPath(row: id-1, section: 0)
+        let currentPin = self.device.layout.defaultSetup[id-1]
         let tableView = stackView.arrangedSubviews[3] as! UITableView
-        let indexPath = IndexPath(row: id, section: 0)
-        self.currentSelection = tableView.dequeueReusableCell(withIdentifier: "PIN CELL", for: indexPath) as! PinTableViewCell
 
-        if userInfo.keys.contains("value") {
-            let value = userInfo["value"]! == "true" ? 1 : 0
-            webAPI.setValue(gpioNumber: id, value: value, completion: { newValue in
-                // TODO: Handle nil = failure
-                print(newValue!)
-                let pin = self.device.layout.defaultSetup[id]
-                pin.value = newValue!
-                self.currentSelection.updateStyle(with: pin)
-            })
-        } else if userInfo.keys.contains("function") {
-            let function = userInfo["function"]! == "Control" ? "out" : "in"
-            webAPI.setFunction(gpioNumber: id, functionType: function, completion: { newFunction in
-                print(newFunction!)
-                // TODO: Handle nil = failure
-                let pin = self.device.layout.defaultSetup[id]
-                pin.function = newFunction!
-                self.currentSelection.updateStyle(with: pin)
-            })
+        // WebIOPi does not allow users to change non-GPIO pins
+        guard currentPin.isGPIO() else {
+            SharedSnackbar.show(parent: self.stackView, type: .warn, message: "You can only update GPIO pins")
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+            return
+        }
+
+        // Handling API response failures
+        let isResponseValid = { (data: Any?) -> Bool in
+            guard data != nil else {
+                SharedSnackbar.show(parent: self.stackView, type: .error, message: "Could not update pin")
+                tableView.reloadRows(at: [indexPath], with: .automatic)
+                return false
+            }
+            return true
+        }
+
+        DispatchQueue.main.async {
+            let gpio = Int(currentPin.boardName.components(separatedBy: " ")[1])
+            self.currentCell = tableView.dequeueReusableCell(withIdentifier: self.cellId, for: indexPath) as! PinTableViewCell
+
+            if userInfo.keys.contains("value") {
+                let value = (userInfo["value"]! as! String) == "true" ? 1 : 0
+                self.webAPI.setValue(gpioNumber: gpio!, value: value) { newValue in
+                    OperationQueue.main.addOperation {
+                        guard isResponseValid(newValue) else { return }
+                        currentPin.value = newValue! - 48
+                        tableView.reloadRows(at: [indexPath], with: .automatic)
+                    }
+                }
+            } else if userInfo.keys.contains("type") {
+                let function = (userInfo["type"]! as! Pin.Types) == .control ? "out" : "in"
+                self.webAPI.setFunction(gpioNumber: gpio!, functionType: function) { newFunction in
+                    OperationQueue.main.addOperation {
+                        guard isResponseValid(newFunction) else { return }
+                        currentPin.function = newFunction!
+                        currentPin.type = userInfo["type"]! as! Pin.Types
+                        tableView.reloadRows(at: [indexPath], with: .automatic)
+                    }
+                }
+            }
         }
     }
 

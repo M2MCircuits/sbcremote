@@ -6,7 +6,7 @@
 //  Copyright (c) 2017 JLL Consulting. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class Pin: NSObject, NSCoding {
 
@@ -33,6 +33,7 @@ class Pin: NSObject, NSCoding {
     }
 
     var id: Int = 0
+    var boardName: String = ""
     var name: String = ""
     var statusWhenHigh: String = "On"
     var statusWhenLow: String = "Off"
@@ -52,9 +53,9 @@ class Pin: NSObject, NSCoding {
 
         // TODO: Handle other pi versions
         if self.id <= 26 {
-            self.name = PinHeader.modelB[self.id]!
+            self.boardName = PinHeader.modelB[self.id]!
         } else if self.id <= 40 {
-            self.name = PinHeader.modelBPlus[self.id]!
+            self.boardName = PinHeader.modelBPlus[self.id]!
         }
 
         if !isGPIO() {
@@ -70,6 +71,7 @@ class Pin: NSObject, NSCoding {
         super.init()
         self.function = decoder.decodeObject(forKey: "function") as! String
         self.id = decoder.decodeInteger(forKey: "id")
+        self.boardName = decoder.decodeObject(forKey: "boardName") as! String
         self.name = decoder.decodeObject(forKey: "name") as! String
         self.statusWhenHigh = decoder.decodeObject(forKey: "statusWhenHigh") as! String
         self.statusWhenLow = decoder.decodeObject(forKey: "statusWhenLow") as! String
@@ -80,6 +82,7 @@ class Pin: NSObject, NSCoding {
     func encode(with coder: NSCoder) {
         coder.encode(self.function, forKey: "function")
         coder.encode(self.id, forKey: "id")
+        coder.encode(self.boardName, forKey: "boardName")
         coder.encode(self.name, forKey: "name")
         coder.encode(self.statusWhenHigh, forKey: "statusWhenHigh")
         coder.encode(self.statusWhenLow, forKey: "statusWhenLow")
@@ -103,5 +106,28 @@ class Pin: NSObject, NSCoding {
 
     func isEven() -> Bool {
         return id % 2 == 0
+    }
+
+    func getColors() -> (UIColor, UIColor) {
+        var bgColor, borderColor: UIColor
+
+        switch type {
+        case .ignore:
+            bgColor = Theme.grey300
+            borderColor = Theme.grey500
+        case .monitor:
+            bgColor = Theme.cyan300
+            borderColor = Theme.cyan500
+        case .control:
+            bgColor = value == 1 ? Theme.lightGreen300 : Theme.amber300
+            borderColor = value == 1 ? Theme.lightGreen500 : Theme.amber500
+        }
+
+        if boardName.contains("V") {
+            bgColor = Theme.red300
+            borderColor = Theme.red500
+        }
+
+        return (bgColor, borderColor)
     }
 }

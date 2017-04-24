@@ -104,35 +104,12 @@ class PinSetupScrollView: UIScrollView {
     }
 
     func setPinData(pins: [Pin]) {
-        let getColors = {(pin: Pin) -> (UIColor, UIColor) in
-            var bgColor, borderColor: UIColor
-
-            switch pin.type {
-            case .ignore:
-                bgColor = Theme.grey300
-                borderColor = Theme.grey500
-            case .monitor:
-                bgColor = Theme.cyan300
-                borderColor = Theme.cyan500
-            case .control:
-                bgColor = pin.value == 1 ? Theme.lightGreen300 : Theme.amber300
-                borderColor = pin.value == 1 ? Theme.lightGreen500 : Theme.amber500
-            }
-
-            if pin.name.contains("V") {
-                bgColor = Theme.red300
-                borderColor = Theme.red500
-            }
-
-            return (bgColor, borderColor)
-        }
-
         // Colorcoding pins
         for child in contentView!.subviews {
             if child is UIButton {
                 let btn = child as! UIButton
                 let i = btn.tag
-                let (bgClr, borderClr) = getColors(pins[i - 1])
+                let (bgClr, borderClr) = pins[i - 1].getColors()
 
                 btn.backgroundColor = bgClr
                 btn.layer.borderColor = borderClr.cgColor
@@ -140,12 +117,12 @@ class PinSetupScrollView: UIScrollView {
             } else if child is UILabel {
                 let label = child as! UILabel
                 let i = label.tag
-                let pinName = pins[i - 1].name
-                let (bgClr, borderClr) = getColors(pins[i - 1])
+                let pinName = pins[i-1].name.isEmpty ? pins[i-1].boardName : pins[i-1].name
+                let (bgClr, borderClr) = pins[i - 1].getColors()
 
-                label.backgroundColor = bgClr.withAlphaComponent(0.66)
-                label.layer.borderColor = borderClr.withAlphaComponent(0.66).cgColor
-                label.layer.borderWidth = 2.0
+                label.backgroundColor = bgClr.withAlphaComponent(0.5)
+                label.layer.borderColor = borderClr.withAlphaComponent(0.5).cgColor
+                label.layer.borderWidth = 4.0
                 label.text = pinName
             }
         }
