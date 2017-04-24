@@ -31,7 +31,7 @@ class LoginViewController: UIViewController {
         self.navigationController?.isNavigationBarHidden = true
 
         // Adding background pattern
-        let patternFill = UIColor(patternImage: UIImage(named: "connect")!)
+        let patternFill = UIColor(patternImage: UIImage(named: "circuit")!)
         view.backgroundColor = patternFill
 
         // Adding shadow style
