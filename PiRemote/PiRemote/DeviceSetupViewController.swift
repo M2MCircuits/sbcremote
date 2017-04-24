@@ -59,7 +59,7 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
         NotificationCenter.default
             .addObserver(self, selector: #selector(self.handleSaveLayout), name: Notification.Name.save, object: nil)
         NotificationCenter.default
-            .addObserver(self, selector: #selector(self.handleUpdatePin), name: Notification.Name.updatePin, object: nil)
+            .addObserver(self, selector: #selector(self.handleUpdatePin), name: Notification.Name.updatePinInLayout, object: nil)
         NotificationCenter.default
             .addObserver(self, selector: #selector(self.handleTouchPin), name: Notification.Name.touchPin, object: nil)
     }
@@ -152,8 +152,16 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
 
     func handleTouchPin(notification: Notification) {
         let i = notification.userInfo?["tag"] as! Int
-        // Open popover with selected pin data
-        self.performSegue(withIdentifier: SegueTypes.idToPinSettings, sender: pinLayout.defaultSetup[i-1])
+        let pin = pinLayout.defaultSetup[i-1]
+
+        // Preventing attempt to edit non-GPIO pins
+        guard pin.isGPIO() else {
+            SharedSnackbar.show(parent: (view)!, type: .warn, message: "You can only update GPIO pins")
+            return
+        }
+
+        // Opening popover with selected pin data
+        self.performSegue(withIdentifier: SegueTypes.idToPinSettings, sender: pin)
     }
 
     func handleUpdatePin(notification: Notification) {
@@ -162,20 +170,12 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
             return
         }
 
-        let userInfo = notification.userInfo as! [String:String]
-        let i = Int(userInfo["id"]!)! - 1
+        let userInfo = notification.userInfo as! [String:Any]
+        let i = (userInfo["id"] as! Int) - 1
 
-        var type: Pin.Types
-        switch userInfo["type"]! {
-        case "control": type = .control
-        case "ignore": type = .ignore
-        case "monitor": type = .monitor
-        default: type = .ignore
-        }
-
-        pinLayout.defaultSetup[i].name = userInfo["name"]!
-        pinLayout.defaultSetup[i].type = type
-        pinLayout.defaultSetup[i].value = userInfo["value"]! == "true" ? 1 : 0
+        pinLayout.defaultSetup[i].name = userInfo["name"] as! String
+        pinLayout.defaultSetup[i].type = userInfo["type"] as! Pin.Types
+        pinLayout.defaultSetup[i].value = (userInfo["value"] as! String) == "true" ? 1 : 0
 
         scrollView.setPinData(pins: pinLayout.defaultSetup)
     }

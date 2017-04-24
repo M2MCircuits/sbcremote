@@ -6,7 +6,7 @@
 //  Copyright (c) 2017 JLL Consulting. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class Pin: NSObject, NSCoding {
 
@@ -33,6 +33,7 @@ class Pin: NSObject, NSCoding {
     }
 
     var id: Int = 0
+    var boardName: String = ""
     var name: String = ""
     var statusWhenHigh: String = "On"
     var statusWhenLow: String = "Off"
@@ -46,23 +47,22 @@ class Pin: NSObject, NSCoding {
 
     init(id: Int, apiData: [String: AnyObject]) {
         super.init()
-        self.id = id
+        self.id = id + 1
         self.function = apiData["function"] as! String
-        self.type = self.function == "IN" ? .monitor : .control
         self.value = apiData["value"] as! Int
-    }
 
+        // TODO: Handle other pi versions
+        if self.id <= 26 {
+            self.boardName = PinHeader.modelB[self.id]!
+        } else if self.id <= 40 {
+            self.boardName = PinHeader.modelBPlus[self.id]!
+        }
 
-    init(id: Int, name: String, function: String, value: Int,
-         type: Types = .ignore, statusWhenHigh: String = "On", statusWhenLow: String = "Off") {
-        super.init()
-        self.function = function
-        self.id = id
-        self.name = name
-        self.statusWhenHigh = statusWhenHigh
-        self.statusWhenLow = statusWhenLow
-        self.type = type
-        self.value = value
+        if !isGPIO() {
+            self.type = .ignore
+        } else {
+            self.type = self.function == "IN" ? .monitor : .control
+        }
     }
 
     // MARK: NSCoding
@@ -71,6 +71,7 @@ class Pin: NSObject, NSCoding {
         super.init()
         self.function = decoder.decodeObject(forKey: "function") as! String
         self.id = decoder.decodeInteger(forKey: "id")
+        self.boardName = decoder.decodeObject(forKey: "boardName") as! String
         self.name = decoder.decodeObject(forKey: "name") as! String
         self.statusWhenHigh = decoder.decodeObject(forKey: "statusWhenHigh") as! String
         self.statusWhenLow = decoder.decodeObject(forKey: "statusWhenLow") as! String
@@ -81,6 +82,7 @@ class Pin: NSObject, NSCoding {
     func encode(with coder: NSCoder) {
         coder.encode(self.function, forKey: "function")
         coder.encode(self.id, forKey: "id")
+        coder.encode(self.boardName, forKey: "boardName")
         coder.encode(self.name, forKey: "name")
         coder.encode(self.statusWhenHigh, forKey: "statusWhenHigh")
         coder.encode(self.statusWhenLow, forKey: "statusWhenLow")
@@ -91,20 +93,41 @@ class Pin: NSObject, NSCoding {
 
     // MARK: Local Functions
 
-
     func isGPIO() -> Bool {
-        // TODO: Add Pi Zero
-
-        // not GPIO on Pi B Rev 1, Pi A/B Rev 2
-        _ = [1, 2, 4, 6, 9, 14, 17, 20, 25] // piOneOrTwo
-        // not GPIO on Pi B+
-        let piThree = [1, 2, 4, 6, 9, 14, 17, 20, 25, 27, 28, 30, 34, 39]
-
-        // TODO: Handle other models
-        return !piThree.contains(id)
+        // TODO: Handle other versions of pi
+        if id <= 26 {
+            return PinHeader.modelB[id]!.contains("GPIO")
+        } else if id <= 40 {
+            return PinHeader.modelBPlus[id]!.contains("GPIO")
+        } else {
+            return false
+        }
     }
 
     func isEven() -> Bool {
         return id % 2 == 0
+    }
+
+    func getColors() -> (UIColor, UIColor) {
+        var bgColor, borderColor: UIColor
+
+        switch type {
+        case .ignore:
+            bgColor = Theme.grey300
+            borderColor = Theme.grey500
+        case .monitor:
+            bgColor = Theme.cyan300
+            borderColor = Theme.cyan500
+        case .control:
+            bgColor = value == 1 ? Theme.lightGreen300 : Theme.amber300
+            borderColor = value == 1 ? Theme.lightGreen500 : Theme.amber500
+        }
+
+        if boardName.contains("V") {
+            bgColor = Theme.red300
+            borderColor = Theme.red500
+        }
+
+        return (bgColor, borderColor)
     }
 }
