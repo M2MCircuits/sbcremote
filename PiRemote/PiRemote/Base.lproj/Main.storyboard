@@ -192,7 +192,7 @@
                                 <rect key="frame" x="24" y="68" width="327" height="551"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="piremote-logo" translatesAutoresizingMaskIntoConstraints="NO" id="123-19-neR">
-                                        <rect key="frame" x="100" y="56" width="128" height="128"/>
+                                        <rect key="frame" x="100" y="44" width="128" height="128"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="128" id="CAo-AD-kv7"/>
                                             <constraint firstAttribute="width" constant="128" id="Igc-ax-GRA"/>
@@ -200,30 +200,30 @@
                                         </constraints>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="piremote-text" translatesAutoresizingMaskIntoConstraints="NO" id="J2x-YA-g1b">
-                                        <rect key="frame" x="100" y="184" width="128" height="25"/>
+                                        <rect key="frame" x="100" y="172" width="128" height="25"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="J2x-YA-g1b" secondAttribute="height" multiplier="128:25" id="nDW-g8-kvd"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N4s-He-pQS">
-                                        <rect key="frame" x="8" y="290" width="69" height="17"/>
+                                        <rect key="frame" x="45" y="266" width="69" height="17"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" preservesSuperviewLayoutMargins="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FT1-3W-OS9">
-                                        <rect key="frame" x="8" y="315" width="311" height="30"/>
+                                        <rect key="frame" x="45" y="287" width="237.5" height="30"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wD5-8g-gOl">
-                                        <rect key="frame" x="8" y="378" width="311" height="30"/>
+                                        <rect key="frame" x="45" y="346" width="237.5" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xZX-HV-27a">
-                                        <rect key="frame" x="86" y="424" width="155" height="30"/>
+                                        <rect key="frame" x="104.5" y="392" width="118" height="30"/>
                                         <state key="normal" title="Login">
                                             <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
@@ -232,26 +232,27 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login with your Remot3.it Account" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TMS-Xy-O1o">
-                                        <rect key="frame" x="8" y="257" width="311" height="17"/>
+                                        <rect key="frame" x="45" y="233" width="237.5" height="17"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iEa-oA-NH2">
-                                        <rect key="frame" x="8" y="353" width="66" height="17"/>
+                                        <rect key="frame" x="45" y="325" width="66" height="17"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oN5-oJ-WR0">
                                         <rect key="frame" x="99" y="513" width="129" height="30"/>
+                                        <color key="tintColor" red="0.9137254901960784" green="0.51372549019607838" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <state key="normal" title="What is Remot3.it?"/>
                                         <connections>
                                             <action selector="onShowRemoteItInfo:" destination="Quz-7m-Y6X" eventType="touchUpInside" id="7Lk-wr-auT"/>
                                         </connections>
                                     </button>
                                     <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="U8O-ix-Ht1">
-                                        <rect key="frame" x="154" y="429" width="20" height="20"/>
+                                        <rect key="frame" x="154" y="397" width="20" height="20"/>
                                         <color key="color" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     </activityIndicatorView>
                                 </subviews>
@@ -260,12 +261,11 @@
                                     <constraint firstItem="FT1-3W-OS9" firstAttribute="width" secondItem="TMS-Xy-O1o" secondAttribute="width" id="0Gv-3p-Rfy"/>
                                     <constraint firstItem="iEa-oA-NH2" firstAttribute="top" secondItem="FT1-3W-OS9" secondAttribute="bottom" constant="8" id="7kt-FS-GY1"/>
                                     <constraint firstAttribute="bottomMargin" secondItem="oN5-oJ-WR0" secondAttribute="bottom" id="8pN-Yk-Qk4"/>
-                                    <constraint firstItem="TMS-Xy-O1o" firstAttribute="top" secondItem="J2x-YA-g1b" secondAttribute="bottom" constant="48" id="973-ak-6bA"/>
-                                    <constraint firstItem="wD5-8g-gOl" firstAttribute="top" secondItem="iEa-oA-NH2" secondAttribute="bottom" constant="8" id="Abi-Vb-aP8"/>
+                                    <constraint firstItem="TMS-Xy-O1o" firstAttribute="top" secondItem="J2x-YA-g1b" secondAttribute="bottom" constant="36" id="973-ak-6bA"/>
+                                    <constraint firstItem="wD5-8g-gOl" firstAttribute="top" secondItem="iEa-oA-NH2" secondAttribute="bottom" constant="4" id="Abi-Vb-aP8"/>
                                     <constraint firstItem="xZX-HV-27a" firstAttribute="centerX" secondItem="NKP-NI-G5D" secondAttribute="centerX" id="B9T-kX-Wgi"/>
-                                    <constraint firstItem="123-19-neR" firstAttribute="top" secondItem="NKP-NI-G5D" secondAttribute="topMargin" constant="48" id="Foe-LV-gnK"/>
+                                    <constraint firstItem="123-19-neR" firstAttribute="top" secondItem="NKP-NI-G5D" secondAttribute="topMargin" constant="36" id="Foe-LV-gnK"/>
                                     <constraint firstItem="xZX-HV-27a" firstAttribute="width" secondItem="wD5-8g-gOl" secondAttribute="width" multiplier="0.5" id="G0t-Ua-4Sv"/>
-                                    <constraint firstAttribute="trailingMargin" secondItem="TMS-Xy-O1o" secondAttribute="trailing" id="HJp-jG-fnS"/>
                                     <constraint firstItem="FT1-3W-OS9" firstAttribute="centerX" secondItem="NKP-NI-G5D" secondAttribute="centerX" id="LSP-Go-lb8"/>
                                     <constraint firstItem="iEa-oA-NH2" firstAttribute="leading" secondItem="FT1-3W-OS9" secondAttribute="leading" id="Q2e-4E-7O8"/>
                                     <constraint firstItem="123-19-neR" firstAttribute="centerX" secondItem="NKP-NI-G5D" secondAttribute="centerX" id="Q78-fI-JWE"/>
@@ -274,12 +274,11 @@
                                     <constraint firstItem="N4s-He-pQS" firstAttribute="top" secondItem="TMS-Xy-O1o" secondAttribute="bottom" constant="16" id="UV9-zK-Qb5"/>
                                     <constraint firstItem="wD5-8g-gOl" firstAttribute="leading" secondItem="iEa-oA-NH2" secondAttribute="leading" id="avI-nD-4Oy"/>
                                     <constraint firstItem="N4s-He-pQS" firstAttribute="leading" secondItem="TMS-Xy-O1o" secondAttribute="leading" id="bbz-Ho-xvM"/>
-                                    <constraint firstItem="TMS-Xy-O1o" firstAttribute="leading" secondItem="NKP-NI-G5D" secondAttribute="leadingMargin" id="cpN-eQ-Pg9"/>
                                     <constraint firstItem="oN5-oJ-WR0" firstAttribute="centerX" secondItem="NKP-NI-G5D" secondAttribute="centerX" id="dFM-aJ-32p"/>
                                     <constraint firstItem="U8O-ix-Ht1" firstAttribute="centerY" secondItem="xZX-HV-27a" secondAttribute="centerY" id="e4g-kk-KPd"/>
                                     <constraint firstItem="J2x-YA-g1b" firstAttribute="centerX" secondItem="NKP-NI-G5D" secondAttribute="centerX" id="f0B-sJ-Jeh"/>
                                     <constraint firstItem="J2x-YA-g1b" firstAttribute="width" secondItem="123-19-neR" secondAttribute="width" id="gai-aZ-mDb"/>
-                                    <constraint firstItem="FT1-3W-OS9" firstAttribute="top" secondItem="N4s-He-pQS" secondAttribute="bottom" constant="8" id="kOr-UW-Dyb"/>
+                                    <constraint firstItem="FT1-3W-OS9" firstAttribute="top" secondItem="N4s-He-pQS" secondAttribute="bottom" constant="4" id="kOr-UW-Dyb"/>
                                     <constraint firstItem="TMS-Xy-O1o" firstAttribute="centerX" secondItem="NKP-NI-G5D" secondAttribute="centerX" id="muQ-ZR-0as"/>
                                     <constraint firstItem="wD5-8g-gOl" firstAttribute="width" secondItem="FT1-3W-OS9" secondAttribute="width" id="qfc-Hg-jVD"/>
                                     <constraint firstItem="J2x-YA-g1b" firstAttribute="top" secondItem="123-19-neR" secondAttribute="bottom" id="u9g-7h-pzA"/>

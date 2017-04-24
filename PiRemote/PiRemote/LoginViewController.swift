@@ -34,6 +34,14 @@ class LoginViewController: UIViewController {
         let patternFill = UIColor(patternImage: UIImage(named: "circuit")!)
         view.backgroundColor = patternFill
 
+        logButton.backgroundColor = UIColor(red: 0x69/255, green: 0xbe/255, blue: 0x28/255, alpha: 1)
+        logButton.setTitleColor(UIColor.white, for: .normal)
+        logButton.layer.cornerRadius = logButton.bounds.size.height / 2
+
+        // Adding event listeners
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
+
         // Adding shadow style
         paperView!.layer.masksToBounds = false
         paperView!.layer.shadowOpacity = 0.5
@@ -43,6 +51,20 @@ class LoginViewController: UIViewController {
     }
 
     // MARK: Local Functions
+
+    func keyboardWillShow(notification: Notification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0 {
+                self.view.frame.origin.y -= keyboardSize.height
+            }
+        }
+    }
+
+    func keyboardWillHide(notification: NSNotification) {
+        if self.view.frame.origin.y != 0 {
+            self.view.frame.origin.y = 0
+        }
+    }
 
     @IBAction func onLogin(_ sender: UIButton) {
         let pass = passwordBox.text!
