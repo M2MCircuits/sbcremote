@@ -45,17 +45,13 @@ class WebLoginViewController: UIViewController,UIPopoverPresentationControllerDe
 
     @IBAction func onLogin(_ sender: UIBarButtonItem) {
         let save = saveLoginSwitch.isOn
-        let pass = passwordBox.text!
-        let user = usernameBox.text!
+        let pass = passwordBox.text!.isEmpty ? passwordBox.placeholder : passwordBox.text!
+        let user = usernameBox.text!.isEmpty ? usernameBox.placeholder : usernameBox.text!
 
-        guard !pass.isEmpty else {
-            SharedSnackbar.show(parent: self.view, type: .warn, message: "Please enter your password")
-            return
-        }
-
-        guard !user.isEmpty else {
-            SharedSnackbar.show(parent: self.view, type: .warn, message: "Please enter your username")
-            return
+        if usernameBox.text!.isEmpty {
+            SharedSnackbar.show(parent: self.view, type: .info, message: "Using default username")
+        } else if passwordBox.text!.isEmpty {
+            SharedSnackbar.show(parent: self.view, type: .info, message: "Using default password")
         }
 
         // Preventing consecutives calls to login
