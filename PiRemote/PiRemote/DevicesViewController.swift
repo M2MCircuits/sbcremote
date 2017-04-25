@@ -214,31 +214,36 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
         // Showing overlay for fetching devices from Remot3.it
         self.overlay = OverlayManager.createLoadingSpinner(withMessage: "Logging in...")
-        self.present(overlay, animated: true)
+        self.present(overlay, animated: true) {
 
-        while(self.isConnectionSuccess == nil) {
-            sleep(100)
-        }
+            // User entered login info before getting an API response from the background
+            while(self.isConnectionSuccess == nil) {
+                sleep(100)
+            }
 
-        guard self.isConnectionSuccess! else {
-            self.overlay = OverlayManager.createErrorOverlay(message: "Could not connect to \(deviceName!)")
-            self.present(self.overlay, animated: true)
-            return
-        }
-
-        self.webManager = WebAPIManager(ipAddress: self.proxy, port: "", username: user, password: pass)
-        self.webManager.getValue(gpioNumber: 2) { value in
-            guard value != nil else {
-                let errorOverlay = OverlayManager.createErrorOverlay(message: "That login is incorrect")
-                self.dismiss(animated: false)
-                self.present(errorOverlay, animated: false)
+            guard self.isConnectionSuccess! else {
+                self.overlay = OverlayManager.createErrorOverlay(message: "Could not connect to \(deviceName!)")
+                self.dismiss(animated: false) {
+                    self.present(self.overlay, animated: true)
+                }
                 return
             }
 
-            // TODO: Save login info
+            self.webManager = WebAPIManager(ipAddress: self.proxy, port: "", username: user, password: pass)
+            self.webManager.getValue(gpioNumber: 2) { value in
+                guard value != nil else {
+                    let errorOverlay = OverlayManager.createErrorOverlay(message: "That login is incorrect")
+                    self.dismiss(animated: false) {
+                        self.present(errorOverlay, animated: false)
+                    }
+                    return
+                }
 
-            self.dismiss(animated: true) {
-                self.performSegue(withIdentifier: SegueTypes.idToDeviceDetails, sender: self)
+                // TODO: Save login info
+
+                self.dismiss(animated: true) {
+                    self.performSegue(withIdentifier: SegueTypes.idToDeviceDetails, sender: self)
+                }
             }
         }
     }

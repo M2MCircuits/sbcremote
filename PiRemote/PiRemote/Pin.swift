@@ -12,8 +12,8 @@ class Pin: NSObject, NSCoding {
 
     enum Types: Int {
         case ignore = 0
-        case control = 1
-        case monitor = 2
+        case monitor = 1
+        case control = 2
     }
 
     // TODO: Values like "ALT0", "ALT3", etc. are being saved as "IN". Should we be doing this?

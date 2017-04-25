@@ -24,22 +24,16 @@
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="piremote-logo" translatesAutoresizingMaskIntoConstraints="NO" id="Z7j-vY-BRh">
-                        <rect key="frame" x="79" y="44" width="256" height="256"/>
+                        <rect key="frame" x="79" y="20" width="256" height="256"/>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="piremote-text" translatesAutoresizingMaskIntoConstraints="NO" id="on4-hf-xLO">
-                        <rect key="frame" x="79" y="300" width="256" height="50"/>
+                        <rect key="frame" x="79" y="276" width="256" height="50"/>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="jll-consulting-logo" translatesAutoresizingMaskIntoConstraints="NO" id="bXu-88-Gmh">
-                        <rect key="frame" x="34.333333333333343" y="374" width="165.33333333333331" height="50"/>
-                    </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="utdallas" translatesAutoresizingMaskIntoConstraints="NO" id="fG6-FG-RKu">
-                        <rect key="frame" x="214" y="432" width="165" height="72"/>
-                        <constraints>
-                            <constraint firstAttribute="width" secondItem="fG6-FG-RKu" secondAttribute="height" multiplier="55:24" id="x5U-Pp-Jja"/>
-                        </constraints>
+                        <rect key="frame" x="34.333333333333343" y="433" width="165.33333333333331" height="50"/>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VPA-Hp-Yr6">
-                        <rect key="frame" x="214" y="512" width="165" height="104"/>
+                        <rect key="frame" x="214" y="578" width="165" height="97"/>
                         <string key="text">Bryan Gillespie
 Jeffery Parsa
 Matt Willoughby
@@ -50,7 +44,7 @@ Victor Aniyah</string>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="borland-farms-logo" translatesAutoresizingMaskIntoConstraints="NO" id="OgB-4F-Q3f">
-                        <rect key="frame" x="34" y="432" width="165" height="181"/>
+                        <rect key="frame" x="34" y="491" width="165" height="181"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="OgB-4F-Q3f" secondAttribute="height" multiplier="165:181" id="5U9-zL-dZQ"/>
                         </constraints>
@@ -62,12 +56,17 @@ Victor Aniyah</string>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Wni-vi-h3v">
-                        <rect key="frame" x="214.33333333333331" y="374" width="165.33333333333331" height="50"/>
+                        <rect key="frame" x="213.99999999999997" y="433" width="165.33333333333329" height="50"/>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="utdallas" translatesAutoresizingMaskIntoConstraints="NO" id="fG6-FG-RKu">
+                        <rect key="frame" x="214" y="498" width="165" height="72"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="fG6-FG-RKu" secondAttribute="height" multiplier="55:24" id="x5U-Pp-Jja"/>
+                        </constraints>
                     </imageView>
                 </subviews>
                 <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                 <constraints>
-                    <constraint firstItem="Wni-vi-h3v" firstAttribute="top" secondItem="on4-hf-xLO" secondAttribute="bottom" constant="24" id="0Ic-NM-jnH"/>
                     <constraint firstItem="OgB-4F-Q3f" firstAttribute="centerX" secondItem="5h2-wV-jf6" secondAttribute="centerX" constant="-90" id="28f-ih-l6P"/>
                     <constraint firstItem="fG6-FG-RKu" firstAttribute="centerX" secondItem="5h2-wV-jf6" secondAttribute="centerX" constant="90" id="3GZ-0K-WTE"/>
                     <constraint firstItem="fG6-FG-RKu" firstAttribute="width" secondItem="bXu-88-Gmh" secondAttribute="width" id="7o6-w9-Ub2"/>
@@ -75,23 +74,24 @@ Victor Aniyah</string>
                     <constraint firstItem="8ie-xW-0ye" firstAttribute="centerX" secondItem="5h2-wV-jf6" secondAttribute="centerX" id="Bvx-dW-E6W"/>
                     <constraint firstItem="bXu-88-Gmh" firstAttribute="centerX" secondItem="5h2-wV-jf6" secondAttribute="centerX" constant="-90" id="DYr-iW-KOo"/>
                     <constraint firstItem="VPA-Hp-Yr6" firstAttribute="width" secondItem="bXu-88-Gmh" secondAttribute="width" id="Ety-26-AIY"/>
+                    <constraint firstItem="Z7j-vY-BRh" firstAttribute="top" secondItem="GcY-UM-7dP" secondAttribute="bottom" id="FVW-vg-20f"/>
                     <constraint firstAttribute="trailingMargin" secondItem="8ie-xW-0ye" secondAttribute="trailing" id="GBs-4o-5Z0"/>
-                    <constraint firstItem="8ie-xW-0ye" firstAttribute="top" relation="greaterThanOrEqual" secondItem="OgB-4F-Q3f" secondAttribute="bottom" priority="750" constant="24" id="GCi-7g-b88"/>
+                    <constraint firstItem="8ie-xW-0ye" firstAttribute="top" relation="greaterThanOrEqual" secondItem="OgB-4F-Q3f" secondAttribute="bottom" priority="750" constant="16" id="GCi-7g-b88"/>
                     <constraint firstItem="VPA-Hp-Yr6" firstAttribute="baseline" secondItem="OgB-4F-Q3f" secondAttribute="baseline" id="GEe-Cd-CvH"/>
-                    <constraint firstItem="bXu-88-Gmh" firstAttribute="top" secondItem="on4-hf-xLO" secondAttribute="bottom" constant="24" id="IRH-GR-iwc"/>
                     <constraint firstItem="Wni-vi-h3v" firstAttribute="centerX" secondItem="5h2-wV-jf6" secondAttribute="centerX" constant="90" id="OOV-Uk-Rx0"/>
+                    <constraint firstItem="bXu-88-Gmh" firstAttribute="top" secondItem="Wni-vi-h3v" secondAttribute="top" id="PsS-dC-72J"/>
                     <constraint firstItem="Z7j-vY-BRh" firstAttribute="centerX" secondItem="5h2-wV-jf6" secondAttribute="centerX" id="SGe-XJ-nZL"/>
                     <constraint firstItem="IHz-fY-oY6" firstAttribute="top" secondItem="8ie-xW-0ye" secondAttribute="bottom" constant="24" id="Ufk-JU-hkx"/>
                     <constraint firstItem="on4-hf-xLO" firstAttribute="top" secondItem="Z7j-vY-BRh" secondAttribute="bottom" id="WAA-zB-Qgg"/>
                     <constraint firstItem="OgB-4F-Q3f" firstAttribute="width" secondItem="bXu-88-Gmh" secondAttribute="width" id="ZMK-1R-a5p"/>
+                    <constraint firstItem="8ie-xW-0ye" firstAttribute="top" secondItem="VPA-Hp-Yr6" secondAttribute="bottom" constant="16" id="dHM-nn-do5"/>
                     <constraint firstItem="VPA-Hp-Yr6" firstAttribute="top" secondItem="fG6-FG-RKu" secondAttribute="bottom" constant="8" id="dQe-C2-snG"/>
                     <constraint firstItem="OgB-4F-Q3f" firstAttribute="top" secondItem="bXu-88-Gmh" secondAttribute="bottom" constant="8" id="hc9-2H-YnH"/>
                     <constraint firstItem="bXu-88-Gmh" firstAttribute="width" secondItem="5h2-wV-jf6" secondAttribute="width" multiplier="0.4" id="jed-kW-zeL"/>
-                    <constraint firstItem="fG6-FG-RKu" firstAttribute="top" secondItem="Wni-vi-h3v" secondAttribute="bottom" constant="8" id="oxf-PE-ObA"/>
+                    <constraint firstItem="fG6-FG-RKu" firstAttribute="top" secondItem="Wni-vi-h3v" secondAttribute="bottom" constant="15" id="oxf-PE-ObA"/>
                     <constraint firstItem="Wni-vi-h3v" firstAttribute="height" secondItem="bXu-88-Gmh" secondAttribute="height" id="pJ3-VO-VPn"/>
                     <constraint firstItem="VPA-Hp-Yr6" firstAttribute="centerX" secondItem="5h2-wV-jf6" secondAttribute="centerX" constant="90" id="po0-M5-x9t"/>
                     <constraint firstItem="Wni-vi-h3v" firstAttribute="width" secondItem="bXu-88-Gmh" secondAttribute="width" id="veI-kb-5Il"/>
-                    <constraint firstItem="Z7j-vY-BRh" firstAttribute="top" secondItem="GcY-UM-7dP" secondAttribute="bottom" constant="24" id="vik-h8-LpF"/>
                     <constraint firstItem="8ie-xW-0ye" firstAttribute="leading" secondItem="5h2-wV-jf6" secondAttribute="leadingMargin" id="x2l-Nl-KpO"/>
                 </constraints>
             </view>

@@ -22,6 +22,7 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
     let cellId = "PIN CELL"
     var currentCell: PinTableViewCell!
     var device: RemoteDevice!
+    var tableData: [Pin]!
     var webAPI: WebAPIManager!
 
     deinit {
@@ -36,7 +37,10 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
 
         // Creating custom layout if not already defined
         if device.layout == nil {
+            self.tableData = [Pin]()
             self.initCustomLayout(for: device)
+        } else {
+            self.tableData = device.layout.defaultSetup.sorted(by: {p1,p2 in p1.type.rawValue > p1.type.rawValue})
         }
 
         // Additional navigation setup
@@ -76,6 +80,7 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
         let destination = segue.destination
         if segue.identifier == SegueTypes.idToDeviceSetup {
             (destination as! DeviceSetupViewController).pinLayout = device.layout
+            (destination as! DeviceSetupViewController).webAPI = self.webAPI
         }
     }
 
@@ -85,13 +90,13 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! PinTableViewCell
         let i = indexPath.row
 
-        cell.updateStyle(with: device.layout.defaultSetup[i])
+        cell.updateStyle(with: tableData[i])
         cell.activityIndicator.isHidden = true
         return cell
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return device.layout != nil ? device.layout.defaultSetup.count : 0
+        return tableData.count
     }
 
     // MARK: UITableViewDelegate Functions
@@ -148,29 +153,15 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
             return true
         }
 
-        DispatchQueue.main.async {
-            let gpio = Int(currentPin.boardName.components(separatedBy: " ")[1])
-            self.currentCell = tableView.dequeueReusableCell(withIdentifier: self.cellId, for: indexPath) as! PinTableViewCell
+        self.currentCell = tableView.dequeueReusableCell(withIdentifier: self.cellId, for: indexPath) as! PinTableViewCell
+        let gpio = Int(currentPin.boardName.components(separatedBy: " ")[1])
+        let value = (userInfo["value"]! as! String) == "true" ? 1 : 0
 
-            if userInfo.keys.contains("value") {
-                let value = (userInfo["value"]! as! String) == "true" ? 1 : 0
-                self.webAPI.setValue(gpioNumber: gpio!, value: value) { newValue in
-                    OperationQueue.main.addOperation {
-                        guard isResponseValid(newValue) else { return }
-                        currentPin.value = newValue! - 48
-                        tableView.reloadRows(at: [indexPath], with: .automatic)
-                    }
-                }
-            } else if userInfo.keys.contains("type") {
-                let function = (userInfo["type"]! as! Pin.Types) == .control ? "out" : "in"
-                self.webAPI.setFunction(gpioNumber: gpio!, functionType: function) { newFunction in
-                    OperationQueue.main.addOperation {
-                        guard isResponseValid(newFunction) else { return }
-                        currentPin.function = newFunction!
-                        currentPin.type = userInfo["type"]! as! Pin.Types
-                        tableView.reloadRows(at: [indexPath], with: .automatic)
-                    }
-                }
+        self.webAPI.setValue(gpioNumber: gpio!, value: value) { newValue in
+            DispatchQueue.main.async {
+                guard isResponseValid(newValue) else { return }
+                currentPin.value = newValue! - 48
+                tableView.reloadRows(at: [indexPath], with: .automatic)
             }
         }
     }
@@ -186,10 +177,14 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
                     let gpioState = device.rawStateData["GPIO"] as! [String:NSDictionary]
                     let pins = gpioState.map({ (pinBoardNumber, pinData) in
                         return Pin(id: Int(pinBoardNumber)!, apiData: pinData as! [String : AnyObject])
-                    }).sorted(by: {p1,p2 in p1.id < p2.id})
+                    }).sorted(by: {p1,p2 in return p1.id < p2.id})[0...25]
 
                     // TODO: Handle other pi versions
-                    device.layout = PinLayout(name: "Custom-\(deviceAlias!)", defaultSetup: Array(pins[0...25]))
+                    device.layout = PinLayout(name: "Custom-\(deviceAlias!)", defaultSetup: Array(pins))
+
+                    self.tableData = pins
+                        .sorted(by: {p1,p2 in return p1.type.rawValue > p2.type.rawValue})
+                        .filter({p in return p.type != .ignore})
 
                     // Updating layout label in more details section
                     let moreDetailsLabels = self.stackView.arrangedSubviews[4].subviews as! [UILabel]

@@ -43,7 +43,7 @@ class PinSetupScrollView: UIScrollView {
         // Positioning buttons with respect to scrollview coordinate system
         for i in 1...maxPins {
             isEven = i % 2 == 0
-            margin = (isEven ? btnSize * 1.25 : -btnSize * 2.25)
+            margin = (isEven ? btnSize * 1.1 : -btnSize * 2.1)
             x = isEven ? midX + btnMargin : midX - btnSize - btnMargin
             y = ((btnSize + (btnMargin * 2)) * floor(CGFloat(i - 1) / 2)) + btnSize
 
@@ -77,11 +77,11 @@ class PinSetupScrollView: UIScrollView {
         let fontSize = 24.0 as CGFloat
         let label = UILabel(frame:
             CGRect(origin: location, size: CGSize(width: btnSize * 2, height: btnSize + (btnMargin * 2))))
-        label.font = UIFont.systemFont(ofSize: fontSize)
+        label.font = UIFont.boldSystemFont(ofSize: fontSize)
         label.tag = id
         label.text = "func #"
         label.textAlignment = .center
-        label.textColor = Theme.grey900
+        label.layer.backgroundColor = UIColor.white.withAlphaComponent(0.66).cgColor
         return label
     }
 
@@ -120,10 +120,8 @@ class PinSetupScrollView: UIScrollView {
                 let pinName = pins[i-1].name.isEmpty ? pins[i-1].boardName : pins[i-1].name
                 let (bgClr, borderClr) = pins[i - 1].getColors()
 
-                label.backgroundColor = bgClr.withAlphaComponent(0.5)
-                label.layer.borderColor = borderClr.withAlphaComponent(0.5).cgColor
-                label.layer.borderWidth = 4.0
                 label.text = pinName
+                label.textColor = borderClr
             }
         }
         setNeedsDisplay()

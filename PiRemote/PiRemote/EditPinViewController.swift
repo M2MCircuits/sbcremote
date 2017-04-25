@@ -20,7 +20,9 @@ class EditPinViewController: UIViewController {
 
     // MARK: Local Variables
 
+    var activityIndicator: UIActivityIndicatorView!
     var pin: Pin!
+    var webAPI: WebAPIManager!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,10 +36,10 @@ class EditPinViewController: UIViewController {
             nameBox.text = pin!.name
         }
 
-        header.text = "#" + String(describing: pin!.id)
+        header.text = pin!.boardName
         onOffLabel.text = pin!.value == 1 ? "On" : "Off"
         onOffSwitch.isOn = pin!.value == 1
-        onOffSwitch.isEnabled = isEditing
+        onOffSwitch.isEnabled = isEditing && pin!.type == .control
 
         switch pin!.type {
         case .control:
@@ -50,16 +52,18 @@ class EditPinViewController: UIViewController {
             ignoreButton.backgroundColor = Theme.grey500
             ignoreButton.setTitleColor(UIColor.white, for: .normal)
         }
+
+        activityIndicator = UIActivityIndicatorView.init()
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.stopAnimating()
+        view.addSubview(activityIndicator)
     }
 
     // MARK: Local Functions
 
-    @IBAction func onUpdateType(_ sender: UIButton) {
-        guard isEditing else { return }
-
+    func changeButtonColors (type: Pin.Types, showIndicator: Bool = false) {
         let bgClr: UIColor
         let buttons = view.subviews.filter({vw in vw is UIButton}) as! [UIButton]
-        let type = sender.titleLabel!.text!.lowercased()
 
         // Resetting button styles
         buttons.forEach({btn in
@@ -68,19 +72,76 @@ class EditPinViewController: UIViewController {
         })
 
         // Updating style for selected button
+        var selectedButton: UIButton
         switch type {
-        case "control": bgClr = onOffSwitch.isOn ? Theme.lightGreen500 : Theme.amber500
-        case "monitor": bgClr = Theme.cyan500
-        case "ignore": bgClr = Theme.grey500
-        default: bgClr = UIColor.red
+        case .control:
+            bgClr = onOffSwitch.isOn ? Theme.lightGreen500 : Theme.amber500
+            selectedButton = controlButton
+        case .monitor:
+            bgClr = Theme.cyan500
+            selectedButton = monitorButton
+        case .ignore:
+            bgClr = Theme.grey500
+            selectedButton = ignoreButton
         }
 
-        sender.backgroundColor = bgClr
-        sender.setTitleColor(UIColor.white, for: .normal)
+        selectedButton.backgroundColor = bgClr
+        selectedButton.setTitleColor(UIColor.white, for: .normal)
 
-        // Notifying parent view controller to update pin data in layout
-        NotificationCenter.default.post(name: Notification.Name.updatePinInLayout, object: self, userInfo: [
-            "id": String(pin!.id), "name": nameBox.text!, "type": type, "value": String(onOffSwitch.isOn)])
+        if showIndicator {
+            // Placing indicator close to selected button
+            let dim = selectedButton.frame.size.height
+            let frame = CGRect(
+                origin: CGPoint(x: view.bounds.size.width - dim, y: selectedButton.frame.origin.y),
+                size: CGSize(width: dim, height: dim))
+            activityIndicator.frame = frame
+            activityIndicator.startAnimating()
+            activityIndicator.isHidden = false
+        }
+    }
+
+    @IBAction func onUpdateType(_ sender: UIButton) {
+        guard isEditing else { return }
+
+        // Recording types
+        var nextType: Pin.Types
+        let oldType = self.pin.type
+        let typeName = sender.titleLabel!.text!.lowercased()
+
+        switch typeName {
+        case "control":
+            nextType = .control
+        case "monitor":
+            nextType = .monitor
+        default:
+            nextType = .ignore
+        }
+
+        self.changeButtonColors(type: nextType, showIndicator: true)
+
+        // Applying change to device
+        let gpio = Int(self.pin.boardName.components(separatedBy: " ")[1])
+
+        let function = nextType == .control ? "out" : "in"
+        self.webAPI.setFunction(gpioNumber: gpio!, functionType: function) { newFunction in
+            DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating()
+            }
+
+            // Reverting UI changes on API response failure
+            guard newFunction != nil else {
+                SharedSnackbar.show(parent: self.view, type: .error, message: "Cannot update")
+                self.changeButtonColors(type: oldType)
+                return
+            }
+
+            let name = self.nameBox.text!.isEmpty ? self.nameBox.text! : self.pin!.name
+            let value = self.onOffSwitch.isOn ? 1 : 0
+
+            // Notifying parent view controller to update pin data in layout
+            NotificationCenter.default.post(name: Notification.Name.updatePinInLayout, object: self, userInfo: [
+                    "id": String(self.pin!.id), "name": name, "type": nextType, "value": value])
+        }
     }
 
     @IBAction func onUpdateValue() {
@@ -93,8 +154,23 @@ class EditPinViewController: UIViewController {
         onOffLabel.text = onOffSwitch.isOn ? "On" : "Off"
         controlButton.backgroundColor = onOffSwitch.isOn ? Theme.lightGreen500 : Theme.amber500
 
-        // Notifying parent view controller to update pin data in layout
-        NotificationCenter.default.post(name: Notification.Name.updatePinInLayout, object: self, userInfo: [
-            "id": String(pin!.id), "name": pin!.name, "type": String(describing: pin!.type), "value": String(onOffSwitch.isOn)])
+        let gpio = Int(self.pin.boardName.components(separatedBy: " ")[1])
+        let value = self.onOffSwitch.isOn ? 1 : 0
+        self.webAPI.setValue(gpioNumber: gpio!, value: value) { newValue in
+            DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating()
+            }
+
+            guard newValue != nil else {
+                SharedSnackbar.show(parent: self.view, type: .error, message: "Cannot update")
+                return
+            }
+
+            let name = self.nameBox.text!.isEmpty ? self.nameBox.text! : self.pin!.name
+
+            // Notifying parent view controller to update pin data in layout
+            NotificationCenter.default.post(name: Notification.Name.updatePinInLayout, object: self, userInfo: [
+                "id": String(self.pin!.id), "name": name, "type": self.pin!.type, "value": value])
+        }
     }
 }
