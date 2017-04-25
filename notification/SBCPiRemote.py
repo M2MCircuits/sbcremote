@@ -165,8 +165,9 @@ def loop():
     webiopi.sleep(1)
 
 # destroy() is called by WebIOPi when it shuts down
-# def destroy():
-    # # Remove event listeners for each pin
-    # webiopi.debug("Removing pin listeners")
-    # for gpio in chan_list:
-        # RPIGPIO.remove_event_detect(gpio)
+def destroy():
+    # Remove event listeners for each pin
+    webiopi.debug("Removing pin listeners")
+    for gpio in chan_list:
+        webiopi.sleep(1)
+        RPIGPIO.remove_event_detect(gpio)
