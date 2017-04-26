@@ -59,6 +59,16 @@ class EditPinViewController: UIViewController {
         view.addSubview(activityIndicator)
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+
+        let name = self.nameBox.text!.isEmpty ? self.pin!.name : self.nameBox.text!
+
+        // Notifying parent view controller to update pin data in layout
+        NotificationCenter.default.post(name: Notification.Name.updatePinInLayout, object: self, userInfo: [
+            "id": pin!.id, "name": name, "type": pin!.type, "value": pin!.value])
+    }
+
     // MARK: Local Functions
 
     func changeButtonColors (type: Pin.Types, showIndicator: Bool = false) {
@@ -124,23 +134,29 @@ class EditPinViewController: UIViewController {
 
         let function = nextType == .control ? "out" : "in"
         self.webAPI.setFunction(gpioNumber: gpio!, functionType: function) { newFunction in
-            DispatchQueue.main.async {
-                self.activityIndicator.stopAnimating()
-            }
-
             // Reverting UI changes on API response failure
             guard newFunction != nil else {
-                SharedSnackbar.show(parent: self.view, type: .error, message: "Cannot update")
+                SharedSnackbar.show(parent: self.view, type: .error, message: "Can't update")
                 self.changeButtonColors(type: oldType)
                 return
             }
 
-            let name = self.nameBox.text!.isEmpty ? self.nameBox.text! : self.pin!.name
-            let value = self.onOffSwitch.isOn ? 1 : 0
+            // Toggling between input and output causes unexpected behavior to value in webiopi interface
+            self.webAPI.getValue(gpioNumber: gpio!) {newValue in
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 0.25, animations: {() in
+                        self.activityIndicator.stopAnimating()
+                        self.onOffSwitch.isOn = newValue! - 48 == 1
+                        self.onOffSwitch.isEnabled = newFunction?.lowercased() == "out"
+                        self.onOffLabel.text = newValue! - 48 == 1 ? "Off" : "On"
+                    })
+                }
 
-            // Notifying parent view controller to update pin data in layout
-            NotificationCenter.default.post(name: Notification.Name.updatePinInLayout, object: self, userInfo: [
-                    "id": String(self.pin!.id), "name": name, "type": nextType, "value": value])
+
+                // Notifying parent view controller to update pin data in layout
+                NotificationCenter.default.post(name: Notification.Name.updatePinInLayout, object: self, userInfo: [
+                    "id": self.pin!.id, "name": self.pin!.name, "type": nextType, "value": newValue!-48])
+            }
         }
     }
 
@@ -154,6 +170,14 @@ class EditPinViewController: UIViewController {
         onOffLabel.text = onOffSwitch.isOn ? "On" : "Off"
         controlButton.backgroundColor = onOffSwitch.isOn ? Theme.lightGreen500 : Theme.amber500
 
+        let dim = 20 as CGFloat
+        let frame = CGRect(
+            origin: CGPoint(x: onOffLabel.frame.origin.x + dim, y: onOffLabel.frame.origin.y),
+            size: CGSize(width: dim, height: dim))
+        activityIndicator.frame = frame
+        activityIndicator.startAnimating()
+        activityIndicator.isHidden = false
+
         let gpio = Int(self.pin.boardName.components(separatedBy: " ")[1])
         let value = self.onOffSwitch.isOn ? 1 : 0
         self.webAPI.setValue(gpioNumber: gpio!, value: value) { newValue in
@@ -166,11 +190,11 @@ class EditPinViewController: UIViewController {
                 return
             }
 
-            let name = self.nameBox.text!.isEmpty ? self.nameBox.text! : self.pin!.name
+            self.pin.value = newValue!
 
             // Notifying parent view controller to update pin data in layout
             NotificationCenter.default.post(name: Notification.Name.updatePinInLayout, object: self, userInfo: [
-                "id": String(self.pin!.id), "name": name, "type": self.pin!.type, "value": value])
+                "id": self.pin!.id, "name": self.pin!.name, "type": self.pin!.type, "value": newValue!])
         }
     }
 }

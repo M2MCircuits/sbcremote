@@ -23,7 +23,6 @@
 		5AD060841CAD8E9800BD6930 /* Attempt2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD060831CAD8E9800BD6930 /* Attempt2Tests.swift */; };
 		5AD0608E1CAD96B100BD6930 /* Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD0608D1CAD96B100BD6930 /* Pin.swift */; };
 		C001CE231E8CB8A200DAA710 /* PinLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C001CE221E8CB8A200DAA710 /* PinLayout.swift */; };
-		C00355001EAEBCA000D262F5 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00354FF1EAEBCA000D262F5 /* LaunchScreen.swift */; };
 		C01D3BD61EA88A9C00BF7B44 /* DevicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01D3BD51EA88A9C00BF7B44 /* DevicesViewController.swift */; };
 		C02614181E86EC71002B725F /* WebLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02614171E86EC71002B725F /* WebLoginViewController.swift */; };
 		C0287E601E90B367009D4578 /* DeviceSetup.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0287E5F1E90B367009D4578 /* DeviceSetup.storyboard */; };
@@ -77,7 +76,6 @@
 		5AD060831CAD8E9800BD6930 /* Attempt2Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Attempt2Tests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5AD0608D1CAD96B100BD6930 /* Pin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Pin.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C001CE221E8CB8A200DAA710 /* PinLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinLayout.swift; sourceTree = "<group>"; };
-		C00354FF1EAEBCA000D262F5 /* LaunchScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
 		C01D3BD51EA88A9C00BF7B44 /* DevicesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevicesViewController.swift; sourceTree = "<group>"; };
 		C02614171E86EC71002B725F /* WebLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebLoginViewController.swift; sourceTree = "<group>"; };
 		C0287E5F1E90B367009D4578 /* DeviceSetup.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = DeviceSetup.storyboard; path = ../DeviceSetup.storyboard; sourceTree = "<group>"; };
@@ -140,7 +138,6 @@
 				5AD060761CAD8E9800BD6930 /* LaunchScreen.xib */,
 				C095F12C1EA41CA300A6E3AF /* SharedSnackbar.xib */,
 				C095F12E1EA41D4B00A6E3AF /* SharedSnackbar.swift */,
-				C00354FF1EAEBCA000D262F5 /* LaunchScreen.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -383,7 +380,6 @@
 				C08665A51E9137EA002A106D /* PopoverViewController.swift in Sources */,
 				5A279FD01CBFE60800272E05 /* LoginViewController.swift in Sources */,
 				C0A3C3851E9A607B007D953B /* PinSetupScrollView.swift in Sources */,
-				C00355001EAEBCA000D262F5 /* LaunchScreen.swift in Sources */,
 				246292941E9F4FA40055A051 /* KeychainWrapper.swift in Sources */,
 				C0C1C1761E6CC923005DE3B2 /* RemoteDeviceManager.swift in Sources */,
 				246292971E9F500E0055A051 /* KeychainItemAccessibility.swift in Sources */,

@@ -20,8 +20,6 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
     // MARK: Local variables
 
     let cellId = "PIN CELL"
-    var currentCell: PinTableViewCell!
-    var device: RemoteDevice!
     var tableData: [Pin]!
     var webAPI: WebAPIManager!
 
@@ -29,18 +27,37 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
         NotificationCenter.default.removeObserver(self)
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let currentDevice = MainUser.sharedInstance.currentDevice!
+        let layoutName = "Custom-\(currentDevice.apiData["deviceAlias"]!)"
+
+        // Loading previously saved layout for this device in order to restore names.
+        if let data = UserDefaults.standard.object(forKey: "layoutNames") as? Data {
+            let savedLayoutNames = NSKeyedUnarchiver.unarchiveObject(with: data) as! [String]!
+            if savedLayoutNames!.contains(layoutName) {
+                let filePath = documentsDirectory().appending(layoutName)
+                if let layout = NSKeyedUnarchiver.unarchiveObject(withFile: filePath) as? PinLayout {
+                    currentDevice.layout = layout
+                }
+            }
+        }
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.isNavigationBarHidden = false
 
-        device = MainUser.sharedInstance.currentDevice!
+        let currentDevice = MainUser.sharedInstance.currentDevice!
 
         // Creating custom layout if not already defined
-        if device.layout == nil {
-            self.tableData = [Pin]()
-            self.initCustomLayout(for: device)
-        } else {
-            self.tableData = device.layout.defaultSetup.sorted(by: {p1,p2 in p1.type.rawValue > p1.type.rawValue})
+        self.tableData = [Pin]()
+        DispatchQueue.main.async {
+            self.refreshPinData() {
+                // Updating layout label in more details section
+                let moreDetailsLabels = self.stackView.arrangedSubviews[4].subviews as! [UILabel]
+                moreDetailsLabels.filter({vw in vw.restorationIdentifier == "layoutName"}).first?.text = currentDevice.layout.name
+            }
         }
 
         // Additional navigation setup
@@ -51,14 +68,14 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
         self.navigationItem.rightBarButtonItem = setupButton
 
         // Configuring immediate info section
-        deviceNameLabel.text = device.apiData["deviceAlias"]
-        lastUpdatedLabel.text = formatTime(timestamp: device.lastUpdated)
+        deviceNameLabel.text = currentDevice.apiData["deviceAlias"]
+        lastUpdatedLabel.text = formatTime(timestamp: currentDevice.lastUpdated)
         powerStatusLabel.backgroundColor = Theme.lightGreen300
         powerStatusLabel.clipsToBounds = true
         powerStatusLabel.layer.cornerRadius = powerStatusLabel.bounds.height / 2
         powerStatusLabel.textColor = Theme.grey900
 
-        // Configuring table view section
+        // Configuring TableView section
         (stackView.arrangedSubviews[2] as! UITableView).rowHeight = 60
 
         // Configuring more details section
@@ -66,7 +83,7 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
 
         let labels = stackView.arrangedSubviews[4].subviews as! [UILabel]
         ["deviceAlias", "deviceLastIP", "lastInternalIP", "serviceTitle", "deviceAddress"].forEach({ key in
-            labels.filter({vw in vw.restorationIdentifier == key}).first?.text = device.apiData[key]
+            labels.filter({vw in vw.restorationIdentifier == key}).first?.text = currentDevice.apiData[key]
         })
 
         // TODO: Add label for device persistance
@@ -79,7 +96,6 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destination = segue.destination
         if segue.identifier == SegueTypes.idToDeviceSetup {
-            (destination as! DeviceSetupViewController).pinLayout = device.layout
             (destination as! DeviceSetupViewController).webAPI = self.webAPI
         }
     }
@@ -108,11 +124,16 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! PinTableViewCell
         cell.tag = indexPath.row
-        self.currentCell = cell
         return indexPath
     }
 
     // MARK: Local Functions
+
+    func documentsDirectory() -> String {
+        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        let documentDirectory = paths[0] as String
+        return documentDirectory
+    }
 
     func formatTime(timestamp: String) -> String {
         // example from weaved: "4/24/2017T10:49 AM"
@@ -132,8 +153,8 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
     func handleUpdatePin(notification: Notification) {
         let userInfo = notification.userInfo as! [String:Any]
         let id = userInfo["id"] as! Int
-        let indexPath = IndexPath(row: id-1, section: 0)
-        let currentPin = self.device.layout.defaultSetup[id-1]
+        let indexPath = IndexPath(row: id-3, section: 0)
+        let currentPin = MainUser.sharedInstance.currentDevice!.layout.defaultSetup[id-1]
         let tableView = stackView.arrangedSubviews[2] as! UITableView
 
         // WebIOPi does not allow users to change non-GPIO pins
@@ -153,7 +174,6 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
             return true
         }
 
-        self.currentCell = tableView.dequeueReusableCell(withIdentifier: self.cellId, for: indexPath) as! PinTableViewCell
         let gpio = Int(currentPin.boardName.components(separatedBy: " ")[1])
         let value = (userInfo["value"]! as! String) == "true" ? 1 : 0
 
@@ -166,33 +186,42 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
         }
     }
 
-    func initCustomLayout(for device: RemoteDevice) {
-        let deviceAlias = device.apiData["deviceAlias"]
-
-        DispatchQueue.main.async {
-            self.webAPI.getFullGPIOState() { data in
-                OperationQueue.main.addOperation {
-                    device.rawStateData = data
-
-                    let gpioState = device.rawStateData["GPIO"] as! [String:NSDictionary]
-                    let pins = gpioState.map({ (pinBoardNumber, pinData) in
-                        return Pin(id: Int(pinBoardNumber)!, apiData: pinData as! [String : AnyObject])
-                    }).sorted(by: {p1,p2 in return p1.id < p2.id})[0...25]
-
-                    // TODO: Handle other pi versions
-                    device.layout = PinLayout(name: "Custom-\(deviceAlias!)", defaultSetup: Array(pins))
-
-                    self.tableData = pins
-                        .sorted(by: {p1,p2 in return p1.type.rawValue > p2.type.rawValue})
-                        .filter({p in return p.type != .ignore})
-
-                    // Updating layout label in more details section
-                    let moreDetailsLabels = self.stackView.arrangedSubviews[4].subviews as! [UILabel]
-                    moreDetailsLabels.filter({vw in vw.restorationIdentifier == "layoutName"}).first?.text = device.layout.name
-
-                    // Refreshing table
-                    (self.stackView.arrangedSubviews[2] as! UITableView).reloadData()
+    func refreshPinData(completion: @escaping () -> Void = {() in}) {
+        let currentDevice = MainUser.sharedInstance.currentDevice!
+        self.webAPI.getFullGPIOState() { data in
+            DispatchQueue.main.async {
+                guard data != nil else {
+                    SharedSnackbar.show(parent: self.stackView, type: .error, message: "Could not refresh pins")
+                    return
                 }
+                currentDevice.rawStateData = data
+
+                let gpioState = currentDevice.rawStateData["GPIO"] as! [String:NSDictionary]
+
+                // Initializing pins from first 26 according to Pi Model B
+                // TODO: Handle other pi versions.
+                let pins = gpioState.map({ (pinBoardNumber, pinData) in
+                    return Pin(id: Int(pinBoardNumber)!+1, apiData: pinData as! [String:AnyObject])
+                }).sorted(by: {p1,p2 in return p1.id < p2.id})[0...25]
+
+                self.tableData = pins
+                    .sorted(by: {p1,p2 in return p1.type.rawValue > p2.type.rawValue})
+                    .filter({p in return p.type != .ignore})
+
+                // Preserving pin names if updated in DeviceSetupVC
+                if currentDevice.layout != nil {
+                    pins.forEach({p in
+                        p.name = currentDevice.layout.defaultSetup[p.id-1].name
+                    })
+                }
+
+                // TODO: Handle case where we're using a saved layout
+                let deviceAlias = currentDevice.apiData["deviceAlias"]
+                currentDevice.layout = PinLayout(name: "Custom-\(deviceAlias!)", defaultSetup: Array(pins))
+
+                // Refreshing table
+                (self.stackView.arrangedSubviews[2] as! UITableView).reloadData()
+                completion()
             }
         }
     }
@@ -208,7 +237,7 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
             UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseOut, animations: {
                 (self.stackView.arrangedSubviews[3] as! UIButton).titleLabel!.text = newTitle
                 self.stackView.arrangedSubviews[4].isHidden = !isCurrentlyHidden
-            }, completion: nil)
+            })
         }
     }
 

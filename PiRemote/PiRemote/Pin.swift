@@ -26,7 +26,7 @@ class Pin: NSObject, NSCoding {
             switch newVal {
             case "IN": type = .monitor
             case "OUT": type = .control
-            default: type = .ignore
+            default: break
             }
             _function = newVal
         }
@@ -47,7 +47,7 @@ class Pin: NSObject, NSCoding {
 
     init(id: Int, apiData: [String: AnyObject]) {
         super.init()
-        self.id = id + 1
+        self.id = id
         self.function = apiData["function"] as! String
         self.value = apiData["value"] as! Int
 
@@ -60,8 +60,6 @@ class Pin: NSObject, NSCoding {
 
         if !isGPIO() {
             self.type = .ignore
-        } else {
-            self.type = self.function == "IN" ? .monitor : .control
         }
     }
 

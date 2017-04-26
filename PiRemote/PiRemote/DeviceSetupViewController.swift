@@ -16,7 +16,6 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
 
     // MARK: Local Variables
 
-    var pinLayout: PinLayout!
     var popoverView: UIViewController!
     var scrollView: PinSetupScrollView!
     var webAPI: WebAPIManager!
@@ -36,9 +35,7 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        guard pinLayout != nil else { fatalError("[ERROR] No pin layout provided") }
-
+        
         // Setting up navigation bar
         let backButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(DeviceSetupViewController.onLeave))
         let editButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(DeviceSetupViewController.onToggleEditDeviceSettings))
@@ -47,7 +44,7 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
         self.navigationItem.rightBarButtonItem = editButton
 
         self.scrollView = stackView.arrangedSubviews[0] as! PinSetupScrollView
-        self.scrollView.setPinData(pins: pinLayout.defaultSetup)
+        self.scrollView.setPinData(pins: (MainUser.sharedInstance.currentDevice?.layout.defaultSetup)!)
 
         self.stackView.arrangedSubviews[1].isHidden = true
         self.stackView.arrangedSubviews[3].isHidden = true
@@ -114,21 +111,23 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
         let filePath = documentsDirectory().appending("/\(fileName)")
         let layout = NSKeyedUnarchiver.unarchiveObject(withFile: filePath) as! PinLayout
 
-        pinLayout = layout
+        MainUser.sharedInstance.currentDevice?.layout = layout
 
-        scrollView.setPinData(pins: pinLayout.defaultSetup)
+        scrollView.setPinData(pins: layout.defaultSetup)
         popoverView.dismiss(animated: true, completion: nil)
     }
 
     func handleClearLayout() {
-        pinLayout = PinLayout(name: "custom", defaultSetup: initPinSetup())
-        scrollView.setPinData(pins: pinLayout.defaultSetup)
+        var layout = (MainUser.sharedInstance.currentDevice?.layout)!
+        layout = PinLayout(name: "custom", defaultSetup: initPinSetup())
+        scrollView.setPinData(pins: layout.defaultSetup)
         popoverView.dismiss(animated: true, completion: nil)
     }
 
     func handleSaveLayout(notification: Notification) {
+        let defaultSetup = (MainUser.sharedInstance.currentDevice?.layout.defaultSetup)!
         let fileName = notification.userInfo?["text"] as! String
-        let layout = PinLayout(name: fileName, defaultSetup: pinLayout.defaultSetup) as PinLayout
+        let layout = PinLayout(name: fileName, defaultSetup: defaultSetup) as PinLayout
 
         save(layout: layout, as: fileName)
 
@@ -139,10 +138,10 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
 
     func handleTouchPin(notification: Notification) {
         let i = notification.userInfo?["tag"] as! Int
-        let pin = pinLayout.defaultSetup[i-1]
+        let pin = MainUser.sharedInstance.currentDevice?.layout.defaultSetup[i-1]
 
         // Preventing attempt to edit non-GPIO pins
-        guard pin.isGPIO() else {
+        guard pin!.isGPIO() else {
             SharedSnackbar.show(parent: (view)!, type: .warn, message: "You can only update GPIO pins")
             return
         }
@@ -155,15 +154,16 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
         // Preventing changes outside of editing mode
         guard self.isEditing else { return }
 
+        let layout = (MainUser.sharedInstance.currentDevice?.layout)!
         let userInfo = notification.userInfo as! [String:Any]
-        let i = Int(userInfo["id"] as! String)! - 1
+        let i = (userInfo["id"] as! Int) - 1
 
-        pinLayout.defaultSetup[i].name = userInfo["name"] as! String
-        pinLayout.defaultSetup[i].type = userInfo["type"] as! Pin.Types
-        pinLayout.defaultSetup[i].value = userInfo["value"] as! Int
+        layout.defaultSetup[i].name = userInfo["name"] as! String
+        layout.defaultSetup[i].type = userInfo["type"] as! Pin.Types
+        layout.defaultSetup[i].value = userInfo["value"] as! Int
 
         DispatchQueue.main.async {
-            self.scrollView.setPinData(pins: self.pinLayout.defaultSetup)
+            self.scrollView.setPinData(pins: layout.defaultSetup)
         }
     }
 
@@ -182,6 +182,9 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
     }
 
     func onLeave(sender: UIBarButtonItem!) {
+        let layout = (MainUser.sharedInstance.currentDevice?.layout)!
+        save(layout: layout, as: layout.name)
+
         if self.isEditing {
             self.isEditing = false
             self.updateNavBarItems()
@@ -199,9 +202,10 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
         isEditing = !isEditing
 
         self.updateNavBarItems()
+        let layout = (MainUser.sharedInstance.currentDevice?.layout)!
 
         if (!isEditing) {
-            save(layout: pinLayout, as: pinLayout.name)
+            save(layout: layout, as: layout.name)
         }
 
         DispatchQueue.main.async {
@@ -215,7 +219,7 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
         let isCurrentlyHidden = sender.titleLabel!.text!.contains("Show") as Bool
         let newTitle = isCurrentlyHidden ? "Hide More Settings" : "Show More Settings"
 
-        layoutNameLabel!.text = pinLayout.name
+        layoutNameLabel!.text = MainUser.sharedInstance.currentDevice?.layout.name
 
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseOut, animations: {
