@@ -61,6 +61,16 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
         // A new token is generated for each session. We always get a new one in case the previous token has expired.
         self.fetchToken() { token in
+            guard token != nil else {
+                DispatchQueue.main.async {
+                    self.dismiss(animated: true) {
+                        self.overlay = OverlayManager.createErrorOverlay(message: "Could not get token")
+                        self.present(self.overlay, animated: true)
+                    }
+                }
+                return
+            }
+
             MainUser.sharedInstance.weavedToken = token
             self.fetchDevices(with: token!)
         }
@@ -212,33 +222,55 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         let pass = notification.userInfo?["password"] as! String
         let shouldSaveLogin = notification.userInfo?["save"] as! Bool
 
+        let printError = {(message:String) in
+            DispatchQueue.main.async {
+                self.overlay = OverlayManager.createErrorOverlay(message: message)
+                self.dismiss(animated: false) {
+                    self.present(self.overlay, animated: true)
+                }
+            }
+        }
+
         // Showing overlay for fetching devices from Remot3.it
-        self.overlay = OverlayManager.createLoadingSpinner(withMessage: "Logging in...")
-        self.present(overlay, animated: true)
+        self.overlay = OverlayManager.createLoadingSpinner(withMessage: "Connecting to device...")
+        self.present(overlay, animated: true) {
 
-        while(self.isConnectionSuccess == nil) {
-            sleep(100)
-        }
+            // User entered login info before getting an API response from the background
+            var cnt = 1
+            while(self.isConnectionSuccess == nil) {
+                let wait = 100 * cnt
+                if wait > 8000 {
+                    printError("Connection timed out. Please try again")
+                    return
+                } else {
+                    sleep(UInt32(wait))
+                    cnt += 1
+                }
+            }
 
-        guard self.isConnectionSuccess! else {
-            self.overlay = OverlayManager.createErrorOverlay(message: "Could not connect to \(deviceName!)")
-            self.present(self.overlay, animated: true)
-            return
-        }
-
-        self.webManager = WebAPIManager(ipAddress: self.proxy, port: "", username: user, password: pass)
-        self.webManager.getValue(gpioNumber: 2) { value in
-            guard value != nil else {
-                let errorOverlay = OverlayManager.createErrorOverlay(message: "That login is incorrect")
-                self.dismiss(animated: false)
-                self.present(errorOverlay, animated: false)
+            guard self.isConnectionSuccess! else {
+                printError("Could not connect to \(deviceName!)")
                 return
             }
 
-            // TODO: Save login info
+            DispatchQueue.main.async {
+                self.overlay.message = "Logging in..."
+            }
 
-            self.dismiss(animated: true) {
-                self.performSegue(withIdentifier: SegueTypes.idToDeviceDetails, sender: self)
+            self.webManager = WebAPIManager(ipAddress: self.proxy, port: "", username: user, password: pass)
+            self.webManager.getValue(gpioNumber: 2) { value in
+                DispatchQueue.main.async {
+                    guard value != nil else {
+                        printError("That login is incorrect")
+                        return
+                    }
+
+                    // TODO: Save login info
+
+                    self.dismiss(animated: true) {
+                        self.performSegue(withIdentifier: SegueTypes.idToDeviceDetails, sender: self)
+                    }
+                }
             }
         }
     }

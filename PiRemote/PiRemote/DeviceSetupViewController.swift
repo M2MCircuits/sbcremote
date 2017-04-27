@@ -15,9 +15,10 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
     @IBOutlet weak var stackView: UIStackView!
 
     // MARK: Local Variables
-    var pinLayout: PinLayout!
+
     var popoverView: UIViewController!
     var scrollView: PinSetupScrollView!
+    var webAPI: WebAPIManager!
 
     let pickerOptions = [
         DeviceTypes.rPi3
@@ -34,19 +35,16 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        guard pinLayout != nil else { fatalError("[ERROR] No pin layout provided") }
-
+        
         // Setting up navigation bar
         let backButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(DeviceSetupViewController.onLeave))
         let editButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(DeviceSetupViewController.onToggleEditDeviceSettings))
 
         self.navigationItem.leftBarButtonItem = backButton
         self.navigationItem.rightBarButtonItem = editButton
-        self.navigationItem.title = "Device Setup"
 
         self.scrollView = stackView.arrangedSubviews[0] as! PinSetupScrollView
-        self.scrollView.setPinData(pins: pinLayout.defaultSetup)
+        self.scrollView.setPinData(pins: (MainUser.sharedInstance.currentDevice?.layout.defaultSetup)!)
 
         self.stackView.arrangedSubviews[1].isHidden = true
         self.stackView.arrangedSubviews[3].isHidden = true
@@ -83,6 +81,7 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
             contentSize = CGSize(width: 150, height: 320)
             sourceRect = CGRect(origin: CGPoint(x: 0, y: 0), size: destination.view.bounds.size)
             (destination as! EditPinViewController).pin = pin
+            (destination as! EditPinViewController).webAPI = webAPI
             destination.isEditing = self.navigationItem.rightBarButtonItem?.title == "Done"
         default: break
         }
@@ -112,50 +111,37 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
         let filePath = documentsDirectory().appending("/\(fileName)")
         let layout = NSKeyedUnarchiver.unarchiveObject(withFile: filePath) as! PinLayout
 
-        pinLayout = layout
+        MainUser.sharedInstance.currentDevice?.layout = layout
 
-        scrollView.setPinData(pins: pinLayout.defaultSetup)
+        scrollView.setPinData(pins: layout.defaultSetup)
         popoverView.dismiss(animated: true, completion: nil)
     }
 
     func handleClearLayout() {
-        pinLayout = PinLayout(name: "custom", defaultSetup: initPinSetup())
-        scrollView.setPinData(pins: pinLayout.defaultSetup)
+        var layout = (MainUser.sharedInstance.currentDevice?.layout)!
+        layout = PinLayout(name: "custom", defaultSetup: initPinSetup())
+        scrollView.setPinData(pins: layout.defaultSetup)
         popoverView.dismiss(animated: true, completion: nil)
     }
 
     func handleSaveLayout(notification: Notification) {
+        let defaultSetup = (MainUser.sharedInstance.currentDevice?.layout.defaultSetup)!
         let fileName = notification.userInfo?["text"] as! String
-        let filePath = documentsDirectory().appending("/\(fileName)")
-        let layout = PinLayout(name: fileName, defaultSetup: pinLayout.defaultSetup) as PinLayout
+        let layout = PinLayout(name: fileName, defaultSetup: defaultSetup) as PinLayout
 
-        // Saving layout data
-        NSKeyedArchiver.archiveRootObject(layout, toFile: filePath)
+        save(layout: layout, as: fileName)
 
-        // Recording layout name to user defaults
-        var savedLayoutNames: [String]
-
-        if let data = UserDefaults.standard.object(forKey: "layoutNames") as? Data {
-            savedLayoutNames = NSKeyedUnarchiver.unarchiveObject(with: data) as! [String]!
-        } else {
-            savedLayoutNames = []
-        }
-
-        savedLayoutNames.append(fileName)
-        let data = NSKeyedArchiver.archivedData(withRootObject: savedLayoutNames)
-        UserDefaults.standard.set(data, forKey: "layoutNames")
-
-        // TODO: Show success snackbar
-        print("Saved as \(fileName)")
+        // Notifiying user
+        SharedSnackbar.show(parent: self.stackView, type: .check, message: "Saved as \(fileName)")
         popoverView.dismiss(animated: true, completion: nil)
     }
 
     func handleTouchPin(notification: Notification) {
         let i = notification.userInfo?["tag"] as! Int
-        let pin = pinLayout.defaultSetup[i-1]
+        let pin = MainUser.sharedInstance.currentDevice?.layout.defaultSetup[i-1]
 
         // Preventing attempt to edit non-GPIO pins
-        guard pin.isGPIO() else {
+        guard pin!.isGPIO() else {
             SharedSnackbar.show(parent: (view)!, type: .warn, message: "You can only update GPIO pins")
             return
         }
@@ -165,24 +151,22 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
     }
 
     func handleUpdatePin(notification: Notification) {
-        // Checking if we're in editing mode
-        guard self.navigationItem.rightBarButtonItem?.title == "Done" else {
-            return
-        }
+        // Preventing changes outside of editing mode
+        guard self.isEditing else { return }
 
+        let layout = (MainUser.sharedInstance.currentDevice?.layout)!
         let userInfo = notification.userInfo as! [String:Any]
         let i = (userInfo["id"] as! Int) - 1
 
-        pinLayout.defaultSetup[i].name = userInfo["name"] as! String
-        pinLayout.defaultSetup[i].type = userInfo["type"] as! Pin.Types
-        pinLayout.defaultSetup[i].value = (userInfo["value"] as! String) == "true" ? 1 : 0
+        layout.defaultSetup[i].name = userInfo["name"] as! String
+        layout.defaultSetup[i].type = userInfo["type"] as! Pin.Types
+        layout.defaultSetup[i].value = userInfo["value"] as! Int
 
-        scrollView.setPinData(pins: pinLayout.defaultSetup)
+        DispatchQueue.main.async {
+            self.scrollView.setPinData(pins: layout.defaultSetup)
+        }
     }
 
-    func handleValidLogin() {
-        print("LOGIN IS VALID")
-    }
 
     func initSavedLayoutNames() -> [String]! {
         if let data = UserDefaults.standard.object(forKey: "layoutNames") as? Data {
@@ -193,55 +177,41 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
 
     func initPinSetup() -> [Pin] {
         var pins = [Pin]()
-        for i in 1...40 { pins.append(Pin(id: i)) }
+        for i in 1...26 { pins.append(Pin(id: i)) }
         return pins
     }
 
-
     func onLeave(sender: UIBarButtonItem!) {
-        switch sender.title! {
-        case "Cancel":
-            // Updating nav bar
-            self.navigationItem.leftBarButtonItem?.title = "Back"
-            self.navigationItem.rightBarButtonItem?.title = "Edit"
+        let layout = (MainUser.sharedInstance.currentDevice?.layout)!
+        save(layout: layout, as: layout.name)
 
+        if self.isEditing {
+            self.isEditing = false
+            self.updateNavBarItems()
             DispatchQueue.main.async {
                 UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseOut, animations: {
                     self.stackView.arrangedSubviews[1].isHidden = true
-                }, completion: nil)
+                })
             }
-        case "Back":
+        } else {
             _ = self.navigationController?.popViewController(animated: true)
-        default: break
         }
     }
 
     func onToggleEditDeviceSettings(sender: UIBarButtonItem!) {
-        var leftBtnTitle: String = "Error"
-        var rightBtnTitle: String = "Error"
-        var shouldHideToolbar: Bool = false
+        isEditing = !isEditing
 
-        switch sender.title! {
-        case "Edit":
-            leftBtnTitle = "Cancel"
-            rightBtnTitle = "Done"
-            shouldHideToolbar = false
-        case "Done":
-            leftBtnTitle = "Back"
-            rightBtnTitle = "Edit"
-            shouldHideToolbar = true
-            // TODO: Implement saving the layout
-        default: break
+        self.updateNavBarItems()
+        let layout = (MainUser.sharedInstance.currentDevice?.layout)!
+
+        if (!isEditing) {
+            save(layout: layout, as: layout.name)
         }
-
-        // Updating nav bar
-        self.navigationItem.leftBarButtonItem?.title = leftBtnTitle
-        self.navigationItem.rightBarButtonItem?.title = rightBtnTitle
 
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseOut, animations: {
-                self.stackView.arrangedSubviews[1].isHidden = shouldHideToolbar
-            }, completion: nil)
+                self.stackView.arrangedSubviews[1].isHidden = !self.isEditing
+            })
         }
     }
 
@@ -249,13 +219,54 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
         let isCurrentlyHidden = sender.titleLabel!.text!.contains("Show") as Bool
         let newTitle = isCurrentlyHidden ? "Hide More Settings" : "Show More Settings"
 
-        layoutNameLabel!.text = pinLayout.name
+        layoutNameLabel!.text = MainUser.sharedInstance.currentDevice?.layout.name
 
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseOut, animations: {
                 (self.stackView.arrangedSubviews[2] as! UIButton).titleLabel!.text = newTitle
                 self.stackView.arrangedSubviews[3].isHidden = !isCurrentlyHidden
-            }, completion: nil)
+            })
         }
+    }
+
+    func save(layout: PinLayout, as name: String) {
+        // TODO: Warn users when we are overriding an existing layout
+        let filePath = documentsDirectory().appending("/\(name)")
+
+        // Archiving layout data
+        NSKeyedArchiver.archiveRootObject(layout, toFile: filePath)
+
+        // Saving layout name to user defaults
+        var savedLayoutNames: [String]
+
+        if let data = UserDefaults.standard.object(forKey: "layoutNames") as? Data {
+            savedLayoutNames = NSKeyedUnarchiver.unarchiveObject(with: data) as! [String]!
+        } else {
+            savedLayoutNames = []
+        }
+
+        if !savedLayoutNames.contains(name) {
+            savedLayoutNames.append(name)
+        }
+
+        let data = NSKeyedArchiver.archivedData(withRootObject: savedLayoutNames)
+        UserDefaults.standard.set(data, forKey: "layoutNames")
+    }
+
+    func updateNavBarItems () {
+        var leftBtnTitle: String = "Error"
+        var rightBtnTitle: String = "Error"
+
+        if self.isEditing {
+            leftBtnTitle = "Cancel"
+            rightBtnTitle = "Done"
+        } else {
+            leftBtnTitle = "Back"
+            rightBtnTitle = "Edit"
+        }
+
+        // Updating nav bar
+        self.navigationItem.leftBarButtonItem?.title = leftBtnTitle
+        self.navigationItem.rightBarButtonItem?.title = rightBtnTitle
     }
 }

@@ -135,6 +135,7 @@
 				C0B3ECD41E9EF4D60005488A /* PinTableViewCell.swift */,
 				C0C791301E62217200D94A13 /* DeviceTableViewCell.swift */,
 				C0A3C3841E9A607B007D953B /* PinSetupScrollView.swift */,
+				5AD060761CAD8E9800BD6930 /* LaunchScreen.xib */,
 				C095F12C1EA41CA300A6E3AF /* SharedSnackbar.xib */,
 				C095F12E1EA41D4B00A6E3AF /* SharedSnackbar.swift */,
 			);
@@ -186,7 +187,6 @@
 				5AD060711CAD8E9800BD6930 /* Main.storyboard */,
 				C0287E5F1E90B367009D4578 /* DeviceSetup.storyboard */,
 				5AD060741CAD8E9800BD6930 /* Images.xcassets */,
-				5AD060761CAD8E9800BD6930 /* LaunchScreen.xib */,
 				5AD0606B1CAD8E9800BD6930 /* Supporting Files */,
 			);
 			path = PiRemote;

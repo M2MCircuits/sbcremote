@@ -34,6 +34,10 @@ class SharedSnackbar: UIView {
     // MARK: Local Functions
 
     func animateOut() {
+        // Preventing animations if view is not being shown
+        guard self.superview != nil else {
+            return
+        }
         let parentHeight = self.superview?.bounds.height
         let parentWidth = self.superview?.bounds.height
         let initalFrame = CGRect(origin: CGPoint(x: 0, y: parentHeight!),
