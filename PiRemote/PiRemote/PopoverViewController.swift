@@ -31,7 +31,7 @@ class PopoverViewController: UIViewController {
     }
 
     @IBAction func onDismiss(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
+        self.dismiss(animated: false)
     }
 
     @IBAction func onSave(_ sender: UIBarButtonItem) {
