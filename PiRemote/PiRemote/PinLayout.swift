@@ -11,11 +11,11 @@ import Foundation
 class PinLayout: NSObject, NSCoding {
 
     // TODO: Handle based on model type. Assumes B+
-    var defaultSetup: [Pin]
+    var pins: [Pin]
     var name: String
 
-    init(name: String, defaultSetup: [Pin]) {
-        self.defaultSetup = defaultSetup
+    init(name: String, pins: [Pin]) {
+        self.pins = pins
         self.name = name
         super.init()
     }
@@ -23,12 +23,12 @@ class PinLayout: NSObject, NSCoding {
     // MARK: NSCoding
     
     required init(coder decoder: NSCoder) {
-        self.defaultSetup = decoder.decodeObject(forKey: "defaultSetup") as! [Pin]
+        self.pins = decoder.decodeObject(forKey: "pins") as! [Pin]
         self.name = decoder.decodeObject(forKey: "name") as! String
     }
 
     func encode(with coder: NSCoder) {
-        coder.encode(defaultSetup, forKey: "defaultSetup")
+        coder.encode(pins, forKey: "pins")
         coder.encode(name, forKey: "name")
     }
 }

@@ -44,7 +44,7 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
         self.navigationItem.rightBarButtonItem = editButton
 
         self.scrollView = stackView.arrangedSubviews[0] as! PinSetupScrollView
-        self.scrollView.setPinData(pins: (MainUser.sharedInstance.currentDevice?.layout.defaultSetup)!)
+        self.scrollView.refreshPinData()
 
         self.stackView.arrangedSubviews[1].isHidden = true
         self.stackView.arrangedSubviews[3].isHidden = true
@@ -113,32 +113,64 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
 
         MainUser.sharedInstance.currentDevice?.layout = layout
 
-        scrollView.setPinData(pins: layout.defaultSetup)
-        popoverView.dismiss(animated: true, completion: nil)
+        scrollView.refreshPinData()
+        popoverView.dismiss(animated: false)
     }
 
     func handleClearLayout() {
-        var layout = (MainUser.sharedInstance.currentDevice?.layout)!
-        layout = PinLayout(name: "custom", defaultSetup: initPinSetup())
-        scrollView.setPinData(pins: layout.defaultSetup)
-        popoverView.dismiss(animated: true, completion: nil)
+        let currentDevice = MainUser.sharedInstance.currentDevice!
+        self.webAPI.getFullGPIOState() { data in
+            DispatchQueue.main.async {
+                guard data != nil else {
+                    SharedSnackbar.show(parent: self.stackView, type: .error, message: "Could not refresh pins")
+                    return
+                }
+                currentDevice.rawStateData = data
+
+                let gpioState = currentDevice.rawStateData["GPIO"] as! [String:NSDictionary]
+
+                // Initializing pins from first 26 according to Pi Model B
+                // TODO: Handle other pi versions.
+                let pins = gpioState.map({ (pinBoardNumber, pinData) in
+                    return Pin(id: Int(pinBoardNumber)!+1, apiData: pinData as! [String:AnyObject])
+                }).sorted(by: {p1,p2 in return p1.id < p2.id})[0...25]
+
+                // Preserving pin names if updated in DeviceSetupVC
+                if currentDevice.layout != nil {
+                    pins.forEach({p in
+                        p.name = currentDevice.layout.pins[p.id-1].name
+                    })
+                }
+
+                // TODO: Handle case where we're using a saved layout
+                let deviceAlias = currentDevice.apiData["deviceAlias"]
+                currentDevice.layout = PinLayout(name: "Custom-\(deviceAlias!)", pins: Array(pins))
+                self.scrollView.refreshPinData()
+                self.dismiss(animated: false)
+            }
+        }
+
+        DispatchQueue.main.async {
+            let overlay = OverlayManager.createLoadingSpinner(withMessage: "Getting latest info...")
+            self.present(overlay, animated: true)
+        }
     }
 
     func handleSaveLayout(notification: Notification) {
-        let defaultSetup = (MainUser.sharedInstance.currentDevice?.layout.defaultSetup)!
+        let pins = (MainUser.sharedInstance.currentDevice?.layout.pins)!
         let fileName = notification.userInfo?["text"] as! String
-        let layout = PinLayout(name: fileName, defaultSetup: defaultSetup) as PinLayout
+        let layout = PinLayout(name: fileName, pins: pins)
 
         save(layout: layout, as: fileName)
 
         // Notifiying user
         SharedSnackbar.show(parent: self.stackView, type: .check, message: "Saved as \(fileName)")
-        popoverView.dismiss(animated: true, completion: nil)
+        popoverView.dismiss(animated: false)
     }
 
     func handleTouchPin(notification: Notification) {
         let i = notification.userInfo?["tag"] as! Int
-        let pin = MainUser.sharedInstance.currentDevice?.layout.defaultSetup[i-1]
+        let pin = MainUser.sharedInstance.currentDevice?.layout.pins[i-1]
 
         // Preventing attempt to edit non-GPIO pins
         guard pin!.isGPIO() else {
@@ -156,14 +188,16 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
 
         let layout = (MainUser.sharedInstance.currentDevice?.layout)!
         let userInfo = notification.userInfo as! [String:Any]
-        let i = (userInfo["id"] as! Int) - 1
+        let boardName = userInfo["boardName"] as! String
 
-        layout.defaultSetup[i].name = userInfo["name"] as! String
-        layout.defaultSetup[i].type = userInfo["type"] as! Pin.Types
-        layout.defaultSetup[i].value = userInfo["value"] as! Int
+        let pin = layout.pins.filter({p in return p.boardName == boardName}).first!
+
+        pin.name = userInfo["name"] as! String
+        pin.type = userInfo["type"] as! Pin.Types
+        pin.value = userInfo["value"] as! Int
 
         DispatchQueue.main.async {
-            self.scrollView.setPinData(pins: layout.defaultSetup)
+            self.scrollView.refreshPinData()
         }
     }
 
@@ -173,12 +207,6 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
             return NSKeyedUnarchiver.unarchiveObject(with: data) as! [String]!
         }
         return []
-    }
-
-    func initPinSetup() -> [Pin] {
-        var pins = [Pin]()
-        for i in 1...26 { pins.append(Pin(id: i)) }
-        return pins
     }
 
     func onLeave(sender: UIBarButtonItem!) {
@@ -194,7 +222,7 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
                 })
             }
         } else {
-            _ = self.navigationController?.popViewController(animated: true)
+            _ = self.navigationController?.popViewController(animated: false)
         }
     }
 

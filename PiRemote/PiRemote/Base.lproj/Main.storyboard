@@ -294,7 +294,6 @@
                             <constraint firstItem="qYn-oJ-7PC" firstAttribute="top" secondItem="NKP-NI-G5D" secondAttribute="bottom" constant="48" id="e0k-sS-TDc"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Login" image="LoginImg" selectedImage="LoginImg" id="MBA-zC-Jci"/>
                     <navigationItem key="navigationItem" id="y0A-20-rAH"/>
                     <connections>
                         <outlet property="logButton" destination="xZX-HV-27a" id="avF-nD-laU"/>
@@ -561,7 +560,7 @@
                                             <constraint firstItem="kTk-if-vPB" firstAttribute="leading" secondItem="m0V-Xr-drT" secondAttribute="leading" id="0N9-Z0-61Z"/>
                                             <constraint firstItem="Pqq-zj-ztB" firstAttribute="leading" secondItem="ji7-SG-bMD" secondAttribute="leading" id="0fI-5W-HmG"/>
                                             <constraint firstItem="m0V-Xr-drT" firstAttribute="leading" secondItem="MkT-u4-tRs" secondAttribute="leadingMargin" constant="8" id="10J-jN-ZcR"/>
-                                            <constraint firstAttribute="height" constant="350" id="7xA-JR-d4X"/>
+                                            <constraint firstAttribute="height" priority="750" constant="350" id="7xA-JR-d4X"/>
                                             <constraint firstItem="Pqq-zj-ztB" firstAttribute="top" secondItem="8PI-iP-f2O" secondAttribute="bottom" constant="8" id="EPH-S2-5Bi"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="KaP-fg-WPy" secondAttribute="trailing" constant="8" id="Ebf-tI-0P4"/>
                                             <constraint firstItem="tx1-M5-1cq" firstAttribute="leading" secondItem="FIj-3m-one" secondAttribute="leading" id="FcG-JN-eAO"/>
@@ -698,7 +697,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="LoginImg" width="24" height="24"/>
         <image name="piremote-logo" width="256" height="256"/>
         <image name="piremote-text" width="256" height="50"/>
     </resources>

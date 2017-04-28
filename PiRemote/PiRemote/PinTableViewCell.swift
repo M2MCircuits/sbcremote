@@ -23,12 +23,9 @@ class PinTableViewCell: UITableViewCell {
     // MARK: Local Functions
 
     @IBAction func onToggleSwitch(_ sender: UISwitch) {
-        activityIndicator.isHidden = false
-        activityIndicator.startAnimating()
-
         // Notifying parent view controller to update pin data in layout
         NotificationCenter.default.post(name: Notification.Name.updatePin, object: self, userInfo: [
-            "id": pinView.tag, "value": String(sender.isOn)])
+            "cell": self, "value": String(sender.isOn)])
     }
 
     func updateStyle(with pin: Pin) {

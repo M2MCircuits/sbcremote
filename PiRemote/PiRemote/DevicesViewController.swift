@@ -36,6 +36,18 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.navigationController?.isNavigationBarHidden = false
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        guard devices != nil else {
+            // Showing overlay for fetching devices from Remot3.it
+            overlay = OverlayManager.createLoadingSpinner(withMessage: "Gathering devices...")
+            self.present(overlay, animated: true)
+
+            self.fetchDevices(with: MainUser.sharedInstance.weavedToken!)
+            return
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Setting up navigation bar
@@ -153,21 +165,19 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     func connectToDevice(device: RemoteDevice) {
         // TODO: Check if login has been saved and use it if so
 
-
-            // Getting public IP address of user's phone or tablet
-            let ipifyURL = "https://api.ipify.org?format=json"
-            SimpleHTTPRequest().simpleAPIRequest(toUrl: ipifyURL, HTTPMethod: "GET", jsonBody: nil, extraHeaderFields: nil) {
-                (success, data, error) in
-                guard data != nil else{
-                    DispatchQueue.main.async{
-                    self.dismiss(animated: true, completion: { 
-                        self.present(OverlayManager.createErrorOverlay(message: "Failed to connect:"), animated: true, completion: nil)
-                        })
-                    }
-                    return
+        // Getting public IP address of user's phone or tablet
+        let ipifyURL = "https://api.ipify.org?format=json"
+        SimpleHTTPRequest().simpleAPIRequest(toUrl: ipifyURL, HTTPMethod: "GET", jsonBody: nil, extraHeaderFields: nil) { (success, data, error) in
+            guard data != nil else{
+                DispatchQueue.main.async{
+                self.dismiss(animated: true, completion: {
+                    self.present(OverlayManager.createErrorOverlay(message: "Failed to connect:"), animated: true, completion: nil)
+                    })
                 }
-                let deviceAddress = device.apiData!["deviceAddress"]!
-                let senderAddress = (data as! NSDictionary)["ip"] as! String
+                return
+            }
+            let deviceAddress = device.apiData!["deviceAddress"]!
+            let senderAddress = (data as! NSDictionary)["ip"] as! String
                 
 
             DispatchQueue.main.async{
@@ -186,14 +196,15 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
                     device.lastUpdated = connection["requested"] as! String
                     self.proxy = self.parseProxy(url: connection["proxy"] as! String)
                     self.sem.signal()
+
+                    if let data = self.checkIfDeviceLoginSaved(){
+                        NotificationCenter.default.post(name: Notification.Name.login, object: nil, userInfo: data)
+                    }else{
+                        // Presenting login dialog while we start sending API calls in the background
+                        self.performSegue(withIdentifier: SegueTypes.idToWebLogin, sender: self)
                     }
                 }
             }
-        if let data = checkIfDeviceLoginSaved(){
-            NotificationCenter.default.post(name: Notification.Name.login, object: nil, userInfo: data)
-        }else{
-        // Presenting login dialog while we start sending API calls in the background
-            self.performSegue(withIdentifier: SegueTypes.idToWebLogin, sender: self)
         }
     }
     
@@ -228,23 +239,22 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     func fetchDevices(with token : String) {
         self.remoteManager.listDevices(token: token) { data in
-            guard data != nil else {
-                self.dismiss(animated: true)
-                return
-            }
-
-            self.devices = self.deviceManager.createDevicesFromAPIResponse(data: data!)
-
-            // Optimization TODO : Only push new accounts. Save accounts and check if there are new ones.
-            let userEmail = MainUser.sharedInstance.email!
             DispatchQueue.main.async {
-                self.appEngineManager.createAccountsForDevices(devices: self.devices, email: userEmail, completion: nil)
-            }
+                guard data != nil else {
+                    self.dismiss(animated: true)
+                    return
+                }
 
-            // Hiding overlay
-            OperationQueue.main.addOperation {
+                self.devices = self.deviceManager.createDevicesFromAPIResponse(data: data!)
+
+                // Optimization TODO : Only push new accounts. Save accounts and check if there are new ones.
+                let userEmail = MainUser.sharedInstance.email!
+                self.appEngineManager.createAccountsForDevices(devices: self.devices, email: userEmail, completion: nil)
+
                 (self.view.subviews[0] as! UITableView).reloadData()
-                self.dismiss(animated: true)
+                if self.overlay != nil {
+                    self.dismiss(animated: true)
+                }
             }
         }
     }
@@ -299,9 +309,9 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
                     // TODO: Save login info
 
-                    self.dismiss(animated: true) {
+                    self.dismiss(animated: true, completion: {() in
                         self.performSegue(withIdentifier: SegueTypes.idToDeviceDetails, sender: self)
-                    }
+                    })
                 }
             }
         }

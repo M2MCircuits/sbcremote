@@ -112,13 +112,13 @@ class LoginViewController: UIViewController {
         let alert = UIAlertController(title: "Remot3.it", message: info, preferredStyle: UIAlertControllerStyle.alert)
 
         alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: {action in
-            alert.dismiss(animated: true, completion: nil)
+            alert.dismiss(animated: true)
         }))
 
         alert.addAction(UIAlertAction(title: "Visit Site", style: UIAlertActionStyle.default, handler: {action in
             UIApplication.shared.openURL(URL(string: "https://www.remot3.it/web/")! as URL)
         }))
 
-        self.present(alert, animated: true, completion: nil)
+        self.present(alert, animated: true)
     }
 }
