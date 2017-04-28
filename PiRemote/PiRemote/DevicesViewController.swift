@@ -12,13 +12,15 @@ import UIKit
 class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIPopoverPresentationControllerDelegate  {
 
     // MARK: Local Variables
+    
+    let sem = DispatchSemaphore(value: 0)
 
     let cellId = "DEVICE CELL"
     var devices: [RemoteDevice]!
     var deviceLastUpdated: String!
     var overlay: UIAlertController!
     var proxy: String!
-    var isConnectionSuccess: Bool!
+    var isConnectionSuccess: Bool = false
 
     var appEngineManager : AppEngineManager!
     var deviceManager : RemoteDeviceManager!
@@ -82,7 +84,8 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         case SegueTypes.idToDeviceDetails:
             (destination as! DeviceDetailsViewController).webAPI = self.webManager
         case SegueTypes.idToWebLogin:
-            (destination as! WebLoginViewController).domain = self.proxy
+            let dest = destination as! WebLoginViewController
+            dest.domain = self.proxy
             let contentSize = CGSize(width: 300, height: 320)
             _ = PopoverViewController.buildPopover(
                 source: self, content: destination, contentSize: contentSize, sourceRect: nil)
@@ -151,30 +154,60 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         // TODO: Check if login has been saved and use it if so
 
 
-        DispatchQueue.main.async {
             // Getting public IP address of user's phone or tablet
             let ipifyURL = "https://api.ipify.org?format=json"
             SimpleHTTPRequest().simpleAPIRequest(toUrl: ipifyURL, HTTPMethod: "GET", jsonBody: nil, extraHeaderFields: nil) {
                 (success, data, error) in
+                guard data != nil else{
+                    DispatchQueue.main.async{
+                    self.dismiss(animated: true, completion: { 
+                        self.present(OverlayManager.createErrorOverlay(message: "Failed to connect:"), animated: true, completion: nil)
+                        })
+                    }
+                    return
+                }
                 let deviceAddress = device.apiData!["deviceAddress"]!
                 let senderAddress = (data as! NSDictionary)["ip"] as! String
+                
 
+            DispatchQueue.main.async{
+                    
                 RemoteAPIManager().connectDevice(deviceAddress: deviceAddress, hostip: senderAddress) { data in
                     self.isConnectionSuccess = data != nil
 
                     // Handling API response failure
-                    guard self.isConnectionSuccess! else { return }
+                    guard self.isConnectionSuccess else {
+                        self.sem.signal()
+                        return
+                    }
 
                     // Parsing url data returned from Remot3.it for WebIOPi
                     let connection = data!["connection"] as! NSDictionary
                     device.lastUpdated = connection["requested"] as! String
                     self.proxy = self.parseProxy(url: connection["proxy"] as! String)
+                    self.sem.signal()
+                    }
                 }
             }
-        }
-
+        if let data = checkIfDeviceLoginSaved(){
+            NotificationCenter.default.post(name: Notification.Name.login, object: nil, userInfo: data)
+        }else{
         // Presenting login dialog while we start sending API calls in the background
-        self.performSegue(withIdentifier: SegueTypes.idToWebLogin, sender: self)
+            self.performSegue(withIdentifier: SegueTypes.idToWebLogin, sender: self)
+        }
+    }
+    
+    
+    func checkIfDeviceLoginSaved()->[String : Any]?{
+        let deviceName = MainUser.sharedInstance.currentDevice!.apiData[DeviceAPIType.deviceAlias]
+        let user = KeychainWrapper.standard.string(forKey: deviceName! + "user_name")
+        let pw = KeychainWrapper.standard.string(forKey: deviceName! + "user_pw")
+        if user != nil && pw != nil{
+            return ["username" : user!,
+            "password" : pw!, "save" : false] as [String : Any]
+        }else{
+            return nil
+        }
     }
 
     func fetchToken(completion: @escaping (_ token: String?)-> Void) {
@@ -221,6 +254,11 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         let user = notification.userInfo?["username"] as! String
         let pass = notification.userInfo?["password"] as! String
         let shouldSaveLogin = notification.userInfo?["save"] as! Bool
+       
+        if shouldSaveLogin{
+         KeychainWrapper.standard.set(user, forKey: deviceName! + "user_name")
+         KeychainWrapper.standard.set(pass, forKey: deviceName! + "user_pw")
+        }
 
         let printError = {(message:String) in
             DispatchQueue.main.async {
@@ -235,20 +273,14 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.overlay = OverlayManager.createLoadingSpinner(withMessage: "Connecting to device...")
         self.present(overlay, animated: true) {
 
-            // User entered login info before getting an API response from the background
-            var cnt = 1
-            while(self.isConnectionSuccess == nil) {
-                let wait = 100 * cnt
-                if wait > 8000 {
-                    printError("Connection timed out. Please try again")
-                    return
-                } else {
-                    sleep(UInt32(wait))
-                    cnt += 1
-                }
-            }
+            // Uses semaphore to wait for signal from background thread. Much faster
+            // Network timeout prevents hanging.
+            _ = self.sem.wait(timeout: DispatchTime.now() + DispatchTimeInterval.seconds(5))
 
-            guard self.isConnectionSuccess! else {
+            guard self.isConnectionSuccess else {
+                self.dismiss(animated: true, completion: { 
+                    self.present(OverlayManager.createErrorOverlay(message: "Failed to connect to device"), animated: true, completion: nil)
+                })
                 printError("Could not connect to \(deviceName!)")
                 return
             }
@@ -275,6 +307,8 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
 
+
+    
     func onLogout(sender: UIButton!) {
         _ = self.navigationController?.popViewController(animated: true)
 
@@ -283,6 +317,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         if !sucess {
             KeychainWrapper.standard.removeObject(forKey: "user_email")
             KeychainWrapper.standard.removeObject(forKey: "user_pw")
+            
         }
     }
 
