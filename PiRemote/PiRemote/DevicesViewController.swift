@@ -315,7 +315,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         // Removing all stored keys from keychain.
         let sucess = KeychainWrapper.standard.removeAllKeys()
         if !sucess {
-            KeychainWrapper.standard.removeObject(forKey: "user_name")
+            KeychainWrapper.standard.removeObject(forKey: "user_email")
             KeychainWrapper.standard.removeObject(forKey: "user_pw")
             
         }
