@@ -294,14 +294,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="300" height="200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Erase Changes" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RQy-94-q3f">
-                                <rect key="frame" x="52" y="40" width="196" height="26"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reset" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RQy-94-q3f">
+                                <rect key="frame" x="54" y="40" width="193" height="26"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Are you sure you want to remove all your changes?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rNj-Jo-q2I">
-                                <rect key="frame" x="52" y="74" width="196" height="41"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remove changes and use latest setup on device?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rNj-Jo-q2I">
+                                <rect key="frame" x="50" y="74" width="200.5" height="41"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -335,8 +335,8 @@
                             <constraint firstItem="RQy-94-q3f" firstAttribute="centerX" secondItem="sJw-PS-NpC" secondAttribute="centerX" id="lcg-pL-me1"/>
                             <constraint firstItem="RQy-94-q3f" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sJw-PS-NpC" secondAttribute="leadingMargin" constant="30" id="oBS-FT-Kpw"/>
                             <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="rNj-Jo-q2I" secondAttribute="trailing" constant="30" id="opC-2P-L4P"/>
-                            <constraint firstItem="RQy-94-q3f" firstAttribute="leading" secondItem="rNj-Jo-q2I" secondAttribute="leading" id="w7d-2u-Yb9"/>
-                            <constraint firstItem="rNj-Jo-q2I" firstAttribute="width" secondItem="RQy-94-q3f" secondAttribute="width" id="y2u-in-b32"/>
+                            <constraint firstItem="RQy-94-q3f" firstAttribute="leading" secondItem="rNj-Jo-q2I" secondAttribute="leading" constant="4" id="w7d-2u-Yb9"/>
+                            <constraint firstItem="rNj-Jo-q2I" firstAttribute="width" secondItem="RQy-94-q3f" secondAttribute="width" constant="7.5" id="y2u-in-b32"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
@@ -347,7 +347,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JJh-pG-etH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-150" y="-543"/>
+            <point key="canvasLocation" x="-150.40000000000001" y="-543.32833583208401"/>
         </scene>
         <!--Save Changes-->
         <scene sceneID="k26-ti-vmi">
@@ -361,8 +361,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="300" height="200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Save Changes" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9nb-x9-KO8">
-                                <rect key="frame" x="65" y="40" width="170" height="25.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Save" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9nb-x9-KO8">
+                                <rect key="frame" x="65" y="40" width="170" height="26"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>

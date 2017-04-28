@@ -309,9 +309,9 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
                     // TODO: Save login info
 
-                    self.dismiss(animated: true) {
+                    self.dismiss(animated: true, completion: {() in
                         self.performSegue(withIdentifier: SegueTypes.idToDeviceDetails, sender: self)
-                    }
+                    })
                 }
             }
         }
