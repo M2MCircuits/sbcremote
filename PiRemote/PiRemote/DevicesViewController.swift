@@ -12,13 +12,15 @@ import UIKit
 class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIPopoverPresentationControllerDelegate  {
 
     // MARK: Local Variables
+    
+    let sem = DispatchSemaphore(value: 0)
 
     let cellId = "DEVICE CELL"
     var devices: [RemoteDevice]!
     var deviceLastUpdated: String!
     var overlay: UIAlertController!
     var proxy: String!
-    var isConnectionSuccess: Bool!
+    var isConnectionSuccess: Bool = false
 
     var appEngineManager : AppEngineManager!
     var deviceManager : RemoteDeviceManager!
@@ -167,18 +169,23 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
                 let deviceAddress = device.apiData!["deviceAddress"]!
                 let senderAddress = (data as! NSDictionary)["ip"] as! String
                 
+
             DispatchQueue.main.async{
                     
                 RemoteAPIManager().connectDevice(deviceAddress: deviceAddress, hostip: senderAddress) { data in
                     self.isConnectionSuccess = data != nil
 
                     // Handling API response failure
-                    guard self.isConnectionSuccess! else { return }
+                    guard self.isConnectionSuccess else {
+                        self.sem.signal()
+                        return
+                    }
 
                     // Parsing url data returned from Remot3.it for WebIOPi
                     let connection = data!["connection"] as! NSDictionary
                     device.lastUpdated = connection["requested"] as! String
                     self.proxy = self.parseProxy(url: connection["proxy"] as! String)
+                    self.sem.signal()
                     }
                 }
             }
@@ -266,20 +273,14 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.overlay = OverlayManager.createLoadingSpinner(withMessage: "Connecting to device...")
         self.present(overlay, animated: true) {
 
-            // User entered login info before getting an API response from the background
-            var cnt = 1
-            while(self.isConnectionSuccess == nil) {
-                let wait = 100 * cnt
-                if wait > 8000 {
-                    printError("Connection timed out. Please try again")
-                    return
-                } else {
-                    sleep(UInt32(wait))
-                    cnt += 1
-                }
-            }
+            // Uses semaphore to wait for signal from background thread. Much faster
+            // Network timeout prevents hanging.
+            _ = self.sem.wait(timeout: DispatchTime.now() + DispatchTimeInterval.seconds(5))
 
-            guard self.isConnectionSuccess! else {
+            guard self.isConnectionSuccess else {
+                self.dismiss(animated: true, completion: { 
+                    self.present(OverlayManager.createErrorOverlay(message: "Failed to connect to device"), animated: true, completion: nil)
+                })
                 printError("Could not connect to \(deviceName!)")
                 return
             }
