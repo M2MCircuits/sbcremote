@@ -66,7 +66,7 @@ class EditPinViewController: UIViewController {
 
         // Notifying parent view controller to update pin data in layout
         NotificationCenter.default.post(name: Notification.Name.updatePinInLayout, object: self, userInfo: [
-            "id": pin!.id, "name": name, "type": pin!.type, "value": pin!.value])
+            "boardName": self.pin!.boardName, "name": name, "type": pin!.type, "value": pin!.value])
     }
 
     // MARK: Local Functions
@@ -143,6 +143,11 @@ class EditPinViewController: UIViewController {
 
             // Toggling between input and output causes unexpected behavior to value in webiopi interface
             self.webAPI.getValue(gpioNumber: gpio!) {newValue in
+                guard newValue != nil else {
+                    SharedSnackbar.show(parent: self.view, type: .error, message: "Cannot update")
+                    return
+                }
+
                 DispatchQueue.main.async {
                     UIView.animate(withDuration: 0.25, animations: {() in
                         self.activityIndicator.stopAnimating()
@@ -155,7 +160,7 @@ class EditPinViewController: UIViewController {
 
                 // Notifying parent view controller to update pin data in layout
                 NotificationCenter.default.post(name: Notification.Name.updatePinInLayout, object: self, userInfo: [
-                    "id": self.pin!.id, "name": self.pin!.name, "type": nextType, "value": newValue!-48])
+                    "boardName": self.pin!.boardName, "name": self.pin!.name, "type": nextType, "value": newValue!-48])
             }
         }
     }
@@ -194,7 +199,7 @@ class EditPinViewController: UIViewController {
 
             // Notifying parent view controller to update pin data in layout
             NotificationCenter.default.post(name: Notification.Name.updatePinInLayout, object: self, userInfo: [
-                "id": self.pin!.id, "name": self.pin!.name, "type": self.pin!.type, "value": newValue!])
+                "boardName": self.pin!.boardName, "name": self.pin!.name, "type": self.pin!.type, "value": newValue!])
         }
     }
 }
