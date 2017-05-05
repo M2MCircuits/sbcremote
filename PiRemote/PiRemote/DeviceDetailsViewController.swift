@@ -10,7 +10,7 @@ import UIKit
 
 // TODO: Add sorting feature by type and status
 @available(iOS 9.0, *)
-class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIPopoverPresentationControllerDelegate {
 
     @IBOutlet weak var deviceNameLabel: UILabel!
     @IBOutlet weak var lastUpdatedLabel: UILabel!
@@ -20,6 +20,7 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
     // MARK: Local variables
 
     let cellId = "PIN CELL"
+    var filters: [Pin.Types:String]!
     var filteredData: [Pin]!
     var webAPI: WebAPIManager!
 
@@ -74,10 +75,10 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
 
         // Additional navigation setup
         let backButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(DeviceDetailsViewController.onBack))
-        let setupButton = UIBarButtonItem(image: UIImage(named: "cog"), style: .plain, target: self, action: #selector(DeviceDetailsViewController.onViewSetup))
+        let optionsButton = UIBarButtonItem(image: UIImage(named: "cog"), style: .plain, target: self, action: #selector(DeviceDetailsViewController.onShowDeviceSetup))
 
         self.navigationItem.leftBarButtonItem = backButton
-        self.navigationItem.rightBarButtonItem = setupButton
+        self.navigationItem.rightBarButtonItem = optionsButton
 
         // Configuring immediate info section
         deviceNameLabel.text = currentDevice.apiData["deviceAlias"]
@@ -86,6 +87,12 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
         powerStatusLabel.clipsToBounds = true
         powerStatusLabel.layer.cornerRadius = powerStatusLabel.bounds.height / 2
         powerStatusLabel.textColor = Theme.grey900
+
+        // Configuring table header section
+        let filterButton = stackView.arrangedSubviews[1].subviews[3] as! UIButton
+        let stencil = UIImage(named: "filter")?.withRenderingMode(.alwaysTemplate)
+        filterButton.setImage(stencil, for: .normal)
+        filterButton.tintColor = UIColor.gray
 
         // Configuring TableView section
         (stackView.arrangedSubviews[2] as! UITableView).rowHeight = 60
@@ -131,6 +138,14 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
 
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
+    }
+
+
+    // MARK: UIPopoverPresentationControllerDelegate Functions
+
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        // Prevents popover from changing style based on the iOS device
+        return UIModalPresentationStyle.none
     }
 
     // MARK: Local Functions
@@ -242,6 +257,11 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
                     .sorted(by: {p1,p2 in return p1.id < p2.id})
                     .sorted(by: {p1,p2 in return p1.type.rawValue > p2.type.rawValue})
 
+                self.filters = [
+                    .control: "Show",
+                    .monitor: "Show",
+                    .ignore: "Hide"
+                ]
 
                 completion(Array(pins))
             }
@@ -252,6 +272,35 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
         _ = self.navigationController?.popViewController(animated: true)
     }
 
+    func onShowDeviceSetup() {
+        performSegue(withIdentifier: SegueTypes.idToDeviceSetup, sender: nil)
+    }
+
+    @IBAction func onShowFilterOptions(_ sender: UIButton) {
+        let alert = UIAlertController(title: "Filter Options", message: "", preferredStyle: .actionSheet)
+        let pins = MainUser.sharedInstance.currentDevice!.layout.pins
+
+        self.filters.forEach({pinType, filter in
+            let opposite = filter == "Show" ? "Hide" : "Show"
+            let btnTitle = opposite + " " + String(describing: pinType) + " pins"
+            let alertAction = UIAlertAction(title: btnTitle, style: .default, handler: { action in
+                self.filters[pinType] = opposite
+                self.filteredData = pins
+                    .filter({p in return self.filters[p.type] == "Show" ? true : false})
+                    .sorted(by: {p1,p2 in return p1.id < p2.id})
+                    .sorted(by: {p1,p2 in return p1.type.rawValue > p2.type.rawValue})
+                // Refreshing table
+                (self.stackView.arrangedSubviews[2] as! UITableView).reloadData()
+            })
+            alert.addAction(alertAction)
+        })
+
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+
+        self.navigationController!.present(alert, animated: true)
+    }
+
+
     @IBAction func onShowMoreDetails(_ sender: UIButton) {
         let isCurrentlyHidden = sender.titleLabel!.text!.contains("Show") as Bool
         let newTitle = isCurrentlyHidden ? "Hide More Details" : "Show More Details"
@@ -261,12 +310,6 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
                 self.stackView.arrangedSubviews[4].isHidden = !isCurrentlyHidden
             })
         }
-    }
-
-    func onViewSetup() {
-        // TODO: Add actionsheet with options: [Show Setup, Filter By, ] 
-        // Supported by iOS <6.0
-        self.performSegue(withIdentifier: SegueTypes.idToDeviceSetup, sender: self)
     }
 
 }
