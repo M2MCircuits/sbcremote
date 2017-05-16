@@ -40,10 +40,8 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         super.viewDidLoad()
         // Setting up navigation bar
         let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(DevicesViewController.onLogout))
-        let optionsButton = UIBarButtonItem(image: UIImage(named: "cog"), style: .plain, target: self, action: #selector(DevicesViewController.onShowActions))
 
         self.navigationItem.leftBarButtonItem = logoutButton
-        self.navigationItem.rightBarButtonItem = optionsButton
 
         // Adding listeners for notifications from popovers
         NotificationCenter.default.addObserver(self, selector: #selector(self.onLogin), name: .login, object: nil)
@@ -299,9 +297,9 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
                     // TODO: Save login info
 
-                    self.dismiss(animated: true) {
+                    self.dismiss(animated: true, completion: {() in
                         self.performSegue(withIdentifier: SegueTypes.idToDeviceDetails, sender: self)
-                    }
+                    })
                 }
             }
         }
@@ -323,10 +321,6 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     func onLoginSuccess(notification: Notification) {
         self.performSegue(withIdentifier: SegueTypes.idToDeviceDetails, sender: self)
-    }
-
-    func onShowActions() {
-        // TODO: Implement. show action sheet (show ssh, layouts, refresh)
     }
 
     func parseProxy(url: String) -> String {

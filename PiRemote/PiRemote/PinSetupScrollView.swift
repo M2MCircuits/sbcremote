@@ -103,7 +103,8 @@ class PinSetupScrollView: UIScrollView {
         }
     }
 
-    func setPinData(pins: [Pin]) {
+    func refreshPinData() {
+        let pins = (MainUser.sharedInstance.currentDevice?.layout.pins)!
         // Colorcoding pins
         for child in contentView!.subviews {
             if child is UIButton {
@@ -118,7 +119,7 @@ class PinSetupScrollView: UIScrollView {
                 let label = child as! UILabel
                 let i = label.tag
                 let pinName = pins[i-1].name.isEmpty ? pins[i-1].boardName : pins[i-1].name
-                let (bgClr, borderClr) = pins[i - 1].getColors()
+                let (_, borderClr) = pins[i - 1].getColors()
 
                 label.text = pinName
                 label.textColor = borderClr
