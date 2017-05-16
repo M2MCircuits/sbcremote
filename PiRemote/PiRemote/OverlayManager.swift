@@ -25,7 +25,7 @@ class OverlayManager: NSObject {
     }
     
     static func createSucessOverlay(message: String) -> UIAlertController{
-        return self.createActionOverlay(title: "Success", withMessage: message)
+        return self.createActionOverlay(title: "Sucess", withMessage: message)
     }
     
     
@@ -42,7 +42,7 @@ class OverlayManager: NSObject {
         return alert
     }
     
-    static func createAndStartAnimatingBasicLoadingSpinner() -> UIActivityIndicatorView {
+    static func createAndStartAnimatingBasicLoadingSpinner() -> UIActivityIndicatorView{
         let loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRect(5, 5, 50, 50)) as UIActivityIndicatorView
         loadingIndicator.hidesWhenStopped = true
         loadingIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.white

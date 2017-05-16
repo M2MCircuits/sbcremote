@@ -59,8 +59,8 @@ class WebLoginViewController: UIViewController,UIPopoverPresentationControllerDe
 
         self.activityIndicator.isHidden = false
         self.activityIndicator.startAnimating()
-        self.dismiss(animated: false) {
-            NotificationCenter.default.post(name: Notification.Name.login, object: nil, userInfo: ["username": user!, "password": pass!, "save": save])
+        self.dismiss(animated: true) {
+            NotificationCenter.default.post(name: Notification.Name.login, object: nil, userInfo: ["username": user, "password": pass, "save": save])
         }
     }
 }

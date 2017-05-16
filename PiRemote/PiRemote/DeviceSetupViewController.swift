@@ -114,14 +114,14 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
         MainUser.sharedInstance.currentDevice?.layout = layout
 
         scrollView.setPinData(pins: layout.defaultSetup)
-        popoverView.dismiss(animated: false)
+        popoverView.dismiss(animated: true, completion: nil)
     }
 
     func handleClearLayout() {
         var layout = (MainUser.sharedInstance.currentDevice?.layout)!
         layout = PinLayout(name: "custom", defaultSetup: initPinSetup())
         scrollView.setPinData(pins: layout.defaultSetup)
-        popoverView.dismiss(animated: false)
+        popoverView.dismiss(animated: true, completion: nil)
     }
 
     func handleSaveLayout(notification: Notification) {
@@ -133,7 +133,7 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
 
         // Notifiying user
         SharedSnackbar.show(parent: self.stackView, type: .check, message: "Saved as \(fileName)")
-        popoverView.dismiss(animated: false)
+        popoverView.dismiss(animated: true, completion: nil)
     }
 
     func handleTouchPin(notification: Notification) {
@@ -162,10 +162,9 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
         layout.defaultSetup[i].type = userInfo["type"] as! Pin.Types
         layout.defaultSetup[i].value = userInfo["value"] as! Int
 
-//        DispatchQueue.main.async {
+        DispatchQueue.main.async {
             self.scrollView.setPinData(pins: layout.defaultSetup)
-            self.popoverView.dismiss(animated: false)
-//        }
+        }
     }
 
 
@@ -195,7 +194,7 @@ class DeviceSetupViewController: UIViewController, UIPopoverPresentationControll
                 })
             }
         } else {
-            _ = self.navigationController?.popViewController(animated: false)
+            _ = self.navigationController?.popViewController(animated: true)
         }
     }
 
