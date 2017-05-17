@@ -236,7 +236,18 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             // Optimization TODO : Only push new accounts. Save accounts and check if there are new ones.
             let userEmail = MainUser.sharedInstance.email!
             DispatchQueue.main.async {
-                self.appEngineManager.createAccountsForDevices(devices: self.devices, email: userEmail, completion: nil)
+                self.appEngineManager.createAccountsForDevices(devices: self.devices, email: userEmail, completion: {(success) in
+                    if success{
+                        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                        
+                        if appDelegate.accountOnRecord == false{
+                            appDelegate.registerForPushNotifications(UIApplication.shared)
+                            MainUser.sharedInstance.savePhoneToken()
+                        }
+                        
+                    }
+                    
+                })
             }
 
             // Hiding overlay
