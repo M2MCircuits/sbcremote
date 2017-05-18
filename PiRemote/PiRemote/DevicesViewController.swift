@@ -263,12 +263,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         let user = notification.userInfo?["username"] as! String
         let pass = notification.userInfo?["password"] as! String
         let shouldSaveLogin = notification.userInfo?["save"] as! Bool
-       
-        if shouldSaveLogin{
-         KeychainWrapper.standard.set(user, forKey: deviceName! + "user_name")
-         KeychainWrapper.standard.set(pass, forKey: deviceName! + "user_pw")
-        }
-
+    
         let printError = {(message:String) in
             DispatchQueue.main.async {
                 self.overlay = OverlayManager.createErrorOverlay(message: message)
@@ -306,7 +301,10 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
                         return
                     }
 
-                    // TODO: Save login info
+                    if shouldSaveLogin{
+                        KeychainWrapper.standard.set(user, forKey: deviceName! + "user_name")
+                        KeychainWrapper.standard.set(pass, forKey: deviceName! + "user_pw")
+                    }
 
                     self.dismiss(animated: true, completion: {() in
                         self.performSegue(withIdentifier: SegueTypes.idToDeviceDetails, sender: self)

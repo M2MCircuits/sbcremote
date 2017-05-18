@@ -64,7 +64,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    
+    // Faulty..There are some cases where posting to app engine will fail and this will be true and thus a
+    // user will never recieve push notifications.
     func handleTokenUpdate(token : String){
 
         let previousToken = MainUser.sharedInstance.phone_token
