@@ -241,7 +241,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
                         let appDelegate = UIApplication.shared.delegate as! AppDelegate
                         
                         if appDelegate.accountOnRecord == false{
-                            appDelegate.registerForPushNotifications(UIApplication.shared)
+                          MainUser.sharedInstance.phone_token = appDelegate.registerForPushNotifications(UIApplication.shared)
                             MainUser.sharedInstance.savePhoneToken()
                         }
                         
