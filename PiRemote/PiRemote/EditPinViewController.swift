@@ -60,7 +60,7 @@ class EditPinViewController: UIViewController {
     }
 
     override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+        super.viewWillDisappear(true)
 
         let name = self.nameBox.text!.isEmpty ? self.pin!.name : self.nameBox.text!
 

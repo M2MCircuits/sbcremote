@@ -150,7 +150,8 @@ class APNPhoneTokenHandler(MainHelperClass):
     	# We get all pi addresses associated with email account.
     	# We add the phone number to phones that listen to the device
         requestBody = self.jsonifyRequestBody()
-        parsed_token = self.parseToken(requestBody["token"])
+        print "token is " + requestBody["token"]
+        parsed_token = requestBody["token"]
         email = requestBody["email"]
 
         if not parsed_token or not email:
@@ -167,12 +168,6 @@ class APNPhoneTokenHandler(MainHelperClass):
 				# Best we can do as the Pi can only hold it's address for security purposes.
         self.writeSucessfulResponse("Sucess, user token has been inputed.")
 
-    def parseToken(self, token):
-    	if not token:
-    		return None
-        startString = token[1:len(token) - 1]
-        endString = startString.replace(" ", "")
-        return endString
 
 
 class APNTest(MainHelperClass):

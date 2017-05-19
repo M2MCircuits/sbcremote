@@ -18,7 +18,7 @@ class PiDiagramViewController: UIViewController {
 
         let diagram = UIImage(named: getFilePathToPinDiagram())
 
-        header.text = "Raspberry Pi 3 Model B"
+        header.text = "Raspberry Pi 3"
 
         // Order is important: resizes content after the image has been added to it.
         imageView.image = diagram
@@ -28,7 +28,7 @@ class PiDiagramViewController: UIViewController {
     // MARK: Local Functions
 
     @IBAction func onDismiss(_ sender: UIBarButtonItem) {
-        dismiss(animated: false)
+        dismiss(animated: true, completion: nil)
     }
 
     func getFilePathToPinDiagram() -> String {

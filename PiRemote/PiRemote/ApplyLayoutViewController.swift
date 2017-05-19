@@ -55,6 +55,6 @@ class ApplyLayoutViewController: UIViewController, UITableViewDelegate, UITableV
     }
 
     @IBAction func onCancel(_ sender: UIBarButtonItem) {
-        self.dismiss(animated: false)
+        dismiss(animated: true, completion: nil)
     }
 }

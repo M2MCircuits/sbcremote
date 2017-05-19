@@ -82,7 +82,7 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
 
         // Configuring immediate info section
         deviceNameLabel.text = currentDevice.apiData["deviceAlias"]
-        lastUpdatedLabel.text = formatTime(timestamp: currentDevice.lastUpdated)
+        lastUpdatedLabel.text = formatTime(timestamp: currentDevice.lastUpdated ?? "")
         powerStatusLabel.backgroundColor = Theme.lightGreen300
         powerStatusLabel.clipsToBounds = true
         powerStatusLabel.layer.cornerRadius = powerStatusLabel.bounds.height / 2
@@ -244,7 +244,7 @@ class DeviceDetailsViewController: UIViewController, UITableViewDataSource, UITa
                 }).sorted(by: {p1,p2 in return p1.id < p2.id})[0...25]
 
                 // Preserving pin names if updated in DeviceSetupVC
-                if currentDevice.layout != nil {
+                if currentDevice.layout != nil && currentDevice.layout.pins.count != 0 {
                     pins.forEach({p in
                         p.name = currentDevice.layout.pins[p.id-1].name
                         p.value = currentDevice.layout.pins[p.id-1].value

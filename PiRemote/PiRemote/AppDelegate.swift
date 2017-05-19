@@ -56,7 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         // We get phone token everytime user starts up per Apple's official documentation guideline
-        registerForPushNotifications(application)
+        _ = registerForPushNotifications(application)
         
         //We only load the devices view if it is not the user's first time.
         loadDevicesView()
@@ -64,7 +64,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    
+    // Faulty..There are some cases where posting to app engine will fail and this will be true and thus a
+    // user will never recieve push notifications.
     func handleTokenUpdate(token : String){
 
         let previousToken = MainUser.sharedInstance.phone_token
@@ -76,7 +77,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if previousToken == nil || previousToken != tokenString{
             
             MainUser.sharedInstance.phone_token = tokenString
-            MainUser.sharedInstance.saveUser()
+            MainUser.sharedInstance.savePhoneToken()
             self.registerTokenWithAppEngine(token: token, completion: { (sucess) in
                 guard sucess == true else{
                     print("Failed to update token with app engine")
@@ -147,10 +148,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     //register for push notifications when app starts
-    func registerForPushNotifications(_ application: UIApplication) {
+    func registerForPushNotifications(_ application: UIApplication)->String? {
         let notificationSettings = UIUserNotificationSettings(
             types: [.badge, .sound, .alert], categories: nil)
         application.registerUserNotificationSettings(notificationSettings)
+        return self.tokenString
     }
 
     //if the user chose to allow notifications, enable remote notifications for pi
@@ -175,6 +177,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidFinishLaunching(_ application: UIApplication) {
-        sleep(4)
+    
     }
 }

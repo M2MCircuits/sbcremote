@@ -42,15 +42,17 @@ class MainUser{
         KeychainWrapper.standard.set(self.email!, forKey: "user_email")
         KeychainWrapper.standard.set(self.password!, forKey: "user_pw")
         KeychainWrapper.standard.set(self.weavedToken!, forKey: "weaved_token")
-        //Could crash in case where use denies notification
-        if self.phone_token != nil{
-            KeychainWrapper.standard.set(self.phone_token!, forKey: "phone_token")
-        }
         if (self.layouts != nil){
             let layoutData = NSKeyedArchiver.archivedData(withRootObject: self.layouts!)
             UserDefaults.standard.set(layoutData, forKey: "user_layout")
         }
         UserDefaults.standard.synchronize()
+    }
+    
+    func savePhoneToken(){
+        if self.phone_token != nil{
+            KeychainWrapper.standard.set(self.phone_token!, forKey: "phone_token")
+        }
     }
     
     func loadSaved()->Bool{

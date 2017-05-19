@@ -21,7 +21,9 @@ class APIManager{
             if sucess{
                 completion(data!)
             }else{
-                print(err.debugDescription)
+                if err != nil{
+                    print(err.debugDescription)
+                }
                 completion(nil)
             }
         })
